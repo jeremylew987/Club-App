@@ -3,7 +3,7 @@ COMS 319 Group Project
 Title: MyClub
 
 Members:
-Benjamin Riemersma
+Benjamin Riemersma <br>
 Graham Mobley
 Kevin Knack
 Jeremy Lewis
