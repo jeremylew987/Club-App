@@ -4,17 +4,17 @@ Title: MyClub
 
 Members:
 Benjamin Riemersma <br>
-Graham Mobley
-Kevin Knack
-Jeremy Lewis
-Parker Schmitz
-Zachary Miller
+Graham Mobley <br>
+Kevin Knack <br>
+Jeremy Lewis <br>
+Parker Schmitz <br>
+Zachary Miller <br>
 
-Frameworks:
-    Backend:
-        Spring Boot
-    Frontend:
-        Android Studio
+Frameworks: <br>
+    Backend: <br>
+        Spring Boot <br>
+    Frontend: <br>
+        Android Studio <br>
 
 -------------------------------------
 
