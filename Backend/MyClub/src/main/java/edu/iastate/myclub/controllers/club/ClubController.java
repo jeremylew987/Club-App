@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,13 +26,13 @@ public class ClubController {
 	private ClubService clubService;
 	
 	@PostMapping("/create")
-	public ResponseEntity<Boolean> createClub(@RequestBody Club club)
+	public ResponseEntity<Boolean> createClub(@RequestHeader HttpHeaders headers, @RequestBody Club club)
 	{
 		//if(has valid permissions)
 		//{
-		//return new ResponseEntity<boolean>(clubService.createClub(club), HttpStatus.OK);
+		return new ResponseEntity<Boolean>(clubService.createClub(club), HttpStatus.OK);
 		//}
-		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		//return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	//TODO determine best way to determine which club is modified with respect to user who made the request
@@ -40,13 +41,13 @@ public class ClubController {
 	{
 		//if(has valid permissions)
 		//{
-		//return new ResponseEntity<boolean>(clubService.modifyClub(club), HttpStatus.OK);
+		return new ResponseEntity<Boolean>(clubService.modifyClub(club), HttpStatus.OK);
 		//}
-		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		//return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	@GetMapping("/joined")
-	public ResponseEntity<List<ClubDto>> getJoinedClubs(HttpHeaders headers)
+	public ResponseEntity<List<ClubDto>> getJoinedClubs(@RequestHeader HttpHeaders headers)
 	{
 		//if(has valid permissions)
 		//{
@@ -56,7 +57,7 @@ public class ClubController {
 	}
 	
 	@GetMapping("/search/{phrase}")
-	public ResponseEntity<List<ClubDto>> getClubsBySearch(@PathVariable String phrase)
+	public ResponseEntity<List<ClubDto>> getClubsBySearch(@RequestHeader HttpHeaders headers, @PathVariable String phrase)
 	{
 		//if(has valid permissions)
 		//{
@@ -66,11 +67,11 @@ public class ClubController {
 	}
 	
 	@GetMapping("/joined/notifications")
-	public ResponseEntity<List<ClubDto>> getJoinedClubsNotifications(HttpHeaders headers)
+	public ResponseEntity<List<ClubDto>> getJoinedClubsNotifications(@RequestHeader HttpHeaders headers)
 	{
 		//if(has valid permissions)
 		//{
-		//return new ResponseEntity<boolean>(clubService.getClubNotifications(club), HttpStatus.OK);
+		//return new ResponseEntity<boolean>(clubService.getClubNotifications(user name here), HttpStatus.OK);
 		//}
 		return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
 	}

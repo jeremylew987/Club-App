@@ -34,5 +34,18 @@ public class ClubService {
 	public List<Club> getJoinedClubs(String name)
 	{
 		
+		return null;
+	}
+	
+	public List<Club> findClubs(String phrase)
+	{
+		
+		return null;
+	}
+	
+	public List<Club> getJoinedClubsNotifications(String name)
+	{
+		
+		return null;
 	}
 }
