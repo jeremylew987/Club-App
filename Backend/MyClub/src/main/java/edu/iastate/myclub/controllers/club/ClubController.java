@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.iastate.myclub.models.Club;
 import edu.iastate.myclub.models.ClubDto;
+import edu.iastate.myclub.models.ClubNotification;
 import edu.iastate.myclub.services.ClubService;
 
 @RestController
@@ -32,6 +33,7 @@ public class ClubController {
 	{
 		//if(has valid permissions)
 		//{
+		System.out.println(club.toString());
 		return new ResponseEntity<Boolean>(clubService.createClub(club), HttpStatus.OK);
 		//}
 		//return new ResponseEntity<Boolean>(true, HttpStatus.OK);
@@ -53,9 +55,9 @@ public class ClubController {
 	{
 		//if(has valid permissions)
 		//{
-		//return new ResponseEntity<boolean>(clubService.getJoinedClubs(<user name here, from headers>), HttpStatus.OK);
+		return new ResponseEntity<List<ClubDto>>(clubService.getJoinedClubs("test"), HttpStatus.OK);
 		//}
-		return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
+		//return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
 	}
 	
 	@GetMapping("/search")
@@ -69,11 +71,11 @@ public class ClubController {
 	}
 	
 	@GetMapping("/joined/notifications")
-	public ResponseEntity<List<ClubDto>> getJoinedClubsNotifications(@RequestHeader HttpHeaders headers)
+	public ResponseEntity<List<ClubNotification>> getJoinedClubsNotifications(@RequestHeader HttpHeaders headers)
 	{
 		//if(has valid permissions)
 		//{
-		//return new ResponseEntity<boolean>(clubService.getClubNotifications(user name here), HttpStatus.OK);
+		//return new ResponseEntity<List<ClubNotification>>(clubService.getClubNotifications("test"), HttpStatus.OK);
 		//}
 		return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
 	}

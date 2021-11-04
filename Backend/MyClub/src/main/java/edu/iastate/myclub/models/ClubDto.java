@@ -46,4 +46,10 @@ public class ClubDto {
 	public void setLogo(byte[] logo) {
 		this.logo = logo;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return this.name;
+	}
 }

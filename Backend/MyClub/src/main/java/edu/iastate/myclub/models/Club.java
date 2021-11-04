@@ -83,6 +83,11 @@ public class Club {
 	
 	@Column(name="logo")
 	private byte[] logo;
+	
+	public Club()
+	{
+		this.name = "";
+	}
 
 	public String getName() {
 		return name;
@@ -186,5 +191,29 @@ public class Club {
 
 	public void setLogo(byte[] logo) {
 		this.logo = logo;
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return name.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		if(o == this)
+			return true;
+		
+		if(!(o instanceof Club))
+			return false;
+		
+		return ((Club)o).name.contentEquals(this.name);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.name;
 	}
 }
