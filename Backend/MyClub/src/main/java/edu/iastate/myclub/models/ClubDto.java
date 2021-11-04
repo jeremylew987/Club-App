@@ -2,7 +2,9 @@ package edu.iastate.myclub.models;
 
 /**
  * Data transfer object for a club type
- * 
+ * TODO may need to change name of this since it only captures 
+ * a few club details and dto description doesn't seem like
+ * the best choice of describing this type
  * @author Graham Mobley
  *
  */
@@ -10,14 +12,14 @@ public class ClubDto {
 
 	private String name;
 	
-	private String description;
+	private String meetingTimes;
 	
 	private byte[] logo;
 	
 	public ClubDto(Club club)
 	{
 		this.setName(club.getName());
-		this.setDescription(club.getDescription());
+		this.setMeetingTimes(club.getMeetingTimes());
 		this.setLogo(club.getLogo());
 	}
 
@@ -29,12 +31,12 @@ public class ClubDto {
 		this.name = name;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getMeetingTimes() {
+		return meetingTimes;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setMeetingTimes(String meetingTimes) {
+		this.meetingTimes = meetingTimes;
 	}
 
 	public byte[] getLogo() {

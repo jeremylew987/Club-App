@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -21,11 +22,12 @@ public class ClubNotification {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
 	private int id;
 	
 	@NotNull
-	@Column(name="club_name")
-	private String clubName;
+	@ManyToOne
+	private Club club;
 	
 	@NotNull
 	@Column(name="sender_name")
@@ -35,15 +37,9 @@ public class ClubNotification {
 	@Column(name="message")
 	private String message;
 	
-	@NotNull
-	@Column(name="logo")
-	private byte[] logo;
-	
 	public ClubNotification() {}
 	public ClubNotification(Club club)
 	{
-		this.setClubName(club.getName());
-		this.setLogo(club.getLogo());
 		this.setSenderName("");
 		this.setMessage("");
 	}
@@ -54,11 +50,11 @@ public class ClubNotification {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getClubName() {
-		return clubName;
+	public Club getClub() {
+		return club;
 	}
-	public void setClubName(String clubName) {
-		this.clubName = clubName;
+	public void setClub(Club club) {
+		this.club = club;
 	}
 	public String getSenderName() {
 		return senderName;
@@ -71,11 +67,5 @@ public class ClubNotification {
 	}
 	public void setMessage(String message) {
 		this.message = message;
-	}
-	public byte[] getLogo() {
-		return logo;
-	}
-	public void setLogo(byte[] logo) {
-		this.logo = logo;
 	}
 }

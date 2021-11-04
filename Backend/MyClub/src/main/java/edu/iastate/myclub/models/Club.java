@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -26,6 +27,7 @@ public class Club {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
 	private int id;
 	
 	@NotNull
@@ -72,6 +74,9 @@ public class Club {
 	
 	private String elections;
 
+	@OneToMany
+	@JoinColumn(name="club_id")
+	private List<ClubNotification> notifications;
 	
 	//@OneToMany
 	//private List<User> members;
@@ -165,6 +170,14 @@ public class Club {
 
 	public void setElections(String elections) {
 		this.elections = elections;
+	}
+
+	public List<ClubNotification> getNotifications() {
+		return notifications;
+	}
+
+	public void setNotifications(List<ClubNotification> notifications) {
+		this.notifications = notifications;
 	}
 
 	public byte[] getLogo() {
