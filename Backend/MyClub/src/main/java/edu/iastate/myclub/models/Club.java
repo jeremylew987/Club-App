@@ -19,6 +19,22 @@ public class Club {
 	
 	private String description;
 	
+	private String meetingTimes;
+	
+	private String eventInformation;
+	
+	private String fees;
+	
+	private String membershipRestrictions;
+	
+	
+	
+	private int numStudents;
+	
+	private int numISUMembers;
+	
+	private int numNonISUMembers;
+	
 	private byte[] logo;
 	
 	//@OneToMany

@@ -50,7 +50,7 @@ public class ClubController {
 	{
 		//if(has valid permissions)
 		//{
-		//return new ResponseEntity<boolean>(clubService.createClub(club), HttpStatus.OK);
+		//return new ResponseEntity<boolean>(clubService.getJoinedClubs(<user name here, from headers>), HttpStatus.OK);
 		//}
 		return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
 	}
@@ -61,6 +61,16 @@ public class ClubController {
 		//if(has valid permissions)
 		//{
 		//return new ResponseEntity<List<ClubDto>>(clubService.findClubs(phrase), HttpStatus.OK);
+		//}
+		return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
+	}
+	
+	@GetMapping("/joined/notifications")
+	public ResponseEntity<List<ClubDto>> getJoinedClubsNotifications(HttpHeaders headers)
+	{
+		//if(has valid permissions)
+		//{
+		//return new ResponseEntity<boolean>(clubService.getClubNotifications(club), HttpStatus.OK);
 		//}
 		return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
 	}
