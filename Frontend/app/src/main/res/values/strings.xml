@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ISU Groups</string>
+    <string name="usernameLabel">Username:</string>
+    <string name="passwordLabel">Password:</string>
 </resources>

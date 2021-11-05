@@ -1,4 +1,4 @@
-package com.example.isuautosched;
+package com.example.isugroups;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,6 @@ public class SettingScreen extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_setting);
+		//setContentView(R.layout.activity_setting);
 	}
 }

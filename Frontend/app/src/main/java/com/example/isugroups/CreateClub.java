@@ -1,4 +1,4 @@
-package com.example.isuautosched;
+package com.example.isugroups;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,9 +27,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateGroup extends AppCompatActivity {
+public class CreateClub extends AppCompatActivity {
 
-	RecyclerView rvItems;
+	/*RecyclerView rvItems;
 	ParticipantAdapter adapter;
 	List<ModelParticipant> items = new ArrayList<>();
 
@@ -91,7 +91,8 @@ public class CreateGroup extends AppCompatActivity {
 				String finalAllNames = allNames;
 				JSONObject newGroup = new JSONObject();
 				try {
-					newGroup.put("groupName", ((EditText) findViewById(R.id.groupName)).getText().toString());
+					newGroup.put("clubName", ((EditText) findViewById(R.id.clubName)).getText().toString());
+					//newGroup.put("clubDescription", ((EditText) findViewById(R.id.groupName)).getText().toString()); //description for Club not implemented in XML
 					newGroup.put("startDay", ((EditText) findViewById(R.id.etStartDay)).getText().toString());
 					newGroup.put("endDay", ((EditText) findViewById(R.id.etEndDay)).getText().toString());
 					newGroup.put("meetingFrequency", finalSwitchValue);
@@ -130,5 +131,5 @@ public class CreateGroup extends AppCompatActivity {
 	private void didTapAddParticipant(){
 		items.add(new ModelParticipant(""));
 		adapter.notifyItemInserted(items.size() - 1);
-	}
+	}*/
 }

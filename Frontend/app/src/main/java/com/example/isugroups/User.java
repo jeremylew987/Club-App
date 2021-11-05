@@ -1,4 +1,4 @@
-package com.example.isuautosched;
+package com.example.isugroups;
 
 public class User {
 	int id;

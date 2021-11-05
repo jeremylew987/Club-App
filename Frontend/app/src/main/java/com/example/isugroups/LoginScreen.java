@@ -1,4 +1,4 @@
-package com.example.isuautosched;
+package com.example.isugroups;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,7 +44,7 @@ public class LoginScreen extends AppCompatActivity {
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constance.BASE_URL + "user/login", data, new Response.Listener<JSONObject>() {
+				/*JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constance.BASE_URL + "user/login", data, new Response.Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
 						Intent i = new Intent(LoginScreen.this,MainMenuScreen.class);
@@ -62,7 +62,7 @@ public class LoginScreen extends AppCompatActivity {
 						alertDialogBuilder.create().show();
 					}
 				});
-				queue.add(request);
+				queue.add(request);*/
 			}
 		});
 	}
