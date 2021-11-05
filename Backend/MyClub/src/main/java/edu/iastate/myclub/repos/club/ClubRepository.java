@@ -14,5 +14,5 @@ import edu.iastate.myclub.models.Club;
 public interface ClubRepository extends CrudRepository<Club, Integer> {
 
 	//Find clubs whose name contain the specific name as a substring, ignoring case
-	Page<Club> findAll(PageRequest of, Sort by);
+	//Page<Club> findAll(PageRequest of, Sort by);
 }

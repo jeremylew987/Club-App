@@ -57,8 +57,9 @@ public class ClubService {
 	
 	public List<ClubDto> findClubs(String phrase, int page, int size)
 	{
-		Page<Club> clubs = clubRepository.findAll(PageRequest.of(page, size), Sort.by(Sort.Direction.DESC, "name"));
-		return (List<ClubDto>) clubs.getContent().stream().map(club -> new ClubDto(club)).collect(Collectors.toList());
+		//Page<Club> clubs = clubRepository.findAll(PageRequest.of(page, size), Sort.by(Sort.Direction.DESC, "name"));
+		//return (List<ClubDto>) clubs.getContent().stream().map(club -> new ClubDto(club)).collect(Collectors.toList());
+		return null;
 	}
 	
 	public List<ClubNotification> getJoinedClubsNotifications(String name)
