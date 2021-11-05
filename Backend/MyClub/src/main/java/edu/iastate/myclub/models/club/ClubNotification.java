@@ -1,4 +1,4 @@
-package edu.iastate.myclub.models;
+package edu.iastate.myclub.models.club;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,6 +37,10 @@ public class ClubNotification {
 	@Column(name="message")
 	private String message;
 	
+	@NotNull
+	@Column(name="timestamp")
+	private String timestamp;
+	
 	public ClubNotification() {}
 	public ClubNotification(Club club)
 	{
@@ -67,5 +71,11 @@ public class ClubNotification {
 	}
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	public String getTimestamp() {
+		return timestamp;
+	}
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
 	}
 }

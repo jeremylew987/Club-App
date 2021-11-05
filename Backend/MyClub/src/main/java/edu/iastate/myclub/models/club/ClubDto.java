@@ -1,4 +1,4 @@
-package edu.iastate.myclub.models;
+package edu.iastate.myclub.models.club;
 
 /**
  * Data transfer object for a club type

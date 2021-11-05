@@ -1,4 +1,4 @@
-package edu.iastate.myclub.models;
+package edu.iastate.myclub.models.club;
 
 import java.util.List;
 import java.util.Set;
@@ -14,6 +14,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import edu.iastate.myclub.models.ContactDetails;
+import edu.iastate.myclub.models.Position;
 
 /**
  * Model defining a club
@@ -39,11 +42,11 @@ public class Club {
 	private String description;
 	
 	@NotNull
-	@Column(name="meetingTimes")
+	@Column(name="meeting_times")
 	private String meetingTimes;
 	
 	@NotNull
-	@Column(name="eventInformation")
+	@Column(name="event_information")
 	private String eventInformation;
 	
 	@NotNull
@@ -51,19 +54,19 @@ public class Club {
 	private String fees;
 	
 	@NotNull
-	@Column(name="membershipRestrictions")
+	@Column(name="membership_restrictions")
 	private String membershipRestrictions;
 	
 	@NotNull
-	@Column(name="numStudents")
+	@Column(name="num_students")
 	private int numStudents;
 	
 	@NotNull
-	@Column(name="numISUMembers")
+	@Column(name="num_isu_members")
 	private int numISUMembers;
 	
 	@NotNull
-	@Column(name="numNonISUMembers")
+	@Column(name="num_non_isu_members")
 	private int numNonISUMembers;
 	
 	@ManyToMany
@@ -72,6 +75,8 @@ public class Club {
 				inverseJoinColumns = @JoinColumn(name="position_id", referencedColumnName="id"))
 	private Set<Position> officerPositions;
 	
+	@NotNull
+	@Column(name="election_information")
 	private String elections;
 
 	@OneToMany
@@ -83,6 +88,10 @@ public class Club {
 	
 	@Column(name="logo")
 	private byte[] logo;
+	
+	@OneToMany
+	@JoinColumn(name="club_id")
+	private List<ContactDetails> contacts;
 	
 	public Club()
 	{
@@ -193,6 +202,14 @@ public class Club {
 		this.logo = logo;
 	}
 	
+	public List<ContactDetails> getContacts() {
+		return contacts;
+	}
+
+	public void setContacts(List<ContactDetails> contacts) {
+		this.contacts = contacts;
+	}
+
 	@Override
 	public int hashCode()
 	{

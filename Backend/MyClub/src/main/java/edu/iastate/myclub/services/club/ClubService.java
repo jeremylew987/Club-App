@@ -1,4 +1,4 @@
-package edu.iastate.myclub.services;
+package edu.iastate.myclub.services.club;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,12 +7,13 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import edu.iastate.myclub.models.Club;
-import edu.iastate.myclub.models.ClubDto;
-import edu.iastate.myclub.models.ClubNotification;
+import edu.iastate.myclub.models.club.Club;
+import edu.iastate.myclub.models.club.ClubDto;
+import edu.iastate.myclub.models.club.ClubNotification;
 import edu.iastate.myclub.repos.club.ClubRepository;
 
 /**
@@ -57,9 +58,9 @@ public class ClubService {
 	
 	public List<ClubDto> findClubs(String phrase, int page, int size)
 	{
-		//Page<Club> clubs = clubRepository.findAll(PageRequest.of(page, size), Sort.by(Sort.Direction.DESC, "name"));
-		//return (List<ClubDto>) clubs.getContent().stream().map(club -> new ClubDto(club)).collect(Collectors.toList());
-		return null;
+		Pageable pageAndSortByName = PageRequest.of(page, size);
+		List<Club> clubs = clubRepository.findAllByNameOrderByNameAsc(phrase, pageAndSortByName);
+		return (List<ClubDto>) clubs.stream().map(club -> new ClubDto(club)).collect(Collectors.toList());
 	}
 	
 	public List<ClubNotification> getJoinedClubsNotifications(String name)

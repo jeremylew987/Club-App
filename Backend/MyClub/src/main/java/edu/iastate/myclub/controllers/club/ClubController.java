@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.iastate.myclub.models.Club;
-import edu.iastate.myclub.models.ClubDto;
-import edu.iastate.myclub.models.ClubNotification;
-import edu.iastate.myclub.services.ClubService;
+import edu.iastate.myclub.models.club.Club;
+import edu.iastate.myclub.models.club.ClubDto;
+import edu.iastate.myclub.models.club.ClubNotification;
+import edu.iastate.myclub.services.club.ClubService;
 
 @RestController
 @RequestMapping("/club")
@@ -75,8 +75,8 @@ public class ClubController {
 	{
 		//if(has valid permissions)
 		//{
-		//return new ResponseEntity<List<ClubNotification>>(clubService.getClubNotifications("test"), HttpStatus.OK);
+		return new ResponseEntity<List<ClubNotification>>(clubService.getJoinedClubsNotifications("test"), HttpStatus.OK);
 		//}
-		return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
+		//return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
 	}
 }
