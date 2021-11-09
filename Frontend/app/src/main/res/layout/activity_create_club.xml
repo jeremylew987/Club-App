@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#EEEEEE"
-            android:orientation="vertical">
+            android:orientation="vertical"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -262,7 +262,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:clickable="true">
+                        android:clickable="true"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -291,14 +291,30 @@
                             app:cornerRadius="30dp"
                             android:clickable="false"/>
 
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                        <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
 
+                <androidx.appcompat.widget.SwitchCompat
 
-                </LinearLayout>
+                    android:id="@+id/biweekly2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
-        </LinearLayout>
+        <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.SwitchCompat
+
+                    android:id="@+id/biweekly3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.core.widget.NestedScrollView>
