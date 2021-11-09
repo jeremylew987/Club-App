@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 
 import edu.iastate.myclub.models.ContactDetails;
 import edu.iastate.myclub.models.Position;
+import edu.iastate.myclub.models.event.Event;
 
 /**
  * Model defining a club
@@ -83,7 +84,7 @@ public class Club {
 	@JoinColumn(name="club_id")
 	private List<ClubNotification> notifications;
 	
-	//@OneToMany
+	//@ManyToMany
 	//private List<User> members;
 	
 	@Column(name="logo")
@@ -92,6 +93,10 @@ public class Club {
 	@OneToMany
 	@JoinColumn(name="club_id")
 	private List<ContactDetails> contacts;
+	
+	@OneToMany
+	@JoinColumn(name="club_id")
+	private List<Event> events;
 	
 	public Club()
 	{
@@ -208,6 +213,14 @@ public class Club {
 
 	public void setContacts(List<ContactDetails> contacts) {
 		this.contacts = contacts;
+	}
+
+	public List<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(List<Event> events) {
+		this.events = events;
 	}
 
 	@Override
