@@ -20,8 +20,8 @@ public class ClubDetailsScreen extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Back to the previous page
-                startActivity(new Intent(ClubDetailsScreen.this, CreateLoginScreen.class));
+                //Back to the main menu
+                //startActivity(new Intent(ClubDetailsScreen.this, CreateLoginScreen.class));
             }
         });
 
@@ -29,7 +29,7 @@ public class ClubDetailsScreen extends AppCompatActivity {
         Button join = (Button) findViewById(R.id.JoinButton);
 
         Boolean isMember = false;
-        //check if user is member in the DM
+        //check if user is member in the DB
         //TODO
         if (isMember) {
             join.setVisibility(View.GONE);
@@ -68,8 +68,7 @@ public class ClubDetailsScreen extends AppCompatActivity {
         yourButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                //Go to events page
-                //TODO
+                startActivity(new Intent(ClubDetailsScreen.this, EventCalendar.class));
             }
         });
 
@@ -99,9 +98,9 @@ public class ClubDetailsScreen extends AppCompatActivity {
         TextView Member = (TextView) findViewById(R.id.Members);
         Member.setText(MemberData);
 
-        Button yourButton2 = (Button) findViewById(R.id.EventButton);
+        Button yourButton2 = (Button) findViewById(R.id.ConstitutionButton);
 
-        yourButton.setOnClickListener(new View.OnClickListener() {
+        yourButton2.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
                 //Download Constitution from DB
