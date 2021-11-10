@@ -23,13 +23,26 @@ public class Event {
 	@Column(name="title")
 	private String title;
 	
+	//Could use single date but for simplicity will separate date from time
 	@NotNull
 	@Column(name="date")
 	private String date;
 	
 	@NotNull
+	@Column(name="time")
+	private String time;
+	
+	@NotNull
 	@ManyToOne
 	private Club club;
+	
+	public Event() {}
+	public Event(EventDto eventDto)
+	{
+		this.title = eventDto.getTitle();
+		this.date = eventDto.getDate();
+		this.time = eventDto.getTime();
+	}
 
 	public int getId() {
 		return id;
@@ -55,11 +68,26 @@ public class Event {
 		this.date = date;
 	}
 
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
 	public Club getClub() {
 		return club;
 	}
 
 	public void setClub(Club club) {
 		this.club = club;
+	}
+	
+	public void copyFromEventDto(EventDto eventDto)
+	{
+		this.title = eventDto.getTitle();
+		this.date = eventDto.getDate();
+		this.time = eventDto.getTime();
 	}
 }

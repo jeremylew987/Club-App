@@ -10,10 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import edu.iastate.myclub.models.ContactDetails;
 import edu.iastate.myclub.models.Position;
@@ -59,14 +62,17 @@ public class Club {
 	private String membershipRestrictions;
 	
 	@NotNull
+	@JsonIgnore
 	@Column(name="num_students")
 	private int numStudents;
 	
 	@NotNull
+	@JsonIgnore
 	@Column(name="num_isu_members")
 	private int numISUMembers;
 	
 	@NotNull
+	@JsonIgnore
 	@Column(name="num_non_isu_members")
 	private int numNonISUMembers;
 	
@@ -78,7 +84,7 @@ public class Club {
 	
 	@NotNull
 	@Column(name="election_information")
-	private String elections;
+	private String electionInformation;
 
 	@OneToMany
 	@JoinColumn(name="club_id")
@@ -87,6 +93,7 @@ public class Club {
 	//@ManyToMany
 	//private List<User> members;
 	
+	@Lob
 	@Column(name="logo")
 	private byte[] logo;
 	
@@ -95,6 +102,7 @@ public class Club {
 	private List<ContactDetails> contacts;
 	
 	@OneToMany
+	@JsonIgnore
 	@JoinColumn(name="club_id")
 	private List<Event> events;
 	
@@ -183,12 +191,12 @@ public class Club {
 		this.officerPositions = officerPositions;
 	}
 
-	public String getElections() {
-		return elections;
+	public String getElectionInformation() {
+		return electionInformation;
 	}
 
-	public void setElections(String elections) {
-		this.elections = elections;
+	public void setElectionInformation(String electionInformation) {
+		this.electionInformation = electionInformation;
 	}
 
 	public List<ClubNotification> getNotifications() {

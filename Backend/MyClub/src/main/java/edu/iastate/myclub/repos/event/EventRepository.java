@@ -1,11 +1,18 @@
-package edu.iastate.myclub.repos.club;
+package edu.iastate.myclub.repos.event;
+
+import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import edu.iastate.myclub.models.club.ClubBasicDto;
 import edu.iastate.myclub.models.event.Event;
 
 @Repository
 public interface EventRepository extends CrudRepository<Event, Integer> {
 
+	Event findByTitle(String title);
+
+	List<Event> findAllByDateContaining(String date);
+	
 }

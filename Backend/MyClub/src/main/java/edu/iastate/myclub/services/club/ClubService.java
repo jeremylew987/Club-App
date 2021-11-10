@@ -12,7 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import edu.iastate.myclub.models.club.Club;
-import edu.iastate.myclub.models.club.ClubDto;
+import edu.iastate.myclub.models.club.ClubBasicDto;
 import edu.iastate.myclub.models.club.ClubNotification;
 import edu.iastate.myclub.repos.club.ClubRepository;
 
@@ -46,7 +46,7 @@ public class ClubService {
 		return true;
 	}
 	
-	public List<ClubDto> getJoinedClubs(String name)
+	public List<ClubBasicDto> getJoinedClubs(String name)
 	{
 		ArrayList<Club> clubs = new ArrayList<Club>();
 		//User user = userRepository.findByName(name);
@@ -56,11 +56,11 @@ public class ClubService {
 		return null;
 	}
 	
-	public List<ClubDto> findClubs(String phrase, int page, int size)
+	public List<ClubBasicDto> findClubs(String phrase, int page, int size)
 	{
 		Pageable pageAndSortByName = PageRequest.of(page, size);
 		List<Club> clubs = clubRepository.findAllByNameOrderByNameAsc(phrase, pageAndSortByName);
-		return (List<ClubDto>) clubs.stream().map(club -> new ClubDto(club)).collect(Collectors.toList());
+		return (List<ClubBasicDto>) clubs.stream().map(club -> new ClubBasicDto(club)).collect(Collectors.toList());
 	}
 	
 	public List<ClubNotification> getJoinedClubsNotifications(String name)

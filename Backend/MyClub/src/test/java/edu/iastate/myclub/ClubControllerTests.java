@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.iastate.myclub.controllers.club.ClubController;
 import edu.iastate.myclub.models.club.Club;
-import edu.iastate.myclub.models.club.ClubDto;
+import edu.iastate.myclub.models.club.ClubBasicDto;
 import edu.iastate.myclub.services.club.ClubService;
 
 @WebMvcTest(ClubController.class)

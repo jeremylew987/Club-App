@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.iastate.myclub.models.club.Club;
-import edu.iastate.myclub.models.club.ClubDto;
+import edu.iastate.myclub.models.club.ClubBasicDto;
 import edu.iastate.myclub.models.club.ClubNotification;
 import edu.iastate.myclub.services.club.ClubService;
 
@@ -33,7 +33,7 @@ public class ClubController {
 	{
 		//if(has valid permissions)
 		//{
-		System.out.println(club.toString());
+		//System.out.println(club.toString());
 		return new ResponseEntity<Boolean>(clubService.createClub(club), HttpStatus.OK);
 		//}
 		//return new ResponseEntity<Boolean>(true, HttpStatus.OK);
@@ -51,21 +51,21 @@ public class ClubController {
 	}
 	
 	@GetMapping("/joined")
-	public ResponseEntity<List<ClubDto>> getJoinedClubs(@RequestHeader HttpHeaders headers)
+	public ResponseEntity<List<ClubBasicDto>> getJoinedClubs(@RequestHeader HttpHeaders headers)
 	{
 		//if(has valid permissions)
 		//{
-		return new ResponseEntity<List<ClubDto>>(clubService.getJoinedClubs("test"), HttpStatus.OK);
+		return new ResponseEntity<List<ClubBasicDto>>(clubService.getJoinedClubs("test"), HttpStatus.OK);
 		//}
 		//return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
 	}
 	
 	@GetMapping("/search")
-	public ResponseEntity<List<ClubDto>> getClubsBySearch(@RequestHeader HttpHeaders headers, @RequestParam("phrase") String phrase, @RequestParam("page") int page)
+	public ResponseEntity<List<ClubBasicDto>> getClubsBySearch(@RequestHeader HttpHeaders headers, @RequestParam("phrase") String phrase, @RequestParam("page") int page)
 	{
 		//if(has valid permissions)
 		//{
-		return new ResponseEntity<List<ClubDto>>(clubService.findClubs(phrase, page, 5), HttpStatus.OK);
+		return new ResponseEntity<List<ClubBasicDto>>(clubService.findClubs(phrase, page, 5), HttpStatus.OK);
 		//}
 		//return new ResponseEntity<List<ClubDto>>(new ArrayList<ClubDto>(), HttpStatus.FORBIDDEN);
 	}
