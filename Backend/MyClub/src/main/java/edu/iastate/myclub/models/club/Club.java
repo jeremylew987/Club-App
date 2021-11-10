@@ -2,7 +2,9 @@ package edu.iastate.myclub.models.club;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,9 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -21,6 +23,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.iastate.myclub.models.ContactDetails;
 import edu.iastate.myclub.models.Position;
 import edu.iastate.myclub.models.event.Event;
+import edu.iastate.myclub.repos.club.ContactDetailsRepository;
+import edu.iastate.myclub.repos.club.PositionRepository;
 
 /**
  * Model defining a club
@@ -93,10 +97,6 @@ public class Club {
 	//@ManyToMany
 	//private List<User> members;
 	
-	@Lob
-	@Column(name="logo")
-	private byte[] logo;
-	
 	@OneToMany
 	@JoinColumn(name="club_id")
 	private List<ContactDetails> contacts;
@@ -105,6 +105,11 @@ public class Club {
 	@JsonIgnore
 	@JoinColumn(name="club_id")
 	private List<Event> events;
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JsonIgnore
+	@JoinColumn(name="club_logo_id", referencedColumnName="id")
+	private ClubLogo clubLogo;
 	
 	public Club()
 	{
@@ -206,14 +211,6 @@ public class Club {
 	public void setNotifications(List<ClubNotification> notifications) {
 		this.notifications = notifications;
 	}
-
-	public byte[] getLogo() {
-		return logo;
-	}
-
-	public void setLogo(byte[] logo) {
-		this.logo = logo;
-	}
 	
 	public List<ContactDetails> getContacts() {
 		return contacts;
@@ -229,6 +226,37 @@ public class Club {
 
 	public void setEvents(List<Event> events) {
 		this.events = events;
+	}
+	
+	public Club copyFromClubDto(ClubDto clubDto, PositionRepository repository, 
+			ContactDetailsRepository contactDetailsRepository)
+	{
+		name = clubDto.getName();
+		description = clubDto.getDescription();
+		meetingTimes = clubDto.getMeetingTimes();
+		eventInformation = clubDto.getEventInformation();
+		fees = clubDto.getFees();
+		membershipRestrictions = clubDto.getMembershipRestrictions();
+		officerPositions = clubDto.getOfficerPositions().stream().map(position -> 
+		{
+		Position p = repository.findByName(position);
+		if(p != null)
+			return p;
+		else
+			return new Position(name);
+		}).collect(Collectors.toSet());
+		
+		electionInformation = clubDto.getElectionInformation();
+		contacts = clubDto.getContacts().stream().map(details -> 
+		{
+			ContactDetails c = contactDetailsRepository.findByName(details.getName());
+			if(c != null)
+				return c;
+			else
+				return new ContactDetails(details);
+		}).collect(Collectors.toList());
+		
+		return this;
 	}
 
 	@Override

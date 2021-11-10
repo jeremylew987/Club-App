@@ -19,7 +19,9 @@ public class EventService {
 	public List<EventDto> findClubEventsByMonthAndYear(String clubName, String date) {
 		
 		//TODO make more efficient
-		return (List<EventDto>)eventRepository.findAllByDateContaining(date).stream().filter(e -> {return e.getTitle().contentEquals(clubName);});
+		return (List<EventDto>)eventRepository.findAllByDateContaining(date)
+				.stream().filter(e -> {return e.getTitle().contentEquals(clubName);})
+				.map(event -> {return new EventDto(event);});
 	}
 	
 	//TODO finish when user type is added

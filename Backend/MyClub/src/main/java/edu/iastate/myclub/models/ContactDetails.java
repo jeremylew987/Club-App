@@ -48,6 +48,12 @@ public class ContactDetails {
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 	}
+	public ContactDetails(ContactDetailsDto contactDetailsDto)
+	{
+		this.name = contactDetailsDto.getName();
+		this.phoneNumber = contactDetailsDto.getPhoneNumber();
+		this.email = contactDetailsDto.getEmail();
+	}
 
 	public int getId() {
 		return id;
@@ -79,5 +85,12 @@ public class ContactDetails {
 	}
 	public void setClub(Club club) {
 		this.club = club;
+	}
+	
+	public void copyFromContactDetailsDto(ContactDetailsDto contactDetailsDto)
+	{
+		this.name = contactDetailsDto.getName();
+		this.phoneNumber = contactDetailsDto.getPhoneNumber();
+		this.email = contactDetailsDto.getEmail();
 	}
 }

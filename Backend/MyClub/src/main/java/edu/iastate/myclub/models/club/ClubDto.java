@@ -34,6 +34,12 @@ public class ClubDto {
 	private List<ContactDetailsDto> contacts;
 	
 	private List<EventDto> events;
+	
+	public ClubDto() {this.name = "testing";}
+	public ClubDto(Club c)
+	{
+		
+	}
 
 	public String getName() {
 		return name;

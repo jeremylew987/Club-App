@@ -13,14 +13,12 @@ public class ClubBasicDto {
 	private String name;
 	
 	private String meetingTimes;
-	
-	private byte[] logo;
-	
+		
+	public ClubBasicDto() {this.name = "testing";}
 	public ClubBasicDto(Club club)
 	{
 		this.setName(club.getName());
 		this.setMeetingTimes(club.getMeetingTimes());
-		this.setLogo(club.getLogo());
 	}
 
 	public String getName() {
@@ -38,18 +36,30 @@ public class ClubBasicDto {
 	public void setMeetingTimes(String meetingTimes) {
 		this.meetingTimes = meetingTimes;
 	}
-
-	public byte[] getLogo() {
-		return logo;
-	}
-
-	public void setLogo(byte[] logo) {
-		this.logo = logo;
-	}
 	
 	@Override
 	public String toString()
 	{
-		return this.name;
+		//consider using library for json serialization
+		return "{\"name\":\"" + name + "\",\"meetingTimes\":" + meetingTimes 
+				+ "}";
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return name.hashCode();
+	}
+	
+	@Override 
+	public boolean equals(Object o)
+	{
+		if(o == this)
+			return true;
+		
+		if(!(o instanceof ClubBasicDto))
+			return false;
+		
+		return ((ClubBasicDto)o).name.contentEquals(name);
 	}
 }

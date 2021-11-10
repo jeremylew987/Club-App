@@ -13,4 +13,6 @@ public interface ClubRepository extends PagingAndSortingRepository<Club, Integer
 
 	//Find clubs whose name contain the specific name as a substring, ignoring case
 	List<Club> findAllByNameOrderByNameAsc(String name, Pageable pageable);
+	
+	Club findByName(String name);
 }
