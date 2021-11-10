@@ -11,7 +11,7 @@
         android:theme="@style/Theme.ISUGroups">
         <activity
             android:name=".EventCalendar"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".LoginScreen"
             android:exported="true">
@@ -29,6 +29,16 @@
         <activity
             android:name=".ClubDetailsScreen"
             android:exported="true" >
+        </activity>
+
+        <activity
+            android:name=".CreateClub"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".SettingScreen"
+            android:exported="true">
 
         </activity>
     </application>

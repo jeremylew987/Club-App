@@ -7,11 +7,7 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-<<<<<<< HEAD
         <option name="gradleJvm" value="11" />
-=======
-        <option name="gradleJvm" value="Android Studio default JDK" />
->>>>>>> ab811ca21c5551e015964f9f302b12f4eb197c49
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -19,6 +15,7 @@
             <option value="$PROJECT_DIR$/app/frontend" />
           </set>
         </option>
+        <option name="resolveExternalAnnotations" value="false" />
         <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>

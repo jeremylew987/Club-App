@@ -30,6 +30,14 @@ public class LoginScreen extends AppCompatActivity {
 		EditText username = findViewById(R.id.usernameInput);
 		EditText password = findViewById(R.id.passwordInput);
 		Button submit = findViewById(R.id.submit);
+		Button CreateLogin = findViewById(R.id.ToCreateLogin);
+		CreateLogin.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view) {
+				startActivity(new Intent(LoginScreen.this, CreateLoginScreen.class));
+			}
+		});
 		submit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
