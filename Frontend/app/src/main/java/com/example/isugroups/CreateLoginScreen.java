@@ -25,7 +25,7 @@ public class CreateLoginScreen extends AppCompatActivity {
         {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(CreateLoginScreen.this, ClubDetailsScreen.class));
+                startActivity(new Intent(CreateLoginScreen.this, LoginScreen.class));
             }
         });
 
