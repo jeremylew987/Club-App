@@ -28,6 +28,7 @@ import edu.iastate.myclub.controllers.club.ClubController;
 import edu.iastate.myclub.models.club.Club;
 import edu.iastate.myclub.models.club.ClubBasicDto;
 import edu.iastate.myclub.models.club.ClubDto;
+import edu.iastate.myclub.models.club.ClubNotification;
 import edu.iastate.myclub.services.club.ClubService;
 
 @WebMvcTest(ClubController.class)
@@ -41,7 +42,7 @@ public class ClubControllerTests {
 
 	@MockBean
 	private ClubService clubService;
-	
+		
 	@Test
 	void contextLoads() {
 	}
@@ -72,31 +73,27 @@ public class ClubControllerTests {
 		System.out.println(result.getResponse().getContentAsString());
 	}
 	
-//	TODO fix
-//	@Test
-//	public void getJoinedClubsShouldReturnResponseFromService() throws Exception {
-//		Club c = new Club();
-//		c.setName("Test");
-//		ArrayList<ClubDto> clubs = new ArrayList<ClubDto>() {
-//			{
-//				add(new ClubDto(c));
-//			}
-//		};
-//		when(clubService.getJoinedClubs("test")).thenReturn(clubs);
-//		MvcResult result = this.mockMvc.perform(get("/club/joined"))
-//				.andExpect(status().isOk())
-//				.andExpect(content().string(clubs.toString()))
-//				.andReturn();
-//		
-//		System.out.println("here");
-//		//System.out.println(result.getResponse().getContentAsString());
-//	}
-//	
-	//TODO fix
+	@Test
+	public void getJoinedClubsShouldReturnResponseFromService() throws Exception {
+		Club c = new Club();
+		c.setName("Test");
+		c.setMeetingTimes("test");
+		ArrayList<ClubBasicDto> clubs = new ArrayList<ClubBasicDto>() {
+			{
+				add(new ClubBasicDto(c));
+			}
+		};
+		when(clubService.getJoinedClubs("")).thenReturn(clubs);
+		MvcResult result = this.mockMvc.perform(get("/club/joined"))
+				.andExpect(status().isOk())
+				.andReturn();
+		System.out.println("Here");
+		System.out.println(objectMapper.writeValueAsString(clubs));
+		assert(result.getResponse().getContentAsString().contentEquals(objectMapper.writeValueAsString(clubs)));
+	}
+	
 	@Test
 	public void getClubsBySearchShouldReturnResponseFromService() throws Exception {
-//		Club c = new Club();
-//		c.setName("Test");
 		LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
 				requestParams.add("phrase", "Te");
 				requestParams.add("page", "3");
@@ -105,41 +102,29 @@ public class ClubControllerTests {
 				add(new ClubBasicDto());
 			}
 		};
-		when(clubService.findClubs("Te", "3", 5)).thenReturn(clubs);
+		when(clubService.findClubs("Te", 3, 5)).thenReturn(clubs);
 		MvcResult result = this.mockMvc.perform(get("/club/search").params(requestParams))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andReturn();
 		assert(result.getResponse().getContentAsString().contentEquals(clubs.toString()));
-		//System.out.println("here");
 	}
 	
-	//TODO finish when user types are contributed
-//	@Test
-//	public void getJoinedClubsNotificationsShouldReturnResponseFromService() throws Exception {
-//		Club c = new Club();
-//		c.setName("Test");
-//		ArrayList<ClubDto> clubs = new ArrayList<ClubDto>() {
-//			{
-//				add(new ClubDto(c));
-//			}
-//		};
-//		when(clubService.getJoinedClubs("test")).thenReturn(clubs);
-//		MvcResult result = this.mockMvc.perform(get("/club/joined"))
-//				.andExpect(status().isOk())
-//				.andExpect(content().string(clubs.toString()))
-//				.andReturn();
-//		
-//		System.out.println("here");
-//		//System.out.println(result.getResponse().getContentAsString());
-//	}
+	@Test
+	public void getJoinedClubsNotificationsShouldReturnResponseFromService() throws Exception {
+		Club c = new Club();
+		c.setName("Test");
+		c.setMeetingTimes("test");
+		ArrayList<ClubNotification> clubs = new ArrayList<ClubNotification>() {
+			{
+				add(new ClubNotification(c));
+			}
+		};
+		when(clubService.getJoinedClubsNotifications("")).thenReturn(clubs);
+		MvcResult result = this.mockMvc.perform(get("/club/joined/notifications"))
+				.andExpect(status().isOk())
+				.andReturn();
+		
+		assert(result.getResponse().getContentAsString().contentEquals(objectMapper.writeValueAsString(clubs)));
+	}
 }
-
-//@SpringBootTest
-//class ClubControllerTests {
-//
-//	@Test
-//	void contextLoads() {
-//	}
-//
-//}

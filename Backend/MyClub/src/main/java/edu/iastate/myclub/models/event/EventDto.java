@@ -12,6 +12,8 @@ import edu.iastate.myclub.models.club.Club;
  *
  */
 public class EventDto {
+	
+	private String clubName;
 
 	private String title;
 	
@@ -19,17 +21,31 @@ public class EventDto {
 	
 	private String time;
 	
+	private String description;
+	
 	public EventDto()
 	{
+		this.clubName = "";
 		this.title = "";
+		this.date = "";
+		this.time = "";
+		this.description = "";
 	}
 	public EventDto(Event event)
 	{
+		this.clubName = event.getClub().getName();
 		this.title = event.getTitle();
 		this.date = event.getDate();
 		this.time = event.getTime();
+		this.description = event.getDescription();
 	}
 	
+	public String getClubName() {
+		return clubName;
+	}
+	public void setClubName(String clubName) {
+		this.clubName = clubName;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -52,6 +68,19 @@ public class EventDto {
 
 	public void setTime(String time) {
 		this.time = time;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	@Override
+	public String toString()
+	{
+		return "{\"title\":\"" + title + "\",\"date\":\"" + date
+				+ "\",\"time\":\"" + time + "\"}";
 	}
 	
 	@Override

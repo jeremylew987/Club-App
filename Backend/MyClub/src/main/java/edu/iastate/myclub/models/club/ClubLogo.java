@@ -5,7 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -15,8 +17,7 @@ import javax.validation.constraints.NotNull;
 public class ClubLogo {
 
 	@Id
-	@Column(name="id")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="club_id")
 	private int id;
 	
 	@Lob
@@ -25,17 +26,14 @@ public class ClubLogo {
 	private byte[] image;
 	
 	@NotNull
-	@Column(name="club_name")
-	private String clubName;
-	
-	@NotNull
-	@OneToOne(mappedBy="clubLogo")
+	@MapsId
+	@OneToOne
+	@JoinColumn(name="club_id")
 	private Club club;
 	
 	public ClubLogo() {}
-	public ClubLogo(String clubName, byte[] logo, Club club)
+	public ClubLogo(byte[] logo, Club club)
 	{
-		this.clubName = clubName;
 		this.image = logo;
 		this.club = club;
 	}
@@ -54,14 +52,6 @@ public class ClubLogo {
 
 	public void setImage(byte[] image) {
 		this.image = image;
-	}
-
-	public String getClubName() {
-		return clubName;
-	}
-
-	public void setClubName(String clubName) {
-		this.clubName = clubName;
 	}
 
 	public Club getClub() {
