@@ -9,6 +9,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class ClubDetailsScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +30,28 @@ public class ClubDetailsScreen extends AppCompatActivity {
                 //startActivity(new Intent(ClubDetailsScreen.this, CreateLoginScreen.class));
             }
         });
+        RequestQueue queue = Volley.newRequestQueue(ClubDetailsScreen.this);
+        JSONObject data = new JSONObject();
 
+				/*JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Constance.BASE_URL + "user/login", data, new Response.Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response) {
+						Intent i = new Intent(LoginScreen.this,MainMenuScreen.class);
+						startActivity(i);
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						error.printStackTrace();
+						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LoginScreen.this);
+						alertDialogBuilder.setTitle("Error");
+						alertDialogBuilder.setMessage(error.getMessage());
+						alertDialogBuilder.setPositiveButton("Ok", null);
+						alertDialogBuilder.setNegativeButton("", null);
+						alertDialogBuilder.create().show();
+					}
+				});
+				queue.add(request);*/
 
         Button join = (Button) findViewById(R.id.JoinButton);
 
