@@ -11,7 +11,9 @@ import edu.iastate.myclub.models.event.Event;
 @Repository
 public interface EventRepository extends CrudRepository<Event, Integer> {
 
-	Event findByTitle(String title);
+	Event findByTitleAndClubId(String title, int clubId);
+
+	List<Event> findAllByDateContainingAndClubId(String date, int clubId);
 
 	List<Event> findAllByDateContaining(String date);
 	

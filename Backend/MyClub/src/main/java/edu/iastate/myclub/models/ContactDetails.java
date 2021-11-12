@@ -37,7 +37,6 @@ public class ContactDetails {
 	@Column(name="email")
 	private String email;
 	
-	@NotNull
 	@ManyToOne
 	private Club club;
 	
@@ -48,11 +47,12 @@ public class ContactDetails {
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 	}
-	public ContactDetails(ContactDetailsDto contactDetailsDto)
+	public ContactDetails(ContactDetailsDto contactDetailsDto, Club club)
 	{
 		this.name = contactDetailsDto.getName();
 		this.phoneNumber = contactDetailsDto.getPhoneNumber();
 		this.email = contactDetailsDto.getEmail();
+		this.club = club;
 	}
 
 	public int getId() {

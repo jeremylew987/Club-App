@@ -33,15 +33,21 @@ public class Event {
 	private String time;
 	
 	@NotNull
+	@Column(name="description")
+	private String description;
+	
+	@NotNull
 	@ManyToOne
 	private Club club;
 	
 	public Event() {}
-	public Event(EventDto eventDto)
+	public Event(EventDto eventDto, Club club)
 	{
 		this.title = eventDto.getTitle();
 		this.date = eventDto.getDate();
 		this.time = eventDto.getTime();
+		this.description = eventDto.getDescription();
+		this.club = club;
 	}
 
 	public int getId() {
@@ -76,6 +82,12 @@ public class Event {
 		this.time = time;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public Club getClub() {
 		return club;
 	}
@@ -89,5 +101,6 @@ public class Event {
 		this.title = eventDto.getTitle();
 		this.date = eventDto.getDate();
 		this.time = eventDto.getTime();
+		this.description = eventDto.getDescription();
 	}
 }

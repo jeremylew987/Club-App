@@ -3,6 +3,7 @@ package edu.iastate.myclub;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,52 +46,49 @@ public class EventControllerTests {
 	void contextLoads() {
 	}
 	
-//	@Test
-//	public void getClubEventsByMonthAndYearShouldReturnResponseFromService() throws Exception {
-//		LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
-//		requestParams.add("club", "TestClub");
-//		requestParams.add("date", "05/2021");
-//		
-//		List<EventDto> clubs = new ArrayList<EventDto>() {
-//			{
-//				add(new ClubBasicDto());
-//			}
-//		};
-//		
-//		when(eventService.findClubEventsByMonthAndYear("TestClub", "05/2021").thenReturn();
-//		MvcResult result = this.mockMvc.perform(get("/event/scheduled").params(requestParams)
-//				.andExpect(status().isOk())
-//				.andExpect(content().string("true"))
-//				.andReturn();
-//		
-//		System.out.println(result.getResponse().getContentAsString());
-//		assert(result.getResponse().getContentAsString().contentEquals(clubs.toString()));
-//
-//	}
-//	
-//	@Test
-//	public void createEventShouldReturnResponseFromService() throws Exception {
-//		when(eventService.addEvent(new EventDto())).thenReturn(true);
-//		MvcResult result = this.mockMvc.perform(post("/event/add")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.content(objectMapper.writeValueAsString(new EventDto())))
-//				.andExpect(status().isOk())
-//				.andExpect(content().string("true"))
-//				.andReturn();
-//		
-//		System.out.println(result.getResponse().getContentAsString());
-//	}
-//	
-//	@Test
-//	public void modifyEventShouldReturnResponseFromService() throws Exception {
-//		when(eventService.modifyEvent(new EventDto())).thenReturn(true);
-//		MvcResult result = this.mockMvc.perform(post("/event/modify")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.content(objectMapper.writeValueAsString(new EventDto())))
-//				.andExpect(status().isOk())
-//				.andExpect(content().string("true"))
-//				.andReturn();
-//		
-//		System.out.println(result.getResponse().getContentAsString());
-//	}
+	@Test
+	public void getClubEventsByMonthAndYearShouldReturnResponseFromService() throws Exception {
+		LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+		requestParams.add("club", "TestClub");
+		requestParams.add("date", "05/2021");
+		
+		List<EventDto> events = new ArrayList<EventDto>() {
+			{
+				add(new EventDto());
+			}
+		};
+		
+		when(eventService.findClubEventsByMonthAndYear("TestClub", "05/2021")).thenReturn(events);
+		MvcResult result = this.mockMvc.perform(get("/event/scheduled").params(requestParams))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andReturn();
+		
+		assert(result.getResponse().getContentAsString().contentEquals(objectMapper.writeValueAsString(events)));
+
+	}
+	
+	@Test
+	public void createEventShouldReturnResponseFromService() throws Exception {
+		when(eventService.addEvent(new EventDto())).thenReturn(true);
+		MvcResult result = this.mockMvc.perform(post("/event/add")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(new EventDto())))
+				.andDo(print())
+				.andExpect(content().string("true"))
+				.andReturn();
+		}
+	
+	@Test
+	public void modifyEventShouldReturnResponseFromService() throws Exception {
+		when(eventService.modifyEvent(new EventDto())).thenReturn(true);
+		MvcResult result = this.mockMvc.perform(post("/event/modify")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(new EventDto())))
+				.andExpect(status().isOk())
+				.andExpect(content().string("true"))
+				.andReturn();
+		
+		System.out.println(result.getResponse().getContentAsString());
+	}
 }

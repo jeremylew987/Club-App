@@ -61,13 +61,13 @@ public class ClubController {
 	{
 		//if(has valid permissions)
 		//{
-		return new ResponseEntity<List<ClubBasicDto>>(clubService.getJoinedClubs("test"), HttpStatus.OK);
+		return new ResponseEntity<List<ClubBasicDto>>(clubService.getJoinedClubs(""), HttpStatus.OK);
 		//}
 		//return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
 	}
 	
 	@GetMapping("/search")
-	public ResponseEntity<List<ClubBasicDto>> getClubsBySearch(@RequestHeader HttpHeaders headers, @RequestParam("phrase") String phrase, @RequestParam("page") String page)
+	public ResponseEntity<List<ClubBasicDto>> getClubsBySearch(@RequestHeader HttpHeaders headers, @RequestParam("phrase") String phrase, @RequestParam("page") int page)
 	{
 		//if(has valid permissions)
 		//{
@@ -81,7 +81,7 @@ public class ClubController {
 	{
 		//if(has valid permissions)
 		//{
-		return new ResponseEntity<List<ClubNotification>>(clubService.getJoinedClubsNotifications("test"), HttpStatus.OK);
+		return new ResponseEntity<List<ClubNotification>>(clubService.getJoinedClubsNotifications(""), HttpStatus.OK);
 		//}
 		//return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
 	}

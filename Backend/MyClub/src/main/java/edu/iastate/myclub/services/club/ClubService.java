@@ -53,7 +53,8 @@ public class ClubService {
 	{
 		//TODO decide whether to do additional validation here and return false in case 
 		//new club is bad
-		clubRepository.save(new Club().copyFromClubDto(club, positionRepository, contactDetailsRepository));
+		Club newClub = clubRepository.save(new Club());
+		clubRepository.save(newClub.copyFromClubDto(club, positionRepository, contactDetailsRepository));
 		return true;
 	}
 	
@@ -80,17 +81,11 @@ public class ClubService {
 		return null;
 	}
 	
-	public List<ClubBasicDto> findClubs(String phrase, String page, int size)
+	public List<ClubBasicDto> findClubs(String phrase, int page, int size)
 	{
-		List<ClubBasicDto> clubs = new ArrayList<ClubBasicDto>() {
-			{
-				add(new ClubBasicDto());
-			}
-		};
-		return clubs;
-//		Pageable pageAndSortByName = PageRequest.of(page, size);
-//		List<Club> clubs = clubRepository.findAllByNameOrderByNameAsc(phrase, pageAndSortByName);
-//		return (List<ClubBasicDto>) clubs.stream().map(club -> new ClubBasicDto(club)).collect(Collectors.toList());
+		Pageable pageAndSortByName = PageRequest.of(page, size);
+		List<Club> clubs = clubRepository.findAllByNameContainingOrderByNameAsc(phrase, pageAndSortByName);
+		return (List<ClubBasicDto>) clubs.stream().map(club -> new ClubBasicDto(club)).collect(Collectors.toList());
 	}
 	
 	public List<ClubNotification> getJoinedClubsNotifications(String name)
@@ -111,7 +106,7 @@ public class ClubService {
 				if(c == null)
 					return false;
 				
-				ClubLogo image = clubLogoRepository.save(new ClubLogo(club, file.getBytes(), c));
+				ClubLogo image = clubLogoRepository.save(new ClubLogo(file.getBytes(), c));
 	            return true;
 			} catch (Exception e)
 			{
@@ -123,7 +118,13 @@ public class ClubService {
 	
 	public Resource loadAsResource(String clubName)
 	{
-		Optional<ClubLogo> image = ((Optional<ClubLogo>)clubLogoRepository.findByClubName(clubName));
+		Club c = clubRepository.findByName(clubName);
+		
+		//if club doesn't exist simply return nothing
+		if(c == null)
+			return new InputStreamResource(new ByteArrayInputStream(new byte[] {}));
+		
+		Optional<ClubLogo> image = ((Optional<ClubLogo>)clubLogoRepository.findByClub(c.getId()));
 		InputStreamResource resource = null;
 
 		if(image.isPresent())

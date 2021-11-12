@@ -27,11 +27,11 @@ public class EventController {
 	private EventService eventService;
 	
 	@GetMapping("/scheduled")
-	public ResponseEntity<List<EventDto>> getClubEventsByMonthAndYear(@RequestHeader HttpHeaders headers, @RequestParam("club") String clubName, @RequestParam("date") String date)
+	public ResponseEntity<List<EventDto>> getClubEventsByMonthAndYear(@RequestHeader HttpHeaders headers, @RequestParam("club") String clubName, @RequestParam("month") String month, @RequestParam("year") String year)
 	{
 		//if(has valid permissions)
 		//{
-		return new ResponseEntity<List<EventDto>>(eventService.findClubEventsByMonthAndYear(clubName, date), HttpStatus.OK);
+		return new ResponseEntity<List<EventDto>>(eventService.findClubEventsByMonthAndYear(clubName, month + "/" + year), HttpStatus.OK);
 		//}
 		//return new ResponseEntity<List<ClubDto>>(new ArrayList<ClubDto>(), HttpStatus.FORBIDDEN);
 	}

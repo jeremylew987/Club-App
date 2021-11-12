@@ -32,9 +32,7 @@ public class ClubDto {
 	private byte[] logo;
 	
 	private List<ContactDetailsDto> contacts;
-	
-	private List<EventDto> events;
-	
+		
 	public ClubDto() {this.name = "testing";}
 	public ClubDto(Club c)
 	{
@@ -119,14 +117,6 @@ public class ClubDto {
 
 	public void setContacts(List<ContactDetailsDto> contacts) {
 		this.contacts = contacts;
-	}
-
-	public List<EventDto> getEvents() {
-		return events;
-	}
-
-	public void setEvents(List<EventDto> events) {
-		this.events = events;
 	}
 
 	@Override

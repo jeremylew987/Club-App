@@ -14,7 +14,7 @@ public class ClubBasicDto {
 	
 	private String meetingTimes;
 		
-	public ClubBasicDto() {this.name = "testing";}
+	public ClubBasicDto() {this.name = "testing"; this.meetingTimes = "test";}
 	public ClubBasicDto(Club club)
 	{
 		this.setName(club.getName());
@@ -41,8 +41,7 @@ public class ClubBasicDto {
 	public String toString()
 	{
 		//consider using library for json serialization
-		return "{\"name\":\"" + name + "\",\"meetingTimes\":" + meetingTimes 
-				+ "}";
+		return "{\"name\":\"" + name + "\",\"meetingTimes\":\"" + meetingTimes + "\"}";
 	}
 	
 	@Override

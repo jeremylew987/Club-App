@@ -15,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -106,14 +107,31 @@ public class Club {
 	@JoinColumn(name="club_id")
 	private List<Event> events;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(mappedBy="club", cascade=CascadeType.ALL)
 	@JsonIgnore
-	@JoinColumn(name="club_logo_id", referencedColumnName="id")
+	@PrimaryKeyJoinColumn
 	private ClubLogo clubLogo;
 	
 	public Club()
 	{
 		this.name = "";
+		this.description ="";
+		this.meetingTimes = "";
+		this.eventInformation = "";
+		this.fees = "";
+		this.membershipRestrictions = "";
+		this.numStudents = 0;
+		this.numISUMembers = 0;
+		this.numNonISUMembers = 0;
+		this.electionInformation = "";
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -243,17 +261,17 @@ public class Club {
 		if(p != null)
 			return p;
 		else
-			return new Position(name);
+			return repository.save(new Position(position));
 		}).collect(Collectors.toSet());
 		
 		electionInformation = clubDto.getElectionInformation();
 		contacts = clubDto.getContacts().stream().map(details -> 
 		{
-			ContactDetails c = contactDetailsRepository.findByName(details.getName());
+			ContactDetails c = contactDetailsRepository.findByName(details.getName()); //TODO change to query by unique field
 			if(c != null)
 				return c;
 			else
-				return new ContactDetails(details);
+				return contactDetailsRepository.save(new ContactDetails(details, this));
 		}).collect(Collectors.toList());
 		
 		return this;
