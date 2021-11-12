@@ -2,6 +2,7 @@ package com.example.isugroups;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,9 +10,15 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,23 +34,185 @@ public class ClubDetailsScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Back to the main menu
-                //startActivity(new Intent(ClubDetailsScreen.this, CreateLoginScreen.class));
+                startActivity(new Intent(ClubDetailsScreen.this, HomeScreen.class));
             }
         });
         RequestQueue queue = Volley.newRequestQueue(ClubDetailsScreen.this);
-        JSONObject data = new JSONObject();
+        String address = "http://coms-319-g22.cs.iastate.edu/club/search?phrase=<" +
+                ((GlobalVars) ClubDetailsScreen.this.getApplication()).getCurClubName() +
+                ">&page=<0>";
 
-				/*JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Constance.BASE_URL + "user/login", data, new Response.Listener<JSONObject>() {
+				JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, address, null, new Response.Listener<JSONArray>() {
 					@Override
-					public void onResponse(JSONObject response) {
-						Intent i = new Intent(LoginScreen.this,MainMenuScreen.class);
-						startActivity(i);
+					public void onResponse(JSONArray response2) {
+
+                        JSONObject response = null;
+                        try {
+                            response = response2.getJSONObject(0);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        Button join = (Button) findViewById(R.id.JoinButton);
+
+                        Boolean isMember = false;
+                        //check if user is member in the DB
+                        //TODO
+                        isMember = ((GlobalVars) ClubDetailsScreen.this.getApplication()).getClubs().contains(((GlobalVars) ClubDetailsScreen.this.getApplication()).getCurClubName());
+                        if (isMember) {
+                            join.setVisibility(View.GONE);
+                        }
+
+
+                        join.setOnClickListener(new View.OnClickListener() {
+
+                            public void onClick(View view) {
+                                //Join Club, add user ID to the list and refresh page to change view
+                                ((GlobalVars) ClubDetailsScreen.this.getApplication()).getClubs().add(((GlobalVars) ClubDetailsScreen.this.getApplication()).getCurClubName());
+                                startActivity(new Intent(ClubDetailsScreen.this, ClubDetailsScreen.class));
+                                //TODO add user on backend and add club
+                            }
+                        });
+
+
+                        String ClubNameData = null;//Will be called from DB
+                        try {
+                            ClubNameData = response.getString("name");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        TextView ClubName = (TextView) findViewById(R.id.ClubName);
+                        ClubName.setText(ClubNameData);
+
+                        String DescriptionData = null;
+                        try {
+                            DescriptionData = response.getString("description");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        TextView Description = (TextView) findViewById(R.id.Description);
+                        Description.setText(DescriptionData);
+
+
+                        String MeetTimeData = null;//Will be called by DB
+                        try {
+                            MeetTimeData = response.getString("meetingTimes");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        TextView MeetTime = (TextView) findViewById(R.id.MeetingTimes);
+                        MeetTime.setText(MeetTimeData);
+
+                        String EventData = null;
+                        try {
+                            EventData = response.getString("eventInformation");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Button yourButton = (Button) findViewById(R.id.EventButton);
+
+                        yourButton.setOnClickListener(new View.OnClickListener() {
+
+                            public void onClick(View view) {
+                                startActivity(new Intent(ClubDetailsScreen.this, EventCalendar.class));
+                            }
+                        });
+
+                        TextView Event = (TextView) findViewById(R.id.Events);
+                        Event.setText(EventData);
+
+                        int numMembers = 0;
+                        String Rescrictions ="Membership Restrictions:"+"\n";
+                        try {
+                             Rescrictions = response.getString("membershipRestrictions");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        String Elections = "Elections:"+"\n";
+                        try {
+                            Elections = response.getString("electionInformation");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        JSONArray exampleArray = null;
+                        try {
+                             exampleArray = response.getJSONArray("officerPositions");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        String Positions = "Officer Positions:"+"\n";
+                        for(int i =0;i< exampleArray.length();i++){
+                            try {
+                                Positions += exampleArray.getString(i) + "\n";
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        String MemberData = Rescrictions + "\n" + Positions + "\n" + Elections;
+
+                        TextView Member = (TextView) findViewById(R.id.Members);
+                        Member.setText(MemberData);
+
+                        Button yourButton2 = (Button) findViewById(R.id.ConstitutionButton);
+
+                        yourButton2.setOnClickListener(new View.OnClickListener() {
+
+                            public void onClick(View view) {
+                                //Download Constitution from DB
+                                //TODO
+                            }
+                        });
+
+                        String FeeData = null;
+                        try {
+                            FeeData = response.getString("fees");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+
+                        TextView fee = (TextView) findViewById(R.id.Fees);
+                        fee.setText(FeeData);
+
+                        String OfficerList = "";
+
+                        String OfficersData = "President\n" +
+                                "John Doe\n" +
+                                "Treasurer\n" +
+                                "Jane Doe";
+
+                        TextView Officers = (TextView) findViewById(R.id.Officers);
+                        Officers.setText(OfficersData);
+
+                        //TODO add contact from JSON object
+
+                        String ContactList = "";
+
+                        String ContactData = "John Doe\n" +
+                                "Phone Number: 123-456-7890\n" +
+                                "email: example@gmail.com\n" +
+                                "Jane Doe\n" +
+                                "Phone Number: 123-456-7891\n" +
+                                "email: example2@gmail.com";
+
+                        TextView Contact = (TextView) findViewById(R.id.Contact);
+                        Contact.setText(ContactData);
+
+
+
+
 					}
 				}, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						error.printStackTrace();
-						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LoginScreen.this);
+						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ClubDetailsScreen.this);
 						alertDialogBuilder.setTitle("Error");
 						alertDialogBuilder.setMessage(error.getMessage());
 						alertDialogBuilder.setPositiveButton("Ok", null);
@@ -51,120 +220,9 @@ public class ClubDetailsScreen extends AppCompatActivity {
 						alertDialogBuilder.create().show();
 					}
 				});
-				queue.add(request);*/
-
-        Button join = (Button) findViewById(R.id.JoinButton);
-
-        Boolean isMember = false;
-        //check if user is member in the DB
-        //TODO
-        if (isMember) {
-            join.setVisibility(View.GONE);
-        }
+				queue.add(request);
 
 
-        join.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                //Join Club, add user ID to the list and refresh page to change view
-                startActivity(new Intent(ClubDetailsScreen.this, ClubDetailsScreen.class));
-                //TODO
-            }
-        });
-
-
-        String ClubNameData = "Random Club";//Will be called from DB
-
-        TextView ClubName = (TextView) findViewById(R.id.ClubName);
-        ClubName.setText(ClubNameData);
-
-        String DescriptionData = "Club promoting and celebrating the game of chess.";//Will be called by DB
-
-        TextView Description = (TextView) findViewById(R.id.Description);
-        Description.setText(DescriptionData);
-
-
-        String MeetTimeData = "Meetings are on MWF 3:00 - 5:00 p.m. and R 6:00 - 7:00 p.m.";//Will be called by DB
-
-        TextView MeetTime = (TextView) findViewById(R.id.MeetingTimes);
-        MeetTime.setText(MeetTimeData);
-
-        String EventData = "Event information is delivered at club meetings, over email, and through this app.";
-        Button yourButton = (Button) findViewById(R.id.EventButton);
-
-        yourButton.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                startActivity(new Intent(ClubDetailsScreen.this, EventCalendar.class));
-            }
-        });
-
-        TextView Event = (TextView) findViewById(R.id.Events);
-        Event.setText(EventData);
-
-        int numMembers = 0;
-        String Rescrictions = "";
-        String Elections = "";
-        String Positions = "";
-
-        String MemberData = "Students                             73\n" +
-                "ISU members                     84\n" +
-                "Non-ISU members            14\n" +
-                "\n" +
-                "Membership Restrictions\n" +
-                "None\n" +
-                "\n" +
-                "Officer Positions\n" +
-                "President\n" +
-                "Treasurer\n" +
-                "\n" +
-                "Elections\n" +
-                "Held in November\n" +
-                "\n";
-
-        TextView Member = (TextView) findViewById(R.id.Members);
-        Member.setText(MemberData);
-
-        Button yourButton2 = (Button) findViewById(R.id.ConstitutionButton);
-
-        yourButton2.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                //Download Constitution from DB
-                //TODO
-            }
-        });
-
-        int FeeNum = 0;
-
-        String FeeData = "$90 Per Semester\n" +
-                "\n" +
-                "$180 Per Year";
-
-        TextView fee = (TextView) findViewById(R.id.Fees);
-        fee.setText(FeeData);
-
-        String OfficerList = "";
-
-        String OfficersData = "President\n" +
-                "John Doe\n" +
-                "Treasurer\n" +
-                "Jane Doe";
-
-        TextView Officers = (TextView) findViewById(R.id.Officers);
-        Officers.setText(OfficersData);
-
-        String ContactList = "";
-
-        String ContactData = "John Doe\n" +
-                "Phone Number: 123-456-7890\n" +
-                "email: example@gmail.com\n" +
-                "Jane Doe\n" +
-                "Phone Number: 123-456-7891\n" +
-                "email: example2@gmail.com";
-
-        TextView Contact = (TextView) findViewById(R.id.Contact);
-        Contact.setText(ContactData);
 
 
     }

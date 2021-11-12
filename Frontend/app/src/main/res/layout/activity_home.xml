@@ -73,4 +73,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
     </ScrollView>
+
+    <Button
+        android:id="@+id/ToSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
