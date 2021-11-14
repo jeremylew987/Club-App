@@ -1,15 +1,11 @@
 package edu.iastate.myclub.controllers.club;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import edu.iastate.myclub.models.club.Club;
-import edu.iastate.myclub.models.club.ClubBasicDto;
 import edu.iastate.myclub.models.club.ClubDto;
 import edu.iastate.myclub.models.club.ClubNotification;
 import edu.iastate.myclub.services.club.ClubService;
@@ -35,11 +29,11 @@ public class ClubController {
 	private ClubService clubService;
 	
 	@PostMapping("/create")
-	public ResponseEntity<Boolean> createClub(@RequestHeader HttpHeaders headers, @RequestBody ClubDto club)
+	public ResponseEntity<Boolean> createClub(@RequestHeader HttpHeaders headers, @RequestBody Club club)
 	{
 		//if(has valid permissions)
 		//{
-		//System.out.println(club.toString());
+		System.out.println(club.toString());
 		return new ResponseEntity<Boolean>(clubService.createClub(club), HttpStatus.OK);
 		//}
 		//return new ResponseEntity<Boolean>(true, HttpStatus.OK);
@@ -47,7 +41,7 @@ public class ClubController {
 	
 	//TODO determine best way to determine which club is modified with respect to user who made the request
 	@PostMapping("/modify")
-	public ResponseEntity<Boolean> modifyClub(@RequestBody ClubDto club)
+	public ResponseEntity<Boolean> modifyClub(@RequestBody Club club)
 	{
 		//if(has valid permissions)
 		//{
@@ -57,21 +51,21 @@ public class ClubController {
 	}
 	
 	@GetMapping("/joined")
-	public ResponseEntity<List<ClubBasicDto>> getJoinedClubs(@RequestHeader HttpHeaders headers)
+	public ResponseEntity<List<ClubDto>> getJoinedClubs(@RequestHeader HttpHeaders headers)
 	{
 		//if(has valid permissions)
 		//{
-		return new ResponseEntity<List<ClubBasicDto>>(clubService.getJoinedClubs(""), HttpStatus.OK);
+		return new ResponseEntity<List<ClubDto>>(clubService.getJoinedClubs("test"), HttpStatus.OK);
 		//}
 		//return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
 	}
 	
 	@GetMapping("/search")
-	public ResponseEntity<List<ClubBasicDto>> getClubsBySearch(@RequestHeader HttpHeaders headers, @RequestParam("phrase") String phrase, @RequestParam("page") int page)
+	public ResponseEntity<List<ClubDto>> getClubsBySearch(@RequestHeader HttpHeaders headers, @RequestParam("phrase") String phrase, @RequestParam("page") int page)
 	{
 		//if(has valid permissions)
 		//{
-		return new ResponseEntity<List<ClubBasicDto>>(clubService.findClubs(phrase, page, 5), HttpStatus.OK);
+		return new ResponseEntity<List<ClubDto>>(clubService.findClubs(phrase, page, 5), HttpStatus.OK);
 		//}
 		//return new ResponseEntity<List<ClubDto>>(new ArrayList<ClubDto>(), HttpStatus.FORBIDDEN);
 	}
@@ -81,31 +75,8 @@ public class ClubController {
 	{
 		//if(has valid permissions)
 		//{
-		return new ResponseEntity<List<ClubNotification>>(clubService.getJoinedClubsNotifications(""), HttpStatus.OK);
+		return new ResponseEntity<List<ClubNotification>>(clubService.getJoinedClubsNotifications("test"), HttpStatus.OK);
 		//}
 		//return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
-	}
-	
-	@PostMapping(path="/upload/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<Boolean> uploadFile(@RequestParam("club") String clubName, @RequestParam("upload") MultipartFile file)
-	{		
-//		if(has valid permissions && !file.isEmpty())
-//		{
-
-				return new ResponseEntity<Boolean>(clubService.store(file, clubName), HttpStatus.OK);
-		//}
-		
-//		return new ResponseEntity<>(false, HttpStatus.FORBIDDEN);
-	}
-	
-	@GetMapping(path="/logo/download")
-	public ResponseEntity<Resource> serveImageFile(@RequestParam("club") String club)
-	{
-		Resource file = clubService.loadAsResource(club);
-		
-		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
-				.contentType(MediaType.APPLICATION_OCTET_STREAM)
-				.body(file);
 	}
 }

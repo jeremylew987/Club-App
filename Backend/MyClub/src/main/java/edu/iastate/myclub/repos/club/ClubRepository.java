@@ -12,7 +12,5 @@ import edu.iastate.myclub.models.club.Club;
 public interface ClubRepository extends PagingAndSortingRepository<Club, Integer> {
 
 	//Find clubs whose name contain the specific name as a substring, ignoring case
-	List<Club> findAllByNameContainingOrderByNameAsc(String phrase, Pageable pageAndSortByName);
-
-	Club findByName(String name);
+	List<Club> findAllByNameOrderByNameAsc(String name, Pageable pageable);
 }

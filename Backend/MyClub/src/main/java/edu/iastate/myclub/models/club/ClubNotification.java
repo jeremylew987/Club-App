@@ -7,10 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 
@@ -29,7 +26,6 @@ public class ClubNotification {
 	private int id;
 	
 	@NotNull
-	@JsonIgnore
 	@ManyToOne
 	private Club club;
 	
@@ -44,9 +40,6 @@ public class ClubNotification {
 	@NotNull
 	@Column(name="timestamp")
 	private String timestamp;
-	
-	@Transient
-	private String clubName;
 	
 	public ClubNotification() {}
 	public ClubNotification(Club club)
@@ -84,11 +77,5 @@ public class ClubNotification {
 	}
 	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
-	}
-	public String getClubName() {
-		return clubName;
-	}
-	public void setClubName(String clubName) {
-		this.clubName = clubName;
 	}
 }

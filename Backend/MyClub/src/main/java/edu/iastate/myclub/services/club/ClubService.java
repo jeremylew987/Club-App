@@ -1,31 +1,20 @@
 package edu.iastate.myclub.services.club;
 
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import edu.iastate.myclub.models.club.Club;
-import edu.iastate.myclub.models.club.ClubBasicDto;
 import edu.iastate.myclub.models.club.ClubDto;
-import edu.iastate.myclub.models.club.ClubLogo;
 import edu.iastate.myclub.models.club.ClubNotification;
-import edu.iastate.myclub.repos.club.ClubLogoRepository;
 import edu.iastate.myclub.repos.club.ClubRepository;
-import edu.iastate.myclub.repos.club.ContactDetailsRepository;
-import edu.iastate.myclub.repos.club.PositionRepository;
 
 /**
  * Service providing club specific functionality and 
@@ -40,38 +29,24 @@ public class ClubService {
 	@Autowired
 	private ClubRepository clubRepository;
 	
-	@Autowired
-	private ContactDetailsRepository contactDetailsRepository;
-	
-	@Autowired
-	private PositionRepository positionRepository;
-	
-	@Autowired 
-	private ClubLogoRepository clubLogoRepository;
-	
-	public boolean createClub(ClubDto club)
+	public boolean createClub(Club club)
 	{
 		//TODO decide whether to do additional validation here and return false in case 
 		//new club is bad
-		Club newClub = clubRepository.save(new Club());
-		clubRepository.save(newClub.copyFromClubDto(club, positionRepository, contactDetailsRepository));
+		clubRepository.save(club);
 		return true;
 	}
 	
 	//TODO decide how to identify specific club entry in database to modify (possibly by name)
-	public boolean modifyClub(ClubDto club)
+	public boolean modifyClub(Club club)
 	{
 		//TODO decide whether to do additional validation here and return false in case 
 		//new club is bad
-		Club c = clubRepository.findByName(club.getName());
-		if(c == null)
-			return false;
-		
-		clubRepository.save(c.copyFromClubDto(club, positionRepository, contactDetailsRepository));
+		clubRepository.save(club);
 		return true;
 	}
 	
-	public List<ClubBasicDto> getJoinedClubs(String name)
+	public List<ClubDto> getJoinedClubs(String name)
 	{
 		ArrayList<Club> clubs = new ArrayList<Club>();
 		//User user = userRepository.findByName(name);
@@ -81,11 +56,11 @@ public class ClubService {
 		return null;
 	}
 	
-	public List<ClubBasicDto> findClubs(String phrase, int page, int size)
+	public List<ClubDto> findClubs(String phrase, int page, int size)
 	{
 		Pageable pageAndSortByName = PageRequest.of(page, size);
-		List<Club> clubs = clubRepository.findAllByNameContainingOrderByNameAsc(phrase, pageAndSortByName);
-		return (List<ClubBasicDto>) clubs.stream().map(club -> new ClubBasicDto(club)).collect(Collectors.toList());
+		List<Club> clubs = clubRepository.findAllByNameOrderByNameAsc(phrase, pageAndSortByName);
+		return (List<ClubDto>) clubs.stream().map(club -> new ClubDto(club)).collect(Collectors.toList());
 	}
 	
 	public List<ClubNotification> getJoinedClubsNotifications(String name)
@@ -96,40 +71,5 @@ public class ClubService {
 		//	add club notifications to priority queue, sorted by timestamp
 		//}
 		return null;
-	}
-	
-	public boolean store(MultipartFile file, String club)
-	{
-		if (!file.isEmpty()) {
-			try {	
-				Club c = clubRepository.findByName(club);
-				if(c == null)
-					return false;
-				
-				ClubLogo image = clubLogoRepository.save(new ClubLogo(file.getBytes(), c));
-	            return true;
-			} catch (Exception e)
-			{
-            	return false;
-			}
-		}
-		return false;
-	}
-	
-	public Resource loadAsResource(String clubName)
-	{
-		Club c = clubRepository.findByName(clubName);
-		
-		//if club doesn't exist simply return nothing
-		if(c == null)
-			return new InputStreamResource(new ByteArrayInputStream(new byte[] {}));
-		
-		Optional<ClubLogo> image = ((Optional<ClubLogo>)clubLogoRepository.findByClub(c.getId()));
-		InputStreamResource resource = null;
-
-		if(image.isPresent())
-			resource = new InputStreamResource(new ByteArrayInputStream(image.get().getImage()));
-		
-		return resource;
 	}
 }
