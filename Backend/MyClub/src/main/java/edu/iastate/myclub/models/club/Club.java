@@ -2,7 +2,9 @@ package edu.iastate.myclub.models.club;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,11 +14,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import edu.iastate.myclub.models.ContactDetails;
 import edu.iastate.myclub.models.Position;
+import edu.iastate.myclub.models.event.Event;
+import edu.iastate.myclub.repos.club.ContactDetailsRepository;
+import edu.iastate.myclub.repos.club.PositionRepository;
 
 /**
  * Model defining a club
@@ -58,14 +67,17 @@ public class Club {
 	private String membershipRestrictions;
 	
 	@NotNull
+	@JsonIgnore
 	@Column(name="num_students")
 	private int numStudents;
 	
 	@NotNull
+	@JsonIgnore
 	@Column(name="num_isu_members")
 	private int numISUMembers;
 	
 	@NotNull
+	@JsonIgnore
 	@Column(name="num_non_isu_members")
 	private int numNonISUMembers;
 	
@@ -77,25 +89,49 @@ public class Club {
 	
 	@NotNull
 	@Column(name="election_information")
-	private String elections;
+	private String electionInformation;
 
 	@OneToMany
 	@JoinColumn(name="club_id")
 	private List<ClubNotification> notifications;
 	
-	//@OneToMany
+	//@ManyToMany
 	//private List<User> members;
-	
-	@Column(name="logo")
-	private byte[] logo;
 	
 	@OneToMany
 	@JoinColumn(name="club_id")
 	private List<ContactDetails> contacts;
 	
+	@OneToMany
+	@JsonIgnore
+	@JoinColumn(name="club_id")
+	private List<Event> events;
+	
+	@OneToOne(mappedBy="club", cascade=CascadeType.ALL)
+	@JsonIgnore
+	@PrimaryKeyJoinColumn
+	private ClubLogo clubLogo;
+	
 	public Club()
 	{
 		this.name = "";
+		this.description ="";
+		this.meetingTimes = "";
+		this.eventInformation = "";
+		this.fees = "";
+		this.membershipRestrictions = "";
+		this.numStudents = 0;
+		this.numISUMembers = 0;
+		this.numNonISUMembers = 0;
+		this.electionInformation = "";
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -178,12 +214,12 @@ public class Club {
 		this.officerPositions = officerPositions;
 	}
 
-	public String getElections() {
-		return elections;
+	public String getElectionInformation() {
+		return electionInformation;
 	}
 
-	public void setElections(String elections) {
-		this.elections = elections;
+	public void setElectionInformation(String electionInformation) {
+		this.electionInformation = electionInformation;
 	}
 
 	public List<ClubNotification> getNotifications() {
@@ -193,14 +229,6 @@ public class Club {
 	public void setNotifications(List<ClubNotification> notifications) {
 		this.notifications = notifications;
 	}
-
-	public byte[] getLogo() {
-		return logo;
-	}
-
-	public void setLogo(byte[] logo) {
-		this.logo = logo;
-	}
 	
 	public List<ContactDetails> getContacts() {
 		return contacts;
@@ -208,6 +236,45 @@ public class Club {
 
 	public void setContacts(List<ContactDetails> contacts) {
 		this.contacts = contacts;
+	}
+
+	public List<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(List<Event> events) {
+		this.events = events;
+	}
+	
+	public Club copyFromClubDto(ClubDto clubDto, PositionRepository repository, 
+			ContactDetailsRepository contactDetailsRepository)
+	{
+		name = clubDto.getName();
+		description = clubDto.getDescription();
+		meetingTimes = clubDto.getMeetingTimes();
+		eventInformation = clubDto.getEventInformation();
+		fees = clubDto.getFees();
+		membershipRestrictions = clubDto.getMembershipRestrictions();
+		officerPositions = clubDto.getOfficerPositions().stream().map(position -> 
+		{
+		Position p = repository.findByName(position);
+		if(p != null)
+			return p;
+		else
+			return repository.save(new Position(position));
+		}).collect(Collectors.toSet());
+		
+		electionInformation = clubDto.getElectionInformation();
+		contacts = clubDto.getContacts().stream().map(details -> 
+		{
+			ContactDetails c = contactDetailsRepository.findByName(details.getName()); //TODO change to query by unique field
+			if(c != null)
+				return c;
+			else
+				return contactDetailsRepository.save(new ContactDetails(details, this));
+		}).collect(Collectors.toList());
+		
+		return this;
 	}
 
 	@Override

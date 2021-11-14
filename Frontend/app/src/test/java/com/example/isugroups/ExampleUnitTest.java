@@ -14,4 +14,15 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+
+    @Test
+    public void TestSetGetClubName(){
+        GlobalVars.setCurClubName("Chess");
+        assertEquals(GlobalVars.getCurClubName(), "Chess");
+    }
+    public void TestSetGetUserID(){
+        GlobalVars.setCurUserID("19191991");
+        assertEquals(GlobalVars.getCurUserID(), "19191991");
+    }
+
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.isugroups">
@@ -33,4 +34,52 @@
         </activity>
     </application>
 
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.isugroups">
+
+    <application
+        android:name=".GlobalVars"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ISUGroups">
+        <activity
+            android:name=".SearchPageScreen"
+            android:exported="false"
+            android:label="@string/title_activity_search_page_screen"
+            android:theme="@style/Theme.ISUGroups.NoActionBar" />
+        <activity
+            android:name=".EventCalendar"
+            android:exported="true" />
+        <activity
+            android:name=".LoginScreen"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CreateLoginScreen"
+            android:exported="true" />
+        <activity
+            android:name=".ClubDetailsScreen"
+            android:exported="true" />
+        <activity
+            android:name=".CreateClub"
+            android:exported="true" />
+        <activity
+            android:name=".SettingScreen"
+            android:exported="true" />
+        <activity
+            android:name=".HomeScreen"
+            android:exported="true" />
+    </application>
+
+>>>>>>> 20876b68ecb3e1fcfb50ebcbc53a72cfcb416cf5
 </manifest>
