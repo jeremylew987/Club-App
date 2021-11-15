@@ -28,26 +28,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreateClub extends AppCompatActivity {
-/*
-	RecyclerView rvItems;
+
+	/*RecyclerView rvItems;
 	ParticipantAdapter adapter;
 	List<ModelParticipant> items = new ArrayList<>();
-*/
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_club);
-    }//TODO remove this to add back everything when adding json stuff
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_create_group);
 
-		/*ImageButton back = (ImageButton) findViewById(R.id.back);
+		ImageButton back = (ImageButton) findViewById(R.id.back);
 		back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Intent i = new Intent(CreateGroup.this, MainMenuScreen.class);
 				startActivity(i);
 			}
-		});*/
-/*
+		});
+
 		RequestQueue queue = Volley.newRequestQueue(this);
 
 		rvItems = findViewById(R.id.rvItems);
