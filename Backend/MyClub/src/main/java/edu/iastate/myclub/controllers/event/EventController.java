@@ -26,6 +26,12 @@ public class EventController {
 	@Autowired
 	private EventService eventService;
 	
+	public EventController() {}
+	public EventController(EventService eventService)
+	{
+		this.eventService = eventService;
+	}
+	
 	@GetMapping("/scheduled")
 	public ResponseEntity<List<EventDto>> getClubEventsByMonthAndYear(@RequestHeader HttpHeaders headers, @RequestParam("club") String clubName, @RequestParam("month") String month, @RequestParam("year") String year)
 	{
@@ -56,3 +62,29 @@ public class EventController {
 		//return new ResponseEntity<Boolean>(new ArrayList<ClubDto>(), HttpStatus.FORBIDDEN);
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -28,15 +28,18 @@ public class ClubDto {
 	private List<String> officerPositions;
 	
 	private String electionInformation;
-	
-	private byte[] logo;
-	
+		
 	private List<ContactDetailsDto> contacts;
 		
-	public ClubDto() {this.name = "testing";}
-	public ClubDto(Club c)
+	public ClubDto() 
 	{
-		
+		name = "";                     
+		description = "";              
+		meetingTimes = "";             
+		eventInformation = "";         
+		fees = "";                     
+		membershipRestrictions = "";         
+		electionInformation = "";      
 	}
 
 	public String getName() {
@@ -101,14 +104,6 @@ public class ClubDto {
 
 	public void setElectionInformation(String electionInformation) {
 		this.electionInformation = electionInformation;
-	}
-
-	public byte[] getLogo() {
-		return logo;
-	}
-
-	public void setLogo(byte[] logo) {
-		this.logo = logo;
 	}
 	
 	public List<ContactDetailsDto> getContacts() {

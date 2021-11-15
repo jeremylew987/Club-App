@@ -19,6 +19,19 @@ public class ContactDetailsDto {
 	
 	private String email;
 	
+	public ContactDetailsDto()
+	{
+		this.name = "";
+		this.phoneNumber = "";
+		this.email = "";
+	}
+	public ContactDetailsDto(String name, String phoneNumber, String email)
+	{
+		this.name = name;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+	}
+	
 	public String getName() {
 		return name;
 	}

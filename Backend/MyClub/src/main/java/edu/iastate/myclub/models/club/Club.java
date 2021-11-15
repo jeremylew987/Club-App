@@ -273,7 +273,6 @@ public class Club {
 			else
 				return contactDetailsRepository.save(new ContactDetails(details, this));
 		}).collect(Collectors.toList());
-		
 		return this;
 	}
 

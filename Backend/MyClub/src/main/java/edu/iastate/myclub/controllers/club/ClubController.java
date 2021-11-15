@@ -34,6 +34,12 @@ public class ClubController {
 	@Autowired
 	private ClubService clubService;
 	
+	public ClubController() {}
+	public ClubController(ClubService clubService)
+	{
+		this.clubService = clubService;
+	}
+	
 	@PostMapping("/create")
 	public ResponseEntity<Boolean> createClub(@RequestHeader HttpHeaders headers, @RequestBody ClubDto club)
 	{

@@ -1,7 +1,6 @@
 package edu.iastate.myclub;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -13,8 +12,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -25,15 +24,20 @@ import org.springframework.util.LinkedMultiValueMap;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.iastate.myclub.controllers.club.ClubController;
+import edu.iastate.myclub.models.ContactDetailsDto;
 import edu.iastate.myclub.models.club.Club;
 import edu.iastate.myclub.models.club.ClubBasicDto;
 import edu.iastate.myclub.models.club.ClubDto;
 import edu.iastate.myclub.models.club.ClubNotification;
+import edu.iastate.myclub.repos.club.ClubRepository;
 import edu.iastate.myclub.services.club.ClubService;
 
 @WebMvcTest(ClubController.class)
 public class ClubControllerTests {
-
+	
+	@Autowired
+	private ClubController clubController;
+	
 	@Autowired
 	private MockMvc mockMvc;
 	
@@ -42,13 +46,22 @@ public class ClubControllerTests {
 
 	@MockBean
 	private ClubService clubService;
-		
-	@Test
-	void contextLoads() {
+	
+	private static ClubDto testDto;
+	
+	public void setup()
+	{
+		testDto = new ClubDto();
+		testDto.setName("ClubTest");
+		testDto.setDescription("Test Description");
+		testDto.setMeetingTimes("Test Meeting Times");
+		testDto.setContacts(new ArrayList<ContactDetailsDto>() {{add(new ContactDetailsDto());}});
+		testDto.setOfficerPositions(new ArrayList<String>());
 	}
-
+	
 	@Test
 	public void createClubShouldReturnResponseFromService() throws Exception {
+		setup();
 		when(clubService.createClub(new ClubDto())).thenReturn(true);
 		MvcResult result = this.mockMvc.perform(post("/club/create")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -62,6 +75,7 @@ public class ClubControllerTests {
 	
 	@Test
 	public void modifyClubShouldReturnResponseFromService() throws Exception {
+		setup();
 		when(clubService.modifyClub(new ClubDto())).thenReturn(true);
 		MvcResult result = this.mockMvc.perform(post("/club/modify")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -75,6 +89,7 @@ public class ClubControllerTests {
 	
 	@Test
 	public void getJoinedClubsShouldReturnResponseFromService() throws Exception {
+		setup();
 		Club c = new Club();
 		c.setName("Test");
 		c.setMeetingTimes("test");
@@ -94,6 +109,7 @@ public class ClubControllerTests {
 	
 	@Test
 	public void getClubsBySearchShouldReturnResponseFromService() throws Exception {
+		setup();
 		LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
 				requestParams.add("phrase", "Te");
 				requestParams.add("page", "3");
@@ -112,6 +128,7 @@ public class ClubControllerTests {
 	
 	@Test
 	public void getJoinedClubsNotificationsShouldReturnResponseFromService() throws Exception {
+		setup();
 		Club c = new Club();
 		c.setName("Test");
 		c.setMeetingTimes("test");

@@ -22,6 +22,13 @@ public class EventService {
 	
 	@Autowired
 	private ClubRepository clubRepository;
+	
+	public EventService() {}
+	public EventService(EventRepository eventRepository, ClubRepository clubRepository)
+	{
+		this.eventRepository = eventRepository;
+		this.clubRepository = clubRepository;
+	}
 
 	public List<EventDto> findClubEventsByMonthAndYear(String clubName, String date) {
 		Club c = clubRepository.findByName(clubName);
