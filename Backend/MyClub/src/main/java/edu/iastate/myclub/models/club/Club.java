@@ -68,18 +68,8 @@ public class Club {
 	
 	@NotNull
 	@JsonIgnore
-	@Column(name="num_students")
-	private int numStudents;
-	
-	@NotNull
-	@JsonIgnore
-	@Column(name="num_isu_members")
-	private int numISUMembers;
-	
-	@NotNull
-	@JsonIgnore
-	@Column(name="num_non_isu_members")
-	private int numNonISUMembers;
+	@Column(name="num_members")
+	private int numMembers;
 	
 	@ManyToMany
 	@JoinTable(name="club_positions",
@@ -90,6 +80,10 @@ public class Club {
 	@NotNull
 	@Column(name="election_information")
 	private String electionInformation;
+	
+	@NotNull
+	@Column(name="constitution")
+	private String constitution;
 
 	@OneToMany
 	@JoinColumn(name="club_id")
@@ -120,10 +114,9 @@ public class Club {
 		this.eventInformation = "";
 		this.fees = "";
 		this.membershipRestrictions = "";
-		this.numStudents = 0;
-		this.numISUMembers = 0;
-		this.numNonISUMembers = 0;
+		this.numMembers = 0;
 		this.electionInformation = "";
+		this.constitution = "";
 	}
 
 	public int getId() {
@@ -182,28 +175,12 @@ public class Club {
 		this.membershipRestrictions = membershipRestrictions;
 	}
 
-	public int getNumStudents() {
-		return numStudents;
+	public int getNumMembers() {
+		return numMembers;
 	}
 
-	public void setNumStudents(int numStudents) {
-		this.numStudents = numStudents;
-	}
-
-	public int getNumISUMembers() {
-		return numISUMembers;
-	}
-
-	public void setNumISUMembers(int numISUMembers) {
-		this.numISUMembers = numISUMembers;
-	}
-
-	public int getNumNonISUMembers() {
-		return numNonISUMembers;
-	}
-
-	public void setNumNonISUMembers(int numNonISUMembers) {
-		this.numNonISUMembers = numNonISUMembers;
+	public void setNumMembers(int numMembers) {
+		this.numMembers = numMembers;
 	}
 
 	public Set<Position> getOfficerPositions() {
@@ -220,6 +197,14 @@ public class Club {
 
 	public void setElectionInformation(String electionInformation) {
 		this.electionInformation = electionInformation;
+	}
+
+	public String getConstitution() {
+		return constitution;
+	}
+
+	public void setConstitution(String constitution) {
+		this.constitution = constitution;
 	}
 
 	public List<ClubNotification> getNotifications() {
@@ -246,8 +231,16 @@ public class Club {
 		this.events = events;
 	}
 	
+	public ClubLogo getClubLogo() {
+		return clubLogo;
+	}
+
+	public void setClubLogo(ClubLogo clubLogo) {
+		this.clubLogo = clubLogo;
+	}
+
 	public Club copyFromClubDto(ClubDto clubDto, PositionRepository repository, 
-			ContactDetailsRepository contactDetailsRepository)
+			ContactDetailsRepository contactDetailsRepository, boolean reuseContactDetails)
 	{
 		name = clubDto.getName();
 		description = clubDto.getDescription();
@@ -255,6 +248,7 @@ public class Club {
 		eventInformation = clubDto.getEventInformation();
 		fees = clubDto.getFees();
 		membershipRestrictions = clubDto.getMembershipRestrictions();
+		constitution = clubDto.getConstitution();
 		officerPositions = clubDto.getOfficerPositions().stream().map(position -> 
 		{
 		Position p = repository.findByName(position);
@@ -267,12 +261,19 @@ public class Club {
 		electionInformation = clubDto.getElectionInformation();
 		contacts = clubDto.getContacts().stream().map(details -> 
 		{
-			ContactDetails c = contactDetailsRepository.findByName(details.getName()); //TODO change to query by unique field
-			if(c != null)
-				return c;
+			if(reuseContactDetails)
+			{
+				ContactDetails c = contactDetailsRepository.findByNameAndClubId(details.getName(), id); //TODO change to query by unique field
+				if(c != null)
+					return c;
+				else
+					return contactDetailsRepository.save(new ContactDetails(details, this));
+			}
 			else
 				return contactDetailsRepository.save(new ContactDetails(details, this));
 		}).collect(Collectors.toList());
+		
+		System.out.println(constitution);
 		return this;
 	}
 

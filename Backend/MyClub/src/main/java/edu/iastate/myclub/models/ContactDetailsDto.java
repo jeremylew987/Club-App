@@ -31,6 +31,12 @@ public class ContactDetailsDto {
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 	}
+	public ContactDetailsDto(ContactDetails cd)
+	{
+		this.name = cd.getName();
+		this.email = cd.getEmail();
+		this.phoneNumber = cd.getPhoneNumber();
+	}
 	
 	public String getName() {
 		return name;
