@@ -10,5 +10,7 @@ import edu.iastate.myclub.models.user.User;
 
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<User,Integer>{
-	List<User> findAllUsersByName(String name, Pageable pageable);
+	List<User> findAllUsersByfirstName(String name, Pageable pageable);
+	
+	User findByfirstName(String firstName);
 }
