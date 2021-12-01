@@ -63,17 +63,10 @@ public class ClubService {
 	{
 		//TODO decide whether to do additional validation here and return false in case 
 		//new club is bad
-		System.out.println("IN");
-		System.out.println(club.getName());
-		System.out.println(clubRepository.findByName(club.getName()));
 		if(clubRepository.findByName(club.getName()) != null)
 			return false;
-		System.out.println("Y");
 		Club newClub = clubRepository.save(new Club());
-		System.out.println("N");
-		clubRepository.save(newClub.copyFromClubDto(club, positionRepository, contactDetailsRepository));
-		System.out.println(newClub.getName());
-		System.out.println(newClub.getDescription());
+		clubRepository.save(newClub.copyFromClubDto(club, positionRepository, contactDetailsRepository, false));
 		return true;
 	}
 	
@@ -86,7 +79,7 @@ public class ClubService {
 		if(c == null)
 			return false;
 		
-		clubRepository.save(c.copyFromClubDto(club, positionRepository, contactDetailsRepository));
+		clubRepository.save(c.copyFromClubDto(club, positionRepository, contactDetailsRepository, true));
 		return true;
 	}
 	
@@ -107,6 +100,17 @@ public class ClubService {
 		return (List<ClubBasicDto>) clubs.stream().map(club -> new ClubBasicDto(club)).collect(Collectors.toList());
 	}
 	
+	public ClubDto getClubInformation(String clubName)
+	{
+		Club c = clubRepository.findByName(clubName);
+		if(c == null)
+			return null;
+		
+		ClubDto clubInformation = new ClubDto();
+		clubInformation.copyFromClub(c);
+		return clubInformation;
+	}
+	
 	public List<ClubNotification> getJoinedClubsNotifications(String name)
 	{
 		//User user = userRepository.findByName(name);
@@ -125,10 +129,19 @@ public class ClubService {
 				if(c == null)
 					return false;
 				
-				ClubLogo image = clubLogoRepository.save(new ClubLogo(file.getBytes(), c));
+				//delete old logo
+				Optional<ClubLogo> prevImage = (Optional<ClubLogo>)clubLogoRepository.findByClubId(c.getId());
+				if(prevImage.isPresent())
+					clubLogoRepository.delete(prevImage.get());
+				
+				//save new logo
+				ClubLogo image = new ClubLogo(file.getBytes(), c);
+				c.setClubLogo(image);
+				clubRepository.save(c);
 	            return true;
 			} catch (Exception e)
 			{
+				e.printStackTrace();
             	return false;
 			}
 		}
@@ -143,7 +156,7 @@ public class ClubService {
 		if(c == null)
 			return new InputStreamResource(new ByteArrayInputStream(new byte[] {}));
 		
-		Optional<ClubLogo> image = ((Optional<ClubLogo>)clubLogoRepository.findByClub(c.getId()));
+		Optional<ClubLogo> image = ((Optional<ClubLogo>)clubLogoRepository.findByClubId(c.getId()));
 		InputStreamResource resource = null;
 
 		if(image.isPresent())

@@ -1,6 +1,7 @@
 package edu.iastate.myclub.models.club;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.iastate.myclub.models.ContactDetailsDto;
 import edu.iastate.myclub.models.event.Event;
@@ -28,6 +29,8 @@ public class ClubDto {
 	private List<String> officerPositions;
 	
 	private String electionInformation;
+	
+	private String constitution;
 		
 	private List<ContactDetailsDto> contacts;
 		
@@ -39,7 +42,8 @@ public class ClubDto {
 		eventInformation = "";         
 		fees = "";                     
 		membershipRestrictions = "";         
-		electionInformation = "";      
+		electionInformation = "";   
+		constitution = "";
 	}
 
 	public String getName() {
@@ -106,12 +110,40 @@ public class ClubDto {
 		this.electionInformation = electionInformation;
 	}
 	
+	public String getConstitution() {
+		return constitution;
+	}
+
+	public void setConstitution(String constitution) {
+		this.constitution = constitution;
+	}
+
 	public List<ContactDetailsDto> getContacts() {
 		return contacts;
 	}
 
 	public void setContacts(List<ContactDetailsDto> contacts) {
 		this.contacts = contacts;
+	}
+	
+	public void copyFromClub(Club c)
+	{
+		this.name = c.getName();
+		this.description = c.getDescription();
+		this.meetingTimes = c.getMeetingTimes();
+		this.eventInformation = c.getEventInformation();
+		this.fees = c.getFees();
+		this.membershipRestrictions = c.getMembershipRestrictions();
+		this.constitution = c.getConstitution();
+		this.officerPositions = c.getOfficerPositions()
+				.stream()
+				.map(position -> {return position.getName();})
+				.collect(Collectors.toList());
+		this.electionInformation = c.getElectionInformation();
+		this.contacts = c.getContacts()
+				.stream()
+				.map(contactDetails -> {return new ContactDetailsDto(contactDetails);})
+				.collect(Collectors.toList());
 	}
 
 	@Override

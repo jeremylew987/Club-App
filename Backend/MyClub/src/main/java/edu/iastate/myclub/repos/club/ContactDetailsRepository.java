@@ -10,4 +10,6 @@ public interface ContactDetailsRepository extends CrudRepository<ContactDetails,
 
 	ContactDetails findByName(String name);
 
+	ContactDetails findByNameAndClubId(String name, int id);
+
 }

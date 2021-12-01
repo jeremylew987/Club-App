@@ -10,5 +10,5 @@ import edu.iastate.myclub.models.club.ClubLogo;
 @Repository
 public interface ClubLogoRepository extends CrudRepository<ClubLogo, Integer> {
 
-	Optional<ClubLogo> findByClub(int clubId);
+	Optional<ClubLogo> findByClubId(int clubId);
 }
