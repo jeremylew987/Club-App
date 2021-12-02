@@ -20,6 +20,7 @@ public class ExampleUnitTest {
         GlobalVars.setCurClubName("Chess");
         assertEquals(GlobalVars.getCurClubName(), "Chess");
     }
+    @Test
     public void TestSetGetUserID(){
         GlobalVars.setCurUserID("19191991");
         assertEquals(GlobalVars.getCurUserID(), "19191991");

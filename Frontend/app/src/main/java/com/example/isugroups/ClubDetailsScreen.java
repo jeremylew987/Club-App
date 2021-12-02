@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -14,6 +15,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -21,6 +23,28 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 public class ClubDetailsScreen extends AppCompatActivity {
     @Override
@@ -38,10 +62,25 @@ public class ClubDetailsScreen extends AppCompatActivity {
             }
         });
         RequestQueue queue = Volley.newRequestQueue(ClubDetailsScreen.this);
-        String address = "http://coms-319-g22.cs.iastate.edu/club/search?phrase=<" +
+        /*String address = "http://coms-319-g22.cs.iastate.edu/club/search?phrase=<" +
                 ((GlobalVars) ClubDetailsScreen.this.getApplication()).getCurClubName() +
-                ">&page=<0>";
-
+                ">&page=<0>";*/
+        String address = "http://10.49.40.75:8080/club/search?phrase=&page=0";
+/*
+        HurlStack hurlStack = new HurlStack() {
+            @Override
+            protected HttpURLConnection createConnection(URL address) throws IOException {
+                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) super.createConnection(address);
+                try {
+                    httpsURLConnection.setSSLSocketFactory(getSSLSocketFactory());
+                    httpsURLConnection.setHostnameVerifier(getHostnameVerifier());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return httpsURLConnection;
+            }
+        };
+*/
 				JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, address, null, new Response.Listener<JSONArray>() {
 					@Override
 					public void onResponse(JSONArray response2) {
@@ -144,6 +183,7 @@ public class ClubDetailsScreen extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        /*
                         String Positions = "Officer Positions:"+"\n";
                         for(int i =0;i< exampleArray.length();i++){
                             try {
@@ -153,11 +193,13 @@ public class ClubDetailsScreen extends AppCompatActivity {
                             }
                         }
 
+
+
                         String MemberData = Rescrictions + "\n" + Positions + "\n" + Elections;
 
                         TextView Member = (TextView) findViewById(R.id.Members);
                         Member.setText(MemberData);
-
+*/
                         Button yourButton2 = (Button) findViewById(R.id.ConstitutionButton);
 
                         yourButton2.setOnClickListener(new View.OnClickListener() {
@@ -211,7 +253,8 @@ public class ClubDetailsScreen extends AppCompatActivity {
 				}, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						error.printStackTrace();
+
+					    error.printStackTrace();
 						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ClubDetailsScreen.this);
 						alertDialogBuilder.setTitle("Error");
 						alertDialogBuilder.setMessage(error.getMessage());
@@ -226,5 +269,75 @@ public class ClubDetailsScreen extends AppCompatActivity {
 
 
     }
+    /*
+    private HostnameVerifier getHostnameVerifier() {
+        return new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+                //return true; // verify always returns true, which could cause insecure network traffic due to trusting TLS/SSL server certificates for wrong hostnames
+                HostnameVerifier hv = HttpsURLConnection.getDefaultHostnameVerifier();
+                return hv.verify("localhost", session);
+            }
+        };
+    }
 
+    private TrustManager[] getWrappedTrustManagers(TrustManager[] trustManagers) {
+        final X509TrustManager originalTrustManager = (X509TrustManager) trustManagers[0];
+        return new TrustManager[]{
+                new X509TrustManager() {
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return originalTrustManager.getAcceptedIssuers();
+                    }
+
+                    public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                        try {
+                            if (certs != null && certs.length > 0){
+                                certs[0].checkValidity();
+                            } else {
+                                originalTrustManager.checkClientTrusted(certs, authType);
+                            }
+                        } catch (CertificateException e) {
+                            Log.w("checkClientTrusted", e.toString());
+                        }
+                    }
+
+                    public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                        try {
+                            if (certs != null && certs.length > 0){
+                                certs[0].checkValidity();
+                            } else {
+                                originalTrustManager.checkServerTrusted(certs, authType);
+                            }
+                        } catch (CertificateException e) {
+                            Log.w("checkServerTrusted", e.toString());
+                        }
+                    }
+                }
+        };
+    }
+
+    private SSLSocketFactory getSSLSocketFactory()
+            throws CertificateException, KeyStoreException, IOException, NoSuchAlgorithmException, KeyManagementException {
+        CertificateFactory cf = CertificateFactory.getInstance("X.509");
+        InputStream caInput = getResources().openRawResource(R.raw.my_cert); // this cert file stored in \app\src\main\res\raw folder path
+
+        Certificate ca = cf.generateCertificate(caInput);
+        caInput.close();
+
+        KeyStore keyStore = KeyStore.getInstance("BKS");
+        keyStore.load(null, null);
+        keyStore.setCertificateEntry("ca", ca);
+
+        String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+        TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+        tmf.init(keyStore);
+
+        TrustManager[] wrappedTrustManagers = getWrappedTrustManagers(tmf.getTrustManagers());
+
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, wrappedTrustManagers, null);
+
+        return sslContext.getSocketFactory();
+    }
+*/
 }
