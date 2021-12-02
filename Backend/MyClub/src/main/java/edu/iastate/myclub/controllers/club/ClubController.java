@@ -34,6 +34,12 @@ public class ClubController {
 	@Autowired
 	private ClubService clubService;
 	
+	public ClubController() {}
+	public ClubController(ClubService clubService)
+	{
+		this.clubService = clubService;
+	}
+	
 	@PostMapping("/create")
 	public ResponseEntity<Boolean> createClub(@RequestHeader HttpHeaders headers, @RequestBody ClubDto club)
 	{
@@ -72,6 +78,16 @@ public class ClubController {
 		//if(has valid permissions)
 		//{
 		return new ResponseEntity<List<ClubBasicDto>>(clubService.findClubs(phrase, page, 5), HttpStatus.OK);
+		//}
+		//return new ResponseEntity<List<ClubDto>>(new ArrayList<ClubDto>(), HttpStatus.FORBIDDEN);
+	}
+	
+	@GetMapping("/search/narrowed")
+	public ResponseEntity<ClubDto> getClubsBySearch(@RequestHeader HttpHeaders headers, @RequestParam("club") String clubName)
+	{
+		//if(has valid permissions)
+		//{
+		return new ResponseEntity<ClubDto>(clubService.getClubInformation(clubName), HttpStatus.OK);
 		//}
 		//return new ResponseEntity<List<ClubDto>>(new ArrayList<ClubDto>(), HttpStatus.FORBIDDEN);
 	}

@@ -32,7 +32,6 @@ import edu.iastate.myclub.services.event.EventService;
 @WebMvcTest(EventController.class)
 public class EventControllerTests {
 
-
 	@Autowired
 	private MockMvc mockMvc;
 	
@@ -50,7 +49,8 @@ public class EventControllerTests {
 	public void getClubEventsByMonthAndYearShouldReturnResponseFromService() throws Exception {
 		LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
 		requestParams.add("club", "TestClub");
-		requestParams.add("date", "05/2021");
+		requestParams.add("month", "05");
+		requestParams.add("year", "2021");
 		
 		List<EventDto> events = new ArrayList<EventDto>() {
 			{

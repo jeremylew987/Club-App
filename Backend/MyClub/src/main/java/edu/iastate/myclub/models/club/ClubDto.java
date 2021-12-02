@@ -1,6 +1,7 @@
 package edu.iastate.myclub.models.club;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.iastate.myclub.models.ContactDetailsDto;
 import edu.iastate.myclub.models.event.Event;
@@ -29,14 +30,20 @@ public class ClubDto {
 	
 	private String electionInformation;
 	
-	private byte[] logo;
-	
+	private String constitution;
+		
 	private List<ContactDetailsDto> contacts;
 		
-	public ClubDto() {this.name = "testing";}
-	public ClubDto(Club c)
+	public ClubDto() 
 	{
-		
+		name = "";                     
+		description = "";              
+		meetingTimes = "";             
+		eventInformation = "";         
+		fees = "";                     
+		membershipRestrictions = "";         
+		electionInformation = "";   
+		constitution = "";
 	}
 
 	public String getName() {
@@ -102,21 +109,41 @@ public class ClubDto {
 	public void setElectionInformation(String electionInformation) {
 		this.electionInformation = electionInformation;
 	}
-
-	public byte[] getLogo() {
-		return logo;
-	}
-
-	public void setLogo(byte[] logo) {
-		this.logo = logo;
-	}
 	
+	public String getConstitution() {
+		return constitution;
+	}
+
+	public void setConstitution(String constitution) {
+		this.constitution = constitution;
+	}
+
 	public List<ContactDetailsDto> getContacts() {
 		return contacts;
 	}
 
 	public void setContacts(List<ContactDetailsDto> contacts) {
 		this.contacts = contacts;
+	}
+	
+	public void copyFromClub(Club c)
+	{
+		this.name = c.getName();
+		this.description = c.getDescription();
+		this.meetingTimes = c.getMeetingTimes();
+		this.eventInformation = c.getEventInformation();
+		this.fees = c.getFees();
+		this.membershipRestrictions = c.getMembershipRestrictions();
+		this.constitution = c.getConstitution();
+		this.officerPositions = c.getOfficerPositions()
+				.stream()
+				.map(position -> {return position.getName();})
+				.collect(Collectors.toList());
+		this.electionInformation = c.getElectionInformation();
+		this.contacts = c.getContacts()
+				.stream()
+				.map(contactDetails -> {return new ContactDetailsDto(contactDetails);})
+				.collect(Collectors.toList());
 	}
 
 	@Override
