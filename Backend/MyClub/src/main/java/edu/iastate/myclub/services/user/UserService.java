@@ -24,13 +24,16 @@ public class UserService {
 		return true;
 	}
 	
-	public User getUser(String name) {
-//		List<User> userList = userRepository.findAll();
-//		for(int i = 0; i < userList.size(); i++) {
-//			if(userList.get(i).getName().equals(name)) {
-//				return userList.get(i);
-//			}
-//		}
+	public User getUserByfirstName(String firstName) {
+		int page = 10;
+		int size = 10;
+		Pageable pageAndSortByName = PageRequest.of(page, size);
+		List<User> userList = (List<User>) userRepository.findAllUsersByfirstName(firstName,pageAndSortByName);
+		for(int i = 0; i < userList.size(); i++) {
+			if(userList.get(i).getFirstName().equals(firstName)) {
+				return userList.get(i);
+			}
+		}
 		return null;
 	}
 	
