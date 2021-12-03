@@ -33,6 +33,6 @@ public class UserController {
 	
 	@GetMapping("/get")
 	public ResponseEntity<User> getUser(@RequestHeader HttpHeaders headers, @RequestParam("name") String name ){
-		return new ResponseEntity<User>(userService.getUser(name), HttpStatus.OK);
+		return new ResponseEntity<User>(userService.getUserByfirstName(name), HttpStatus.OK);
 	}
 }
