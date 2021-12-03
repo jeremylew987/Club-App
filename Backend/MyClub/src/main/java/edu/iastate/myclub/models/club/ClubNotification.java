@@ -1,5 +1,7 @@
 package edu.iastate.myclub.models.club;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @Entity
 @Table(name="club_notification")
-public class ClubNotification {
+public class ClubNotification implements Comparable<ClubNotification> {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -42,13 +44,20 @@ public class ClubNotification {
 	private String message;
 	
 	@NotNull
-	@Column(name="timestamp")
-	private String timestamp;
+	@Column(name="timestamp", columnDefinition="TIMESTAMP")
+	private LocalDateTime timestamp;
 	
 	@Transient
 	private String clubName;
 	
 	public ClubNotification() {}
+	public ClubNotification(ClubNotificationDto notificationDto)
+	{
+		this.senderName = notificationDto.getSenderName();
+		this.message = notificationDto.getMessage();
+		this.timestamp = notificationDto.getTimestamp();
+		this.clubName = notificationDto.getClubName();
+	}
 	public ClubNotification(Club club)
 	{
 		this.setSenderName("");
@@ -79,10 +88,10 @@ public class ClubNotification {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public String getTimestamp() {
+	public LocalDateTime getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(String timestamp) {
+	public void setTimestamp(LocalDateTime timestamp) {
 		this.timestamp = timestamp;
 	}
 	public String getClubName() {
@@ -90,5 +99,10 @@ public class ClubNotification {
 	}
 	public void setClubName(String clubName) {
 		this.clubName = clubName;
+	}
+	
+	@Override
+	public int compareTo(ClubNotification o) {
+		return this.timestamp.compareTo(o.timestamp);
 	}
 }

@@ -3,8 +3,13 @@ package edu.iastate.myclub.models.user;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import java.util.Set;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import edu.iastate.myclub.models.club.Club;
 
 @Entity
 @Table(name = "Users")
@@ -31,6 +36,12 @@ public class User {
 	@NotNull
 	@Column(name="username")
 	String username;
+	
+	@ManyToMany
+	@JoinTable(name="club_membership",
+			joinColumns=@JoinColumn(name="uid", referencedColumnName="uid"),
+			inverseJoinColumns=@JoinColumn(name="club_id", referencedColumnName="id"))
+	private Set<Club> joinedClubs;
 	
 	public User() {
 		
@@ -76,8 +87,12 @@ public class User {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
-	
-	
-	
+
+	public Set<Club> getJoinedClubs() {
+		return joinedClubs;
+	}
+
+	public void setJoinedClubs(Set<Club> joinedClubs) {
+		this.joinedClubs = joinedClubs;
+	}
 }

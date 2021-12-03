@@ -1,8 +1,9 @@
 package edu.iastate.myclub.services.club;
 
 import java.io.ByteArrayInputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,10 +11,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,10 +21,14 @@ import edu.iastate.myclub.models.club.ClubBasicDto;
 import edu.iastate.myclub.models.club.ClubDto;
 import edu.iastate.myclub.models.club.ClubLogo;
 import edu.iastate.myclub.models.club.ClubNotification;
+import edu.iastate.myclub.models.club.ClubNotificationDto;
+import edu.iastate.myclub.models.user.User;
 import edu.iastate.myclub.repos.club.ClubLogoRepository;
+import edu.iastate.myclub.repos.club.ClubNotificationRepository;
 import edu.iastate.myclub.repos.club.ClubRepository;
 import edu.iastate.myclub.repos.club.ContactDetailsRepository;
 import edu.iastate.myclub.repos.club.PositionRepository;
+import edu.iastate.myclub.repos.user.UserRepository;
 
 /**
  * Service providing club specific functionality and 
@@ -49,14 +52,23 @@ public class ClubService {
 	@Autowired 
 	private ClubLogoRepository clubLogoRepository;
 	
+	@Autowired
+	private ClubNotificationRepository clubNotificationRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
 	public ClubService() {}
 	public ClubService(ClubRepository clubRepository, ContactDetailsRepository contactDetailsRepository,
-			PositionRepository positionRepository, ClubLogoRepository clubLogoRepository)
+			PositionRepository positionRepository, ClubLogoRepository clubLogoRepository,
+			ClubNotificationRepository clubNotificationRepository, UserRepository userRepository)
 	{
 		this.clubRepository = clubRepository;
 		this.contactDetailsRepository = contactDetailsRepository;
 		this.positionRepository = positionRepository;
 		this.clubLogoRepository = clubLogoRepository;
+		this.clubNotificationRepository = clubNotificationRepository;
+		this.userRepository = userRepository;
 	}
 	
 	public boolean createClub(ClubDto club)
@@ -85,12 +97,28 @@ public class ClubService {
 	
 	public List<ClubBasicDto> getJoinedClubs(String name)
 	{
-		ArrayList<Club> clubs = new ArrayList<Club>();
-		//User user = userRepository.findByName(name);
-		//for(Club club: user.getClubs())
-		//	clubs.add(new ClubDto(club));
-		//return clubs;
-		return null;
+		ArrayList<ClubBasicDto> clubs = new ArrayList<ClubBasicDto>();
+		User user = userRepository.findByUsername(name);
+		for(Club club: user.getJoinedClubs())
+			clubs.add(new ClubBasicDto(club));
+		return clubs;
+	}
+	
+	public String joinClub(String username, String clubName) {
+		User user = userRepository.findByUsername(username);
+		if(user == null)
+			return "User does not exist.";
+		
+		Club c = clubRepository.findByName(clubName);
+		if(c == null)
+			return "The provided club does not exist.";
+		
+		if(user.getJoinedClubs().contains(c))
+			return "User has already joined this club.";
+		
+		user.getJoinedClubs().add(c);
+		userRepository.save(user);
+		return "SUCCESS";
 	}
 	
 	public List<ClubBasicDto> findClubs(String phrase, int page, int size)
@@ -111,14 +139,36 @@ public class ClubService {
 		return clubInformation;
 	}
 	
-	public List<ClubNotification> getJoinedClubsNotifications(String name)
+	public List<ClubNotificationDto> getJoinedClubsNotifications(String name, int page)
 	{
-		//User user = userRepository.findByName(name);
-		//for(Club club: user.getClubs())
-		//{
-		//	add club notifications to priority queue, sorted by timestamp
-		//}
-		return null;
+		ArrayList<ClubNotification> notifications = new ArrayList<ClubNotification>();
+		User user = userRepository.findByUsername(name);
+		for(Club club: user.getJoinedClubs())
+			notifications.addAll(clubNotificationRepository.findAllByClubId(club.getId()));
+		
+		if(page * 5 >= notifications.size())
+			return new ArrayList<>();
+		
+		ArrayList<ClubNotificationDto> notificationDtos = (ArrayList<ClubNotificationDto>) notifications
+				.stream()
+				.map(notification -> { return new ClubNotificationDto(notification);})
+				.collect(Collectors.toList());
+		
+		Collections.sort(notificationDtos, Collections.reverseOrder());
+		return notificationDtos.subList(page * 5, Math.min(page * 5 + 5, notificationDtos.size()));
+	}
+	
+	public Boolean addClubNotification(String username, ClubNotificationDto notificationDto) {
+		Club c = clubRepository.findByName(notificationDto.getClubName());
+		if(c == null)
+			return false;
+		
+		ClubNotification notification = new ClubNotification(notificationDto);
+		notification.setSenderName(username);
+		notification.setClub(c);
+		notification.setTimestamp(LocalDateTime.now());
+		clubNotificationRepository.save(notification);
+		return true;
 	}
 	
 	public boolean store(MultipartFile file, String club)
