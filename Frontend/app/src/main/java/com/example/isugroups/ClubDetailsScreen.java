@@ -65,32 +65,14 @@ public class ClubDetailsScreen extends AppCompatActivity {
         /*String address = "http://coms-319-g22.cs.iastate.edu/club/search?phrase=<" +
                 ((GlobalVars) ClubDetailsScreen.this.getApplication()).getCurClubName() +
                 ">&page=<0>";*/
-        String address = "http://10.49.40.75:8080/club/search?phrase=&page=0";
-/*
-        HurlStack hurlStack = new HurlStack() {
-            @Override
-            protected HttpURLConnection createConnection(URL address) throws IOException {
-                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) super.createConnection(address);
-                try {
-                    httpsURLConnection.setSSLSocketFactory(getSSLSocketFactory());
-                    httpsURLConnection.setHostnameVerifier(getHostnameVerifier());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return httpsURLConnection;
-            }
-        };
-*/
-				JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, address, null, new Response.Listener<JSONArray>() {
-					@Override
-					public void onResponse(JSONArray response2) {
+        String club = GlobalVars.getCurClubName();
+        String address = "http://10.48.40.5:8080/club/search/narrowed?club="+club;
 
-                        JSONObject response = null;
-                        try {
-                            response = response2.getJSONObject(0);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+				JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, address, null, new Response.Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response) {
+
+
 
                         Button join = (Button) findViewById(R.id.JoinButton);
 
@@ -183,23 +165,25 @@ public class ClubDetailsScreen extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        /*
-                        String Positions = "Officer Positions:"+"\n";
-                        for(int i =0;i< exampleArray.length();i++){
-                            try {
-                                Positions += exampleArray.getString(i) + "\n";
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                        String Positions = "Officer Positions:" + "\n";
+                        if(exampleArray != null) {
+
+                            for (int i = 0; i < exampleArray.length(); i++) {
+                                try {
+                                    Positions += exampleArray.getString(i) + "\n";
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
 
 
 
-                        String MemberData = Rescrictions + "\n" + Positions + "\n" + Elections;
+                        String MemberData = Rescrictions + "\n\n" + Positions + "\n" + Elections;
 
                         TextView Member = (TextView) findViewById(R.id.Members);
                         Member.setText(MemberData);
-*/
+
                         Button yourButton2 = (Button) findViewById(R.id.ConstitutionButton);
 
                         yourButton2.setOnClickListener(new View.OnClickListener() {
@@ -224,17 +208,37 @@ public class ClubDetailsScreen extends AppCompatActivity {
 
                         String OfficerList = "";
 
-                        String OfficersData = "President\n" +
+                      /*  String OfficersData = "President\n" +
                                 "John Doe\n" +
                                 "Treasurer\n" +
                                 "Jane Doe";
 
                         TextView Officers = (TextView) findViewById(R.id.Officers);
                         Officers.setText(OfficersData);
-
+*/
                         //TODO add contact from JSON object
 
+                        JSONArray exampleArray2 = null;
+                        try {
+                            exampleArray2 = response.getJSONArray("contacts");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                         String ContactList = "";
+                        if(exampleArray2 != null) {
+
+                            for (int i = 0; i < exampleArray2.length(); i++) {
+                                try {
+                                    JSONObject temp  = exampleArray2.getJSONObject(i);
+                                    ContactList += temp.getString("name") + "\n";
+                                    ContactList += temp.getString("phoneNumber") + "\n";
+                                    ContactList += temp.getString("email") + "\n";
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
 
                         String ContactData = "John Doe\n" +
                                 "Phone Number: 123-456-7890\n" +
@@ -244,7 +248,7 @@ public class ClubDetailsScreen extends AppCompatActivity {
                                 "email: example2@gmail.com";
 
                         TextView Contact = (TextView) findViewById(R.id.Contact);
-                        Contact.setText(ContactData);
+                        Contact.setText(ContactList);
 
 
 
@@ -269,75 +273,5 @@ public class ClubDetailsScreen extends AppCompatActivity {
 
 
     }
-    /*
-    private HostnameVerifier getHostnameVerifier() {
-        return new HostnameVerifier() {
-            @Override
-            public boolean verify(String hostname, SSLSession session) {
-                //return true; // verify always returns true, which could cause insecure network traffic due to trusting TLS/SSL server certificates for wrong hostnames
-                HostnameVerifier hv = HttpsURLConnection.getDefaultHostnameVerifier();
-                return hv.verify("localhost", session);
-            }
-        };
-    }
 
-    private TrustManager[] getWrappedTrustManagers(TrustManager[] trustManagers) {
-        final X509TrustManager originalTrustManager = (X509TrustManager) trustManagers[0];
-        return new TrustManager[]{
-                new X509TrustManager() {
-                    public X509Certificate[] getAcceptedIssuers() {
-                        return originalTrustManager.getAcceptedIssuers();
-                    }
-
-                    public void checkClientTrusted(X509Certificate[] certs, String authType) {
-                        try {
-                            if (certs != null && certs.length > 0){
-                                certs[0].checkValidity();
-                            } else {
-                                originalTrustManager.checkClientTrusted(certs, authType);
-                            }
-                        } catch (CertificateException e) {
-                            Log.w("checkClientTrusted", e.toString());
-                        }
-                    }
-
-                    public void checkServerTrusted(X509Certificate[] certs, String authType) {
-                        try {
-                            if (certs != null && certs.length > 0){
-                                certs[0].checkValidity();
-                            } else {
-                                originalTrustManager.checkServerTrusted(certs, authType);
-                            }
-                        } catch (CertificateException e) {
-                            Log.w("checkServerTrusted", e.toString());
-                        }
-                    }
-                }
-        };
-    }
-
-    private SSLSocketFactory getSSLSocketFactory()
-            throws CertificateException, KeyStoreException, IOException, NoSuchAlgorithmException, KeyManagementException {
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        InputStream caInput = getResources().openRawResource(R.raw.my_cert); // this cert file stored in \app\src\main\res\raw folder path
-
-        Certificate ca = cf.generateCertificate(caInput);
-        caInput.close();
-
-        KeyStore keyStore = KeyStore.getInstance("BKS");
-        keyStore.load(null, null);
-        keyStore.setCertificateEntry("ca", ca);
-
-        String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
-        tmf.init(keyStore);
-
-        TrustManager[] wrappedTrustManagers = getWrappedTrustManagers(tmf.getTrustManagers());
-
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, wrappedTrustManagers, null);
-
-        return sslContext.getSocketFactory();
-    }
-*/
 }
