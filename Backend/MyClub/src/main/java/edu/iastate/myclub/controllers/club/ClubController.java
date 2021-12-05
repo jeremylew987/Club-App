@@ -25,6 +25,7 @@ import edu.iastate.myclub.models.club.Club;
 import edu.iastate.myclub.models.club.ClubBasicDto;
 import edu.iastate.myclub.models.club.ClubDto;
 import edu.iastate.myclub.models.club.ClubNotification;
+import edu.iastate.myclub.models.club.ClubNotificationDto;
 import edu.iastate.myclub.services.club.ClubService;
 
 @RestController
@@ -62,14 +63,20 @@ public class ClubController {
 		//return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
-	@GetMapping("/joined")
-	public ResponseEntity<List<ClubBasicDto>> getJoinedClubs(@RequestHeader HttpHeaders headers)
+	@GetMapping("/joined") //TODO update api
+	public ResponseEntity<List<ClubBasicDto>> getJoinedClubs(@RequestHeader HttpHeaders headers, @RequestParam("username") String username)
 	{
 		//if(has valid permissions)
 		//{
-		return new ResponseEntity<List<ClubBasicDto>>(clubService.getJoinedClubs(""), HttpStatus.OK);
+		return new ResponseEntity<List<ClubBasicDto>>(clubService.getJoinedClubs(username), HttpStatus.OK);
 		//}
 		//return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
+	}
+	
+	@PostMapping("/join") //TODO update api
+	public ResponseEntity<String> joinClub(@RequestHeader HttpHeaders headers, @RequestParam("club") String clubName)
+	{
+		return new ResponseEntity<String>(clubService.joinClub(headers.get("Authorization").get(0).split(":")[0], clubName), HttpStatus.OK);
 	}
 	
 	@GetMapping("/search")
@@ -93,13 +100,19 @@ public class ClubController {
 	}
 	
 	@GetMapping("/joined/notifications")
-	public ResponseEntity<List<ClubNotification>> getJoinedClubsNotifications(@RequestHeader HttpHeaders headers)
+	public ResponseEntity<List<ClubNotificationDto>> getJoinedClubsNotifications(@RequestHeader HttpHeaders headers, @RequestParam("page") int page)
 	{
 		//if(has valid permissions)
 		//{
-		return new ResponseEntity<List<ClubNotification>>(clubService.getJoinedClubsNotifications(""), HttpStatus.OK);
+		return new ResponseEntity<List<ClubNotificationDto>>(clubService.getJoinedClubsNotifications(headers.get("Authorization").get(0).split(":")[0], page), HttpStatus.OK);
 		//}
 		//return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
+	}
+	
+	@PostMapping("/notifications/add")
+	public ResponseEntity<Boolean> addClubNotification(@RequestHeader HttpHeaders headers, @RequestBody ClubNotificationDto notification)
+	{
+		return new ResponseEntity<Boolean>(clubService.addClubNotification(headers.get("Authorization").get(0).split(":")[0], notification), HttpStatus.OK);
 	}
 	
 	@PostMapping(path="/upload/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
