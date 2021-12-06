@@ -1,5 +1,7 @@
 package edu.iastate.myclub.controllers.user;
 
+import java.util.List;
+
 import org.springframework.beans.factory.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -34,5 +36,10 @@ public class UserController {
 	@GetMapping("/get")
 	public ResponseEntity<User> getUser(@RequestHeader HttpHeaders headers, @RequestParam("name") String name ){
 		return new ResponseEntity<User>(userService.getUserByfirstName(name), HttpStatus.OK);
+	}
+	
+	@GetMapping("/getAll")
+	public ResponseEntity<List<User>> getAll(@RequestHeader HttpHeaders headers){
+		return new ResponseEntity<List<User>>(userService.getAllUsers(),HttpStatus.OK);
 	}
 }
