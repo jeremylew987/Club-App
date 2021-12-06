@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -14,6 +15,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -21,6 +23,28 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 public class ClubDetailsScreen extends AppCompatActivity {
     @Override
@@ -38,20 +62,17 @@ public class ClubDetailsScreen extends AppCompatActivity {
             }
         });
         RequestQueue queue = Volley.newRequestQueue(ClubDetailsScreen.this);
-        String address = "http://coms-319-g22.cs.iastate.edu/club/search?phrase=<" +
+        /*String address = "http://coms-319-g22.cs.iastate.edu/club/search?phrase=<" +
                 ((GlobalVars) ClubDetailsScreen.this.getApplication()).getCurClubName() +
-                ">&page=<0>";
+                ">&page=<0>";*/
+        String club = GlobalVars.getCurClubName();
+        String address = "http://10.48.40.5:8080/club/search/narrowed?club="+club;
 
-				JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, address, null, new Response.Listener<JSONArray>() {
+				JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, address, null, new Response.Listener<JSONObject>() {
 					@Override
-					public void onResponse(JSONArray response2) {
+					public void onResponse(JSONObject response) {
 
-                        JSONObject response = null;
-                        try {
-                            response = response2.getJSONObject(0);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+
 
                         Button join = (Button) findViewById(R.id.JoinButton);
 
@@ -144,16 +165,21 @@ public class ClubDetailsScreen extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        String Positions = "Officer Positions:"+"\n";
-                        for(int i =0;i< exampleArray.length();i++){
-                            try {
-                                Positions += exampleArray.getString(i) + "\n";
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                        String Positions = "Officer Positions:" + "\n";
+                        if(exampleArray != null) {
+
+                            for (int i = 0; i < exampleArray.length(); i++) {
+                                try {
+                                    Positions += exampleArray.getString(i) + "\n";
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
 
-                        String MemberData = Rescrictions + "\n" + Positions + "\n" + Elections;
+
+
+                        String MemberData = Rescrictions + "\n\n" + Positions + "\n" + Elections;
 
                         TextView Member = (TextView) findViewById(R.id.Members);
                         Member.setText(MemberData);
@@ -182,17 +208,37 @@ public class ClubDetailsScreen extends AppCompatActivity {
 
                         String OfficerList = "";
 
-                        String OfficersData = "President\n" +
+                      /*  String OfficersData = "President\n" +
                                 "John Doe\n" +
                                 "Treasurer\n" +
                                 "Jane Doe";
 
                         TextView Officers = (TextView) findViewById(R.id.Officers);
                         Officers.setText(OfficersData);
-
+*/
                         //TODO add contact from JSON object
 
+                        JSONArray exampleArray2 = null;
+                        try {
+                            exampleArray2 = response.getJSONArray("contacts");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                         String ContactList = "";
+                        if(exampleArray2 != null) {
+
+                            for (int i = 0; i < exampleArray2.length(); i++) {
+                                try {
+                                    JSONObject temp  = exampleArray2.getJSONObject(i);
+                                    ContactList += temp.getString("name") + "\n";
+                                    ContactList += temp.getString("phoneNumber") + "\n";
+                                    ContactList += temp.getString("email") + "\n";
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
 
                         String ContactData = "John Doe\n" +
                                 "Phone Number: 123-456-7890\n" +
@@ -202,7 +248,7 @@ public class ClubDetailsScreen extends AppCompatActivity {
                                 "email: example2@gmail.com";
 
                         TextView Contact = (TextView) findViewById(R.id.Contact);
-                        Contact.setText(ContactData);
+                        Contact.setText(ContactList);
 
 
 
@@ -211,7 +257,8 @@ public class ClubDetailsScreen extends AppCompatActivity {
 				}, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						error.printStackTrace();
+
+					    error.printStackTrace();
 						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ClubDetailsScreen.this);
 						alertDialogBuilder.setTitle("Error");
 						alertDialogBuilder.setMessage(error.getMessage());

@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.iastate.myclub.models.ContactDetails;
 import edu.iastate.myclub.models.Position;
 import edu.iastate.myclub.models.event.Event;
+import edu.iastate.myclub.models.user.User;
 import edu.iastate.myclub.repos.club.ContactDetailsRepository;
 import edu.iastate.myclub.repos.club.PositionRepository;
 
@@ -89,8 +90,8 @@ public class Club {
 	@JoinColumn(name="club_id")
 	private List<ClubNotification> notifications;
 	
-	//@ManyToMany
-	//private List<User> members;
+	@ManyToMany(mappedBy="joinedClubs")
+	private List<User> members;
 	
 	@OneToMany
 	@JoinColumn(name="club_id")
@@ -109,6 +110,19 @@ public class Club {
 	public Club()
 	{
 		this.name = "";
+		this.description ="";
+		this.meetingTimes = "";
+		this.eventInformation = "";
+		this.fees = "";
+		this.membershipRestrictions = "";
+		this.numMembers = 0;
+		this.electionInformation = "";
+		this.constitution = "";
+	}
+	
+	public Club(String name)
+	{
+		this.name = name;
 		this.description ="";
 		this.meetingTimes = "";
 		this.eventInformation = "";
@@ -215,6 +229,14 @@ public class Club {
 		this.notifications = notifications;
 	}
 	
+	public List<User> getMembers() {
+		return members;
+	}
+
+	public void setMembers(List<User> members) {
+		this.members = members;
+	}
+
 	public List<ContactDetails> getContacts() {
 		return contacts;
 	}

@@ -40,5 +40,10 @@ public class GlobalVars extends Application {
         Clubs.add(name);
     }
 
+    private static int CurPage;
+
+    public static int getCurPage(){return CurPage;}
+
+    public static void setCurPage(int p){CurPage = p;}
 
 }
