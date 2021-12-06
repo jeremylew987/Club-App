@@ -29,19 +29,20 @@ public class UserService {
 	}
 	
 	public User getUserByfirstName(String firstName) {
-		System.out.println(firstName);
-		int page = 1;
+		int page = 0;
 		int size = 10;
 		Pageable pageAndSortByName = PageRequest.of(page, size);
 		List<User> userList = userRepository.findAllUsersByfirstName(firstName,pageAndSortByName);
-		System.out.println(userList.size() + " " );
 		for(int i = 0; i < userList.size(); i++) {
 			if(userList.get(i).getFirstName().equals(firstName)) {
 				return userList.get(i);
 			}
 		}
-		System.out.println("hi\n");
 		return null;
+	}
+	
+	public User getUserByusername(String username) {
+		return userRepository.findByUsername(username);
 	}
 	
 	public List<User> getAllUsers(){

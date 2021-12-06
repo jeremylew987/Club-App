@@ -38,9 +38,14 @@ public class UserController {
 		return new ResponseEntity<Boolean>(userService.passphraseMatch(user),HttpStatus.OK);
 	}
 	
-	@GetMapping("/get")
+	@GetMapping("/getByName")
 	public ResponseEntity<User> getUser(@RequestHeader HttpHeaders headers, @RequestParam("name") String name ){
 		return new ResponseEntity<User>(userService.getUserByfirstName(name), HttpStatus.OK);
+	}
+	
+	@GetMapping("/getByUsername")
+	public ResponseEntity<User> getUserByUsername(@RequestHeader HttpHeaders headers, @RequestParam("username") String username ){
+		return new ResponseEntity<User>(userService.getUserByusername(username), HttpStatus.OK);
 	}
 	
 	@GetMapping("/getAll")
