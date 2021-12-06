@@ -33,6 +33,11 @@ public class UserController {
 		return new ResponseEntity<Boolean>(userService.createUser(user),HttpStatus.OK);
 	}
 	
+	@PostMapping("/login")
+	public ResponseEntity<Boolean> loginAcceptable(@RequestHeader HttpHeaders header, @RequestBody User user){
+		return new ResponseEntity<Boolean>(userService.passphraseMatch(user),HttpStatus.OK);
+	}
+	
 	@GetMapping("/get")
 	public ResponseEntity<User> getUser(@RequestHeader HttpHeaders headers, @RequestParam("name") String name ){
 		return new ResponseEntity<User>(userService.getUserByfirstName(name), HttpStatus.OK);

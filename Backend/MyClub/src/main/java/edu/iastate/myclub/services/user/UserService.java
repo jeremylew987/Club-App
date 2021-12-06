@@ -18,10 +18,14 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	public Boolean createUser(edu.iastate.myclub.models.user.User user) {
+	public Boolean createUser(User user) {
 		//TODO make it so no duplicate users
 		userRepository.save(user);
 		return true;
+	}
+	
+	public Boolean passphraseMatch(User user) {
+		return userRepository.findByUsername(user.getUsername()).getPassphrase().equals(user.getPassphrase());
 	}
 	
 	public User getUserByfirstName(String firstName) {
@@ -29,7 +33,7 @@ public class UserService {
 		int page = 1;
 		int size = 10;
 		Pageable pageAndSortByName = PageRequest.of(page, size);
-		java.util.List<User> userList = userRepository.findAllUsersByfirstName(firstName,pageAndSortByName);
+		List<User> userList = userRepository.findAllUsersByfirstName(firstName,pageAndSortByName);
 		System.out.println(userList.size() + " " );
 		for(int i = 0; i < userList.size(); i++) {
 			if(userList.get(i).getFirstName().equals(firstName)) {
