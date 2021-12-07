@@ -20,6 +20,14 @@ public class HomeScreen extends AppCompatActivity {
         appBar.setTitle("Home");
         setSupportActionBar(appBar);
 
+        Button yourButton = (Button) findViewById(R.id.ToSearch);
+
+        yourButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomeScreen.this, SearchPageScreen.class));
+            }
+        });
 
     }
 
