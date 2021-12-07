@@ -1,11 +1,5 @@
 package edu.iastate.myclub.models.event;
 
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-
-import edu.iastate.myclub.models.club.Club;
-
 /**
  * Data transfer object for Event
  * @author Graham Mobley

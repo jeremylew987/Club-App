@@ -13,6 +13,7 @@ public interface UserRepository extends PagingAndSortingRepository<User,Integer>
 	
 	List<User> findAllUsersByfirstName(String name, Pageable pageable);
 	
+	@Override
 	List<User> findAll();
 	
 	User findByfirstName(String firstName);

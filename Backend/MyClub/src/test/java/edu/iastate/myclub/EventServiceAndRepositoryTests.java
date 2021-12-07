@@ -1,19 +1,5 @@
 package edu.iastate.myclub;
 
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
-import edu.iastate.myclub.controllers.event.EventController;
-import edu.iastate.myclub.models.event.EventDto;
-import edu.iastate.myclub.repos.club.ClubRepository;
-import edu.iastate.myclub.repos.event.EventRepository;
-import edu.iastate.myclub.services.event.EventService;
-
 //@DataJpaTest
 //@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class EventServiceAndRepositoryTests {

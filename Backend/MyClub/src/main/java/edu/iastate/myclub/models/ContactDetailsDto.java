@@ -1,11 +1,5 @@
 package edu.iastate.myclub.models;
 
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-
-import edu.iastate.myclub.models.club.Club;
-
 /**
  * Data transfer object for contact details
  * @author Graham Mobley

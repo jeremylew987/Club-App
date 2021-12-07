@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -25,11 +24,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.iastate.myclub.controllers.club.ClubController;
 import edu.iastate.myclub.models.ContactDetailsDto;
-import edu.iastate.myclub.models.club.Club;
 import edu.iastate.myclub.models.club.ClubBasicDto;
 import edu.iastate.myclub.models.club.ClubDto;
-import edu.iastate.myclub.models.club.ClubNotification;
-import edu.iastate.myclub.repos.club.ClubRepository;
 import edu.iastate.myclub.services.club.ClubService;
 
 @WebMvcTest(ClubController.class)

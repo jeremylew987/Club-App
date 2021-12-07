@@ -125,7 +125,7 @@ public class ClubService {
 	{
 		Pageable pageAndSortByName = PageRequest.of(page, size);
 		List<Club> clubs = clubRepository.findAllByNameContainingOrderByNameAsc(phrase, pageAndSortByName);
-		return (List<ClubBasicDto>) clubs.stream().map(club -> new ClubBasicDto(club)).collect(Collectors.toList());
+		return clubs.stream().map(club -> new ClubBasicDto(club)).collect(Collectors.toList());
 	}
 	
 	public ClubDto getClubInformation(String clubName)
@@ -180,7 +180,7 @@ public class ClubService {
 					return false;
 				
 				//delete old logo
-				Optional<ClubLogo> prevImage = (Optional<ClubLogo>)clubLogoRepository.findByClubId(c.getId());
+				Optional<ClubLogo> prevImage = clubLogoRepository.findByClubId(c.getId());
 				if(prevImage.isPresent())
 					clubLogoRepository.delete(prevImage.get());
 				
@@ -206,7 +206,7 @@ public class ClubService {
 		if(c == null)
 			return new InputStreamResource(new ByteArrayInputStream(new byte[] {}));
 		
-		Optional<ClubLogo> image = ((Optional<ClubLogo>)clubLogoRepository.findByClubId(c.getId()));
+		Optional<ClubLogo> image = (clubLogoRepository.findByClubId(c.getId()));
 		InputStreamResource resource = null;
 
 		if(image.isPresent())

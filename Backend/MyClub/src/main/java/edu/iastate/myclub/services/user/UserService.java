@@ -1,10 +1,8 @@
 package edu.iastate.myclub.services.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +18,9 @@ public class UserService {
 	
 	public Boolean createUser(User user) {
 		//TODO make it so no duplicate users
+		if(userRepository.findByUsername(user.getUsername()).equals(user.getUsername())) {
+			return false;
+		}
 		userRepository.save(user);
 		return true;
 	}

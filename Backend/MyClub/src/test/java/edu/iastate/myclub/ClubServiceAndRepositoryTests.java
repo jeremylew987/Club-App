@@ -1,30 +1,5 @@
 package edu.iastate.myclub;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import edu.iastate.myclub.controllers.club.ClubController;
-import edu.iastate.myclub.models.ContactDetailsDto;
-import edu.iastate.myclub.models.club.Club;
-import edu.iastate.myclub.models.club.ClubBasicDto;
-import edu.iastate.myclub.models.club.ClubDto;
-import edu.iastate.myclub.repos.club.ClubLogoRepository;
-import edu.iastate.myclub.repos.club.ClubRepository;
-import edu.iastate.myclub.repos.club.ContactDetailsRepository;
-import edu.iastate.myclub.repos.club.PositionRepository;
-import edu.iastate.myclub.services.club.ClubService;
-
 //@DataJpaTest
 //@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class ClubServiceAndRepositoryTests {

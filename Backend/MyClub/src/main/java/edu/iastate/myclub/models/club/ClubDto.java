@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import edu.iastate.myclub.models.ContactDetailsDto;
-import edu.iastate.myclub.models.event.Event;
-import edu.iastate.myclub.models.event.EventDto;
 
 /**
  * Data transfer object for adding and updating clubs

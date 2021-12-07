@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.iastate.myclub.models.club.Club;
-import edu.iastate.myclub.models.club.ClubBasicDto;
 import edu.iastate.myclub.models.event.Event;
 import edu.iastate.myclub.models.event.EventDto;
 import edu.iastate.myclub.repos.club.ClubRepository;
@@ -36,7 +35,7 @@ public class EventService {
 			return new ArrayList<>();
 		
 		//TODO make more efficient
-		return (List<EventDto>)eventRepository.findAllByDateContainingAndClubId(date, c.getId())
+		return eventRepository.findAllByDateContainingAndClubId(date, c.getId())
 				.stream().map(event -> {return new EventDto(event);}).collect(Collectors.toList());
 	}
 	

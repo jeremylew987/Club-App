@@ -21,12 +21,8 @@ import org.springframework.util.LinkedMultiValueMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import edu.iastate.myclub.controllers.club.ClubController;
 import edu.iastate.myclub.controllers.event.EventController;
-import edu.iastate.myclub.models.club.Club;
-import edu.iastate.myclub.models.club.ClubBasicDto;
 import edu.iastate.myclub.models.event.EventDto;
-import edu.iastate.myclub.services.club.ClubService;
 import edu.iastate.myclub.services.event.EventService;
 
 @WebMvcTest(EventController.class)

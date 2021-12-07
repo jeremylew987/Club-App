@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.iastate.myclub.models.club.ClubBasicDto;
-import edu.iastate.myclub.models.event.Event;
 import edu.iastate.myclub.models.event.EventDto;
 import edu.iastate.myclub.services.event.EventService;
 
