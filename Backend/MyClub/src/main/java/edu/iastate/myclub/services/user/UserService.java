@@ -22,7 +22,7 @@ public class UserService {
 			userRepository.save(user);
 			return true;
 		}
-		if(userRepository.findByUsername(user.getUsername()).equals(user.getUsername())) {
+		if(userRepository.findByUsername(user.getUsername()).getUsername().equals(user.getUsername())) {
 			return false;
 		}
 		userRepository.save(user);
@@ -30,7 +30,10 @@ public class UserService {
 	}
 	
 	public Boolean passphraseMatch(User user) {
-		return userRepository.findByUsername(user.getUsername()).getPassphrase().equals(user.getPassphrase());
+		if(userRepository.findByUsername(user.getUsername()) ==  null) {
+			return false;
+		}
+		return userRepository.findByUsername(user.getUsername()).getPassphrase().contentEquals(user.getPassphrase());
 	}
 	
 	public User getUserByfirstName(String firstName) {
