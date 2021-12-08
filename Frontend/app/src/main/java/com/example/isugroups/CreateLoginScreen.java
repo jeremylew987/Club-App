@@ -80,6 +80,7 @@ public class CreateLoginScreen extends AppCompatActivity {
 					@Override
 					public void onResponse(Boolean response) {
 					    if(response) {
+					        GlobalVars.setCurUserID(username);
                             Intent i = new Intent(CreateLoginScreen.this, HomeScreen.class);
                             startActivity(i);
                         }
