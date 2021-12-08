@@ -18,6 +18,10 @@ public class UserService {
 	
 	public Boolean createUser(User user) {
 		//TODO make it so no duplicate users
+		if(userRepository.findByUsername(user.getUsername()) == null) {
+			userRepository.save(user);
+			return true;
+		}
 		if(userRepository.findByUsername(user.getUsername()).equals(user.getUsername())) {
 			return false;
 		}
