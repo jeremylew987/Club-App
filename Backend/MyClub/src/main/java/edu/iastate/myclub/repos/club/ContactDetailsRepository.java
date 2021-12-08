@@ -1,5 +1,7 @@
 package edu.iastate.myclub.repos.club;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +14,5 @@ public interface ContactDetailsRepository extends CrudRepository<ContactDetails,
 
 	ContactDetails findByNameAndClubId(String name, int id);
 
+	List<ContactDetails> findAllByClubId(int id);
 }

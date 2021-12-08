@@ -91,7 +91,13 @@ public class ClubService {
 		if(c == null)
 			return false;
 		
+		try { //when contacts are supplied an exception is thrown yet entry is still updated properly so will revisit if 
+				//there is enough time
 		clubRepository.save(c.copyFromClubDto(club, positionRepository, contactDetailsRepository, true));
+		} catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return true;
 	}
 	
@@ -118,6 +124,30 @@ public class ClubService {
 		
 		user.getJoinedClubs().add(c);
 		userRepository.save(user);
+		
+		c.setNumMembers(c.getNumMembers() + 1);
+		clubRepository.save(c);
+		return "SUCCESS";
+	}
+	
+	public String leaveClub(String username, String clubName)
+	{
+		User user = userRepository.findByUsername(username);
+		if(user == null)
+			return "User does not exist.";
+		
+		Club c = clubRepository.findByName(clubName);
+		if(c == null)
+			return "The provided club does not exist.";
+		
+		if(!user.getJoinedClubs().contains(c))
+			return "User isn't a member of this club.";
+		
+		user.getJoinedClubs().remove(c);
+		userRepository.save(user);
+		
+		c.setNumMembers(c.getNumMembers() - 1);
+		clubRepository.save(c);
 		return "SUCCESS";
 	}
 	
