@@ -66,10 +66,16 @@ public class ClubController {
 		//return null;//new ResponseEntity<List<ClubDto>>(null, HttpStatus.FORBIDDEN);
 	}
 	
-	@PostMapping("/join") //TODO update api
+	@PostMapping("/join")
 	public ResponseEntity<String> joinClub(@RequestHeader HttpHeaders headers, @RequestParam("club") String clubName)
 	{
 		return new ResponseEntity<String>(clubService.joinClub(headers.get("Authorization").get(0).split(":")[0], clubName), HttpStatus.OK);
+	}
+	
+	@PostMapping("/leave")
+	public ResponseEntity<String> leaveClub(@RequestHeader HttpHeaders headers, @RequestParam("club") String clubName)
+	{
+		return new ResponseEntity<String>(clubService.leaveClub(headers.get("Authorization").get(0).split(":")[0], clubName), HttpStatus.OK);
 	}
 	
 	@GetMapping("/search")

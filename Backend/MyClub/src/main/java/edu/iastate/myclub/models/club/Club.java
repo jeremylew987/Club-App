@@ -72,7 +72,7 @@ public class Club {
 	@Column(name="num_members")
 	private int numMembers;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name="club_positions",
 				joinColumns = @JoinColumn(name="club_id", referencedColumnName="id"),
 				inverseJoinColumns = @JoinColumn(name="position_id", referencedColumnName="id"))
@@ -93,7 +93,7 @@ public class Club {
 	@ManyToMany(mappedBy="joinedClubs")
 	private List<User> members;
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="club_id")
 	private List<ContactDetails> contacts;
 	
@@ -271,6 +271,7 @@ public class Club {
 		fees = clubDto.getFees();
 		membershipRestrictions = clubDto.getMembershipRestrictions();
 		constitution = clubDto.getConstitution();
+		System.out.println("BEFORE POSITIONS");
 		officerPositions = clubDto.getOfficerPositions().stream().map(position -> 
 		{
 		Position p = repository.findByName(position);
@@ -281,21 +282,18 @@ public class Club {
 		}).collect(Collectors.toSet());
 		
 		electionInformation = clubDto.getElectionInformation();
+		
+		//There may be a more elegant solution but due to time constraints this will suffice
+		List<ContactDetails> oldContacts = (List<ContactDetails>)contactDetailsRepository.findAllByClubId(this.id);
+		for(ContactDetails c: oldContacts)
+			contactDetailsRepository.delete(c);
+		
 		contacts = clubDto.getContacts().stream().map(details -> 
 		{
-			if(reuseContactDetails)
-			{
-				ContactDetails c = contactDetailsRepository.findByNameAndClubId(details.getName(), id); //TODO change to query by unique field
-				if(c != null)
-					return c;
-				else
-					return contactDetailsRepository.save(new ContactDetails(details, this));
-			}
-			else
-				return contactDetailsRepository.save(new ContactDetails(details, this));
+			return new ContactDetails(details, this);
 		}).collect(Collectors.toList());
 		
-		System.out.println(constitution);
+		System.out.println(id);
 		return this;
 	}
 
