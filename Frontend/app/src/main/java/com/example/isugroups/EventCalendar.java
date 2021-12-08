@@ -1,5 +1,6 @@
 package com.example.isugroups;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class EventCalendar extends AppCompatActivity {
 
@@ -27,12 +32,27 @@ public class EventCalendar extends AppCompatActivity {
     private JsonObjectRequest mJSONRequest;
     private String url;
     private static final String TAG = EventCalendar.class.getName();
+    List<eventmodel> eventlist = new ArrayList<eventmodel>();
+    private TextView Clubtitle;
+    private CalendarView calendar;
+    private TextView eventdate;
+    private TextView eventdescription;
+    private TextView eventtitle;
+    private TextView eventtime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_calendar);
-
+        Clubtitle = findViewById(R.id.club_title_calendar);
         Button homebutton = findViewById(R.id.calendar_home_button);
+        calendar = findViewById(R.id.calendarView);
+        eventdate = findViewById(R.id.calendar_date);
+        eventdescription = findViewById(R.id.calendar_event_description);
+        eventtitle = findViewById(R.id.calendar_event_title);
+        eventtime = findViewById(R.id.calendar_event_time);
+
+        EventRequest();
 
         homebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,15 +62,28 @@ public class EventCalendar extends AppCompatActivity {
             }
         });
 
+        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
+                int month = i1 + 1;
+                String date = i2 + "/" + month + "/" + i;
+                eventdate.setText(date + ":");
+                for (int j = 0; j < eventlist.size(); j++) {
+                    if (eventlist.get(j).getdate().equals(date)) {
+                        eventtitle.setText(eventlist.get(j).gettitle());
+                        eventdescription.setText(eventlist.get(j).getdescription());
+                        eventtime.setText(eventlist.get(j).gettime());
+                    }
+                }
+            }
+        });
+
 
 
     }
 
     private void EventRequest() {
-        String monthtext = "";
-        String daytext = "";
-        String clubnametext = "";
-
+        String clubtitlestring = Clubtitle.toString();
 
         mJSONRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -59,25 +92,20 @@ public class EventCalendar extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
 
-                            JSONArray jsonArray = response.getJSONArray("clubs");
+                            JSONArray jsonArray = response.getJSONArray("Events");
                             for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject clubs = jsonArray.getJSONObject(i);
+                                JSONObject event = jsonArray.getJSONObject(i);
 
-                                String clubname = clubs.getString("club name");
-                                if (clubnametext == clubname) {
-                                    JSONArray eventsarray = clubs.getJSONArray("events");
-                                    for (int j = 0; j < eventsarray.length(); j++) {
-                                        JSONObject events = eventsarray.getJSONObject(j);
-                                        String month = events.getString("month");
-                                        String day = events.getString("day");
-                                        String eventname = events.getString("eventname");
-                                        String description = events.getString("description");
-                                        if (monthtext == month && daytext == day) {
-                                            Changetext(description, eventname);
-                                        }
-                                    }
+                                String date  = event.getString("date");
+                                String time = event.getString("time");
+                                String title = event.getString("title");
+                                String description = event.getString("description");
+
+                                String clubname = event.getString("clubName");
+                                if (clubtitlestring.equals(clubname)) {
+                                    eventmodel ev = new eventmodel(clubname, description, title, date, time);
+                                    eventlist.add(ev);
                                 }
-
                             }
                         } catch (JSONException e) {
 
@@ -94,11 +122,5 @@ public class EventCalendar extends AppCompatActivity {
     }
 
 
-    private void Changetext(String eventdescription, String eventname) {
-        TextView Event = (TextView) findViewById(R.id.calendar_event_title);
-        TextView description = (TextView) findViewById(R.id.calendar_event_description);
-        Event.setText(eventdescription);
-        description.setText(eventname);
 
-    }
 }
