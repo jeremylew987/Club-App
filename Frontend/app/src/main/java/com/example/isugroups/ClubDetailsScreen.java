@@ -57,8 +57,7 @@ public class ClubDetailsScreen extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Back to the main menu
-                startActivity(new Intent(ClubDetailsScreen.this, HomeScreen.class));
+                finish();
             }
         });
         RequestQueue queue = Volley.newRequestQueue(ClubDetailsScreen.this);
@@ -66,7 +65,7 @@ public class ClubDetailsScreen extends AppCompatActivity {
                 ((GlobalVars) ClubDetailsScreen.this.getApplication()).getCurClubName() +
                 ">&page=<0>";*/
         String club = GlobalVars.getCurClubName();
-        String address = "http://10.48.40.5:8080/club/search/narrowed?club="+club;
+        String address = "http://10.49.40.75:8080/club/search/narrowed?club="+club;
 
 				JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, address, null, new Response.Listener<JSONObject>() {
 					@Override

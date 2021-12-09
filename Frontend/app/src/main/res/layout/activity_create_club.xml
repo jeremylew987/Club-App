@@ -63,21 +63,21 @@
             android:background="#EEEEEE"
             android:orientation="vertical"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:background="#AAAAAA"
-                android:padding="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="#FFFF"
+            android:padding="10dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Club name"
-                    android:textAllCaps="false"
-                    android:textColor="#808080"
-                    android:textSize="20dp" />
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Club name"
+                android:textAllCaps="false"
+                android:textColor="#808080"
+                android:textSize="20dp" />
+        </LinearLayout>
 
             <EditText
                 android:id="@+id/clubName"
@@ -105,364 +105,219 @@
                 android:visibility="visible"
                 tools:text="Description:" />
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Club Members"
-                android:textAllCaps="false"
-                android:textColor="#000"
-                android:textSize="20dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#AAA"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|left"
-                    android:orientation="vertical">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvItems"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
-                        tools:itemCount="2"
-                        tools:listitem="@layout/list_item_participant" />
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/llAddParticipant"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:orientation="horizontal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="Add Participant"
-                        android:textAllCaps="false"
-                        android:textColor="#808080"
-                        android:textSize="20dp" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/addParticipant"
-                        android:layout_width="40dp"
-                        android:layout_height="50dp"
-
-                        android:layout_marginRight="10dp"
-                        android:backgroundTint="#EEE"
-                        android:clickable="false"
-                        android:text="+"
-                        android:textColor="@color/black"
-                        android:textSize="20dp"
-                        app:cornerRadius="30dp" />
-
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
-
-                </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:background="#AAAAAA"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    android:id="@+id/Advisor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:text="Advisor"
-                    android:textAllCaps="false"
-                    android:textColor="#808080"
-                    android:textSize="20dp" />
-
-                <EditText
-                    android:id="@+id/etStartDay"
-                    android:layout_width="173dp"
-                    android:layout_height="33dp"
-                    android:ems="10"
-                    android:inputType="date"
-                    android:textSize="10sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="President Phone Number:"
-                    android:textAllCaps="false"
-                    android:textColor="#808080"
-                    android:textSize="20dp" />
-
-                <EditText
-                    android:id="@+id/PresidentPhoneNumber"
-                    android:layout_width="172dp"
-                    android:layout_height="32dp"
-                    android:ems="10"
-                    android:inputType="date"
-                    android:textSize="10sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="President Email"
-                    android:textAllCaps="false"
-                    android:textColor="#808080"
-                    android:textSize="20dp" />
-
-                    />
-                <EditText
-                    android:id="@+id/PresidentEmail"
-                    android:layout_width="172dp"
-                    android:layout_height="32dp"
-                    android:ems="10"
-                    android:inputType="date"
-                    android:textSize="10sp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Vice President Phone Number"
-                    android:textAllCaps="false"
-                    android:textColor="#808080"
-                    android:textSize="20dp" />
-                <EditText
-                    android:id="@+id/VicePresidentPhoneNumber"
-                    android:layout_width="172dp"
-                    android:layout_height="32dp"
-                    android:ems="10"
-                    android:inputType="date"
-                    android:textSize="10sp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Vice President Email"
-                    android:textAllCaps="false"
-                    android:textColor="#808080"
-                    android:textSize="20dp" />
-                <EditText
-                    android:id="@+id/VicePresidentEmail"
-                    android:layout_width="172dp"
-                    android:layout_height="32dp"
-                    android:ems="10"
-                    android:inputType="date"
-                    android:textSize="10sp" />
-
-            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#FFFF"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="Membership" />
+                android:text="Event Information:"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvStudents"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Students:" />
+            <EditText
+                android:id="@+id/EventC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/etStudents"
-            android:layout_width="173dp"
-            android:layout_height="33dp"
-            android:ems="10"
-            android:inputType="date"
-            android:textSize="10sp" />
-        <TextView
-            android:id="@+id/tvISUMembers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="ISU Members:" />
+            <TextView
+                android:id="@+id/tv6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Meeting Times:"
+                android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/etISUMembers"
-            android:layout_width="173dp"
-            android:layout_height="33dp"
-            android:ems="10"
-            android:inputType="date"
-            android:textSize="10sp" />
+            <EditText
+                android:id="@+id/meetTimes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tvNonIsu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Non-ISU Members:" />
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fees:"
+                android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/etNonIsu"
-            android:layout_width="173dp"
-            android:layout_height="33dp"
-            android:ems="10"
-            android:inputType="date"
-            android:textSize="10sp" />
+            <EditText
+                android:id="@+id/FeeC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tvRestrictions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Restrictions:" />
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Member Restrictions:"
+                android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/etRestrictions"
-            android:layout_width="173dp"
-            android:layout_height="33dp"
-            android:ems="10"
-            android:inputType="date"
-            android:textSize="10sp" />
+            <EditText
+                android:id="@+id/MemberRestrict"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tvPositions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Positions (separated by comma):" />
+            <TextView
+                android:id="@+id/tvPositions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Positions (separated by comma):"
+                android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/etPositions"
-            android:layout_width="173dp"
-            android:layout_height="33dp"
-            android:ems="10"
-            android:inputType="date"
-            android:textSize="10sp" />
+            <EditText
+                android:id="@+id/etPositions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tvElections"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Elections:" />
+            <TextView
+                android:id="@+id/tvElections"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Elections:"
+                android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/etElections"
-            android:layout_width="173dp"
-            android:layout_height="33dp"
-            android:ems="10"
-            android:inputType="date"
-            android:textSize="10sp" />
+            <EditText
+                android:id="@+id/etElections"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:textSize="18sp" />
 
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Constitution:"
+                android:textSize="20sp" />
 
-        <View
+            <EditText
+                android:id="@+id/ConstitutionC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:textSize="18dp" />
 
-                android:layout_width="2000dp"
-                android:layout_height="3dp"
+            <TextView
+                android:id="@+id/tvPresidentOffice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="President Name:"
+                android:textSize="20sp" />
 
-                android:background="#fff" />
+            <EditText
+                android:id="@+id/PresName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="President Email"
+                android:textAllCaps="false"
+                android:textColor="#808080"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/PresidentEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="President Phone Number:"
+                android:textAllCaps="false"
+                android:textColor="#808080"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/PresidentPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vice President Name:"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/VPresName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vice President Email"
+                android:textAllCaps="false"
+                android:textColor="#808080"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/VicePresidentEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vice President Phone Number"
+                android:textAllCaps="false"
+                android:textColor="#808080"
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/VicePresidentPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:textSize="18sp" />
+
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="#AAAAAA"
-                android:gravity="center">
+                android:layout_weight="1" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="top"
-                    android:text="Constitution"
-                    android:textAllCaps="false"
-                    android:textSize="20dp" />
-
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-        <EditText
-            android:id="@+id/etConstitution"
-            android:layout_width="173dp"
-            android:layout_height="33dp"
-            android:ems="10"
-            android:inputType="date"
-            android:textSize="10sp" />
-
-            <View
-                android:layout_width="2000dp"
-                android:layout_height="3dp"
-                android:background="#fff" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:background="#AAAAAA"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="top"
-                    android:text="Offices"
-                    android:textAllCaps="false"
-                    android:textColor="#808080"
-                    android:textSize="20dp" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-        <TextView
-            android:id="@+id/tvPresidentOffice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="President:" />
-        <EditText
-            android:id="@+id/etPresidentOffice"
-            android:layout_width="173dp"
-            android:layout_height="33dp"
-            android:ems="10"
-            android:inputType="date"
-            android:textSize="10sp" />
-        <TextView
-            android:id="@+id/tvVicePresidentOffice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Vice President:" />
-        <EditText
-            android:id="@+id/etVicePresidentOffice"
-            android:layout_width="173dp"
-            android:layout_height="33dp"
-            android:ems="10"
-            android:inputType="date"
-            android:textSize="10sp" />
-
-        <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
+        </LinearLayout>
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 

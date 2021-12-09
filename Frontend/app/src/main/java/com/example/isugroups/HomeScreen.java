@@ -24,6 +24,7 @@ public class HomeScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        GlobalVars.setPrevPage("HomeScreen.this");
 
         Toolbar appBar = (Toolbar)findViewById(R.id.appbar);
         appBar.setTitle("Home");

@@ -35,7 +35,7 @@ public class SearchPageScreen extends AppCompatActivity {
         yourButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SearchPageScreen.this, HomeScreen.class));
+                finish();
             }
         });
 
@@ -51,7 +51,7 @@ public class SearchPageScreen extends AppCompatActivity {
                 EditText Searchbar = (EditText) findViewById(R.id.SearchBar);
                 String SearchVal = Searchbar.getText().toString();
                 RequestQueue queue = Volley.newRequestQueue(SearchPageScreen.this);
-                String address = "http://10.48.40.5:8080/club/search?phrase=" +
+                String address = "http://10.49.40.75:8080/club/search?phrase=" +
                         SearchVal +
                         "&page=" + GlobalVars.getCurPage();
                 TextView Description = (TextView) findViewById(R.id.S1);

@@ -46,4 +46,11 @@ public class GlobalVars extends Application {
 
     public static void setCurPage(int p){CurPage = p;}
 
+
+    private static String prevPage;
+    public static String getPrevPage(){return prevPage;}
+
+    public static void setPrevPage(String p){prevPage = p;}
+
+
 }
