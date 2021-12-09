@@ -26,12 +26,12 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-public class CreateEventScreen extends AppCompatActivity {
+public class CreateClubNotificationScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_event_screen);
+        setContentView(R.layout.activity_create_club_notification_screen);
 
         //set up back button
         ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
@@ -39,48 +39,41 @@ public class CreateEventScreen extends AppCompatActivity {
         {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(CreateEventScreen.this, LoginScreen.class));
+                startActivity(new Intent(CreateClubNotificationScreen.this, LoginScreen.class));
             }
         });
 
         //set up submit button
-        Button submitButton = (android.widget.Button) findViewById(R.id.Submit);
+        Button submitButton = (Button) findViewById(R.id.Submit);
         submitButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view) {
-                String title = ((TextView)findViewById(R.id.TitleText)).getText().toString();
-                String description = ((EditText)findViewById(R.id.DescriptionText)).getText().toString();
-                String date = ((EditText)findViewById(R.id.DateText)).getText().toString();
-                String time = ((EditText)findViewById(R.id.TimeText)).getText().toString();
+                String message = ((EditText)findViewById(R.id.MessageText)).getText().toString();
 
 
-                RequestQueue queue = Volley.newRequestQueue(CreateEventScreen.this);
+                RequestQueue queue = Volley.newRequestQueue(CreateClubNotificationScreen.this);
                 JSONObject data = new JSONObject();
                 try {
-                    data.put("clubName",GlobalVars.getCurClubName());
-                    data.put("title",title);
-                    data.put("description",description);
-                    data.put("date",date);
-                    data.put("time",time);
+                    data.put("message",message);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 String requestBody = data.toString();
-                String address = "http://localhost:8080/event/add";
-                CreateEventScreen.BooleanRequest request = new CreateEventScreen.BooleanRequest(Request.Method.POST, address, requestBody, new Response.Listener<Boolean>() {
+                String address = "http://localhost:8080/club/notifications/add";
+                CreateClubNotificationScreen.BooleanRequest request = new CreateClubNotificationScreen.BooleanRequest(Request.Method.POST, address, requestBody, new Response.Listener<Boolean>() {
                     @Override
                     public void onResponse(Boolean response) {
                         if(response)
-                            ((TextView)findViewById(R.id.StatusText)).setText("Event Successfully Added.");
+                            ((TextView)findViewById(R.id.StatusText)).setText("Notification Was Successfully Sent.");
                         else
-                            ((TextView)findViewById(R.id.StatusText)).setText("The Event Could Not Be Added.");
+                            ((TextView)findViewById(R.id.StatusText)).setText("The Notification Could Not Be Sent.");
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateEventScreen.this);
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateClubNotificationScreen.this);
                         alertDialogBuilder.setTitle("Error");
                         alertDialogBuilder.setMessage(error.getMessage());
                         alertDialogBuilder.setPositiveButton("Ok", null);

@@ -57,7 +57,7 @@
         app:layout_constraintTop_toBottomOf="@+id/TimeText" />
 
     <EditText
-        android:id="@+id/Message"
+        android:id="@+id/TitleText"
         android:layout_width="301dp"
         android:layout_height="41dp"
         android:layout_marginTop="44dp"
@@ -105,6 +105,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Message" />
+        app:layout_constraintTop_toBottomOf="@+id/TitleText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

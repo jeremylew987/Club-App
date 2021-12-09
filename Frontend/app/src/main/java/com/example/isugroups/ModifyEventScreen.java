@@ -26,12 +26,12 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-public class CreateEventScreen extends AppCompatActivity {
+public class ModifyEventScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_event_screen);
+        setContentView(R.layout.activity_modify_event_screen);
 
         //set up back button
         ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
@@ -39,12 +39,12 @@ public class CreateEventScreen extends AppCompatActivity {
         {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(CreateEventScreen.this, LoginScreen.class));
+                startActivity(new Intent(ModifyEventScreen.this, LoginScreen.class));
             }
         });
 
         //set up submit button
-        Button submitButton = (android.widget.Button) findViewById(R.id.Submit);
+        Button submitButton = (Button) findViewById(R.id.Submit);
         submitButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -55,7 +55,7 @@ public class CreateEventScreen extends AppCompatActivity {
                 String time = ((EditText)findViewById(R.id.TimeText)).getText().toString();
 
 
-                RequestQueue queue = Volley.newRequestQueue(CreateEventScreen.this);
+                RequestQueue queue = Volley.newRequestQueue(ModifyEventScreen.this);
                 JSONObject data = new JSONObject();
                 try {
                     data.put("clubName",GlobalVars.getCurClubName());
@@ -67,20 +67,20 @@ public class CreateEventScreen extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 String requestBody = data.toString();
-                String address = "http://localhost:8080/event/add";
-                CreateEventScreen.BooleanRequest request = new CreateEventScreen.BooleanRequest(Request.Method.POST, address, requestBody, new Response.Listener<Boolean>() {
+                String address = "http://localhost:8080/event/modify";
+                ModifyEventScreen.BooleanRequest request = new ModifyEventScreen.BooleanRequest(Request.Method.POST, address, requestBody, new Response.Listener<Boolean>() {
                     @Override
                     public void onResponse(Boolean response) {
                         if(response)
-                            ((TextView)findViewById(R.id.StatusText)).setText("Event Successfully Added.");
+                            ((TextView)findViewById(R.id.StatusText)).setText("Event Successfully Modified.");
                         else
-                            ((TextView)findViewById(R.id.StatusText)).setText("The Event Could Not Be Added.");
+                            ((TextView)findViewById(R.id.StatusText)).setText("The Event Could Not Be Modified.");
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateEventScreen.this);
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ModifyEventScreen.this);
                         alertDialogBuilder.setTitle("Error");
                         alertDialogBuilder.setMessage(error.getMessage());
                         alertDialogBuilder.setPositiveButton("Ok", null);

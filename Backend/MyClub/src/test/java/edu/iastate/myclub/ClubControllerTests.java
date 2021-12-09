@@ -27,6 +27,7 @@ import edu.iastate.myclub.models.ContactDetailsDto;
 import edu.iastate.myclub.models.club.ClubBasicDto;
 import edu.iastate.myclub.models.club.ClubDto;
 import edu.iastate.myclub.services.club.ClubService;
+import edu.iastate.myclub.services.user.UserService;
 
 @WebMvcTest(ClubController.class)
 public class ClubControllerTests {
@@ -42,6 +43,9 @@ public class ClubControllerTests {
 
 	@MockBean
 	private ClubService clubService;
+	
+	@MockBean
+	private UserService userService;
 	
 	private static ClubDto testDto;
 	
