@@ -30,9 +30,9 @@ public class SearchPageScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_page_screen);
 
-        ImageButton yourButton = (ImageButton) findViewById(R.id.BackToHome);
+        ImageButton back = (ImageButton) findViewById(R.id.BackToHome);
 
-        yourButton.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

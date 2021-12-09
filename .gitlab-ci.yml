@@ -42,7 +42,7 @@ spring-deploy-prod:
   script:
     - cd Backend/MyClub
     - mvn package
-    - sudo mv target/api.jar /backend/web-demo.jar
+    - sudo mv target/MyClub-0.0.1-SNAPSHOT.jar /backend/web-demo.jar
     - sudo systemctl stop system-web-demo
     - sudo systemctl start system-web-demo
   only:

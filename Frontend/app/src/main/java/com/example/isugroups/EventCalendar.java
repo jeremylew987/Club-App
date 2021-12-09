@@ -17,28 +17,33 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
 public class EventCalendar extends AppCompatActivity {
 
-    private RequestQueue mRequestQueue;
     private JsonObjectRequest mJSONRequest;
-    private String url;
+    private String address;
     private static final String TAG = EventCalendar.class.getName();
-    List<eventmodel> eventlist = new ArrayList<eventmodel>();
     private TextView Clubtitle;
     private CalendarView calendar;
     private TextView eventdate;
     private TextView eventdescription;
     private TextView eventtitle;
     private TextView eventtime;
+    private String currentmonth;
+    private String currentyear;
+    private String currentclub;
+    private String currentdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,16 @@ public class EventCalendar extends AppCompatActivity {
         eventdescription = findViewById(R.id.calendar_event_description);
         eventtitle = findViewById(R.id.calendar_event_title);
         eventtime = findViewById(R.id.calendar_event_time);
+        currentclub = GlobalVars.getCurClubName();
+        Clubtitle.setText(currentclub);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String selectedDate = sdf.format(new Date(calendar.getDate()));
+        currentmonth = selectedDate.substring(6, 10);
+        currentyear = selectedDate.substring(3, 5);
+        currentdate = selectedDate.substring(0, 2);
+        eventdate.setText(currentdate + ":");
+        address = "http://:8080/event/scheduled?club=" + currentclub + "&month=" + currentmonth + "&year=" + currentyear;
 
         EventRequest();
 
@@ -65,16 +80,18 @@ public class EventCalendar extends AppCompatActivity {
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
+                eventdescription.setText("");
+                eventtitle.setText("");
+                eventtime.setText("");
+                currentmonth = String.valueOf(i1);
+                currentyear = String.valueOf(i);
+
                 int month = i1 + 1;
-                String date = i2 + "/" + month + "/" + i;
-                eventdate.setText(date + ":");
-                for (int j = 0; j < eventlist.size(); j++) {
-                    if (eventlist.get(j).getdate().equals(date)) {
-                        eventtitle.setText(eventlist.get(j).gettitle());
-                        eventdescription.setText(eventlist.get(j).getdescription());
-                        eventtime.setText(eventlist.get(j).gettime());
-                    }
-                }
+                currentdate = i2 + "/" + month + "/" + i;
+                eventdate.setText(currentdate + ":");
+                address = "http://:8080/event/scheduled?club=" + currentclub + "&month=" + currentmonth + "&year=" + currentyear;
+                EventRequest();
+
             }
         });
 
@@ -83,16 +100,15 @@ public class EventCalendar extends AppCompatActivity {
     }
 
     private void EventRequest() {
-        String clubtitlestring = Clubtitle.toString();
-
+        RequestQueue queue = Volley.newRequestQueue(this);
         mJSONRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, address, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
 
-                            JSONArray jsonArray = response.getJSONArray("Events");
+                            JSONArray jsonArray = response.getJSONArray("EventDto");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject event = jsonArray.getJSONObject(i);
 
@@ -100,11 +116,10 @@ public class EventCalendar extends AppCompatActivity {
                                 String time = event.getString("time");
                                 String title = event.getString("title");
                                 String description = event.getString("description");
-
-                                String clubname = event.getString("clubName");
-                                if (clubtitlestring.equals(clubname)) {
-                                    eventmodel ev = new eventmodel(clubname, description, title, date, time);
-                                    eventlist.add(ev);
+                                if (currentdate.equals(date)) {
+                                    eventtitle.setText(title);
+                                    eventdescription.setText(description);
+                                    eventtime.setText(time);
                                 }
                             }
                         } catch (JSONException e) {
@@ -116,9 +131,10 @@ public class EventCalendar extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.i(TAG, "Error :" + error.toString());
+                        Toast.makeText(getApplicationContext(), "Error :", Toast.LENGTH_LONG).show();
                     }
                 });
-        mRequestQueue.add(mJSONRequest);
+        queue.add(mJSONRequest);
     }
 
 

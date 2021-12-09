@@ -70,9 +70,6 @@ public class ClubDetailsScreen extends AppCompatActivity {
 				JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, address, null, new Response.Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
-
-
-
                         Button join = (Button) findViewById(R.id.JoinButton);
 
                         Boolean isMember = false;

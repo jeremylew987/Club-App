@@ -15,8 +15,7 @@
         <activity
             android:name=".SearchPageScreen"
             android:exported="false"
-            android:label="@string/title_activity_search_page_screen"
-            android:theme="@style/Theme.ISUGroups.NoActionBar" />
+            android:label="@string/title_activity_search_page_screen" />
         <activity
             android:name=".EventCalendar"
             android:exported="true" />
