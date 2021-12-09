@@ -28,7 +28,7 @@ maven-test-prod:
     - mvn test
   artifacts:
     paths:
-      - Backend/VirtualBioChemLab/target/*.jar
+      - Backend/MyClub/target/*.jar
   only:
     refs:
       - master
