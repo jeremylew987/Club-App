@@ -5,6 +5,8 @@ import android.app.Application;
 import java.util.ArrayList;
 
 public class GlobalVars extends Application {
+    public static String VirtualUrl = "http://coms-319-g22.cs.iastate.edu:8080";
+
     private static int CurUserID;
 
     public static int getCurUserID() {//for home page and finding clubs in
@@ -16,6 +18,16 @@ public class GlobalVars extends Application {
     }
 
     public static String userPassphrase;
+
+    public static String username;
+
+    public static void setUsername(String username){
+        GlobalVars.username = username;
+    }
+
+    public static String getUsername(){
+        return username;
+    }
 
     public static String getUserPassphrase() {return userPassphrase;}
 
@@ -36,6 +48,7 @@ public class GlobalVars extends Application {
     public static ArrayList<String> getClubs(){
         return Clubs;
     }
+
     public static void setClubs(String[] cList) {
         Clubs.clear();
         for(String a: cList)
