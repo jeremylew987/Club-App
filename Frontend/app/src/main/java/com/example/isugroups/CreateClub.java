@@ -14,105 +14,112 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreateClub extends AppCompatActivity {
-/*
-	RecyclerView rvItems;
-	ParticipantAdapter adapter;
-	List<ModelParticipant> items = new ArrayList<>();
-*/
+
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_club);
-    }//TODO remove this to add back everything when adding json stuff
 
-		/*ImageButton back = (ImageButton) findViewById(R.id.back);
+
+		ImageButton back = (ImageButton) findViewById(R.id.back);
 		back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent i = new Intent(CreateGroup.this, MainMenuScreen.class);
+				Intent i = new Intent(CreateClub.this, HomeScreen.class);
 				startActivity(i);
-			}
-		});*/
-/*
-		RequestQueue queue = Volley.newRequestQueue(this);
-
-		rvItems = findViewById(R.id.rvItems);
-		rvItems.setLayoutManager(new LinearLayoutManager(this));
-		adapter = new ParticipantAdapter(this, items);
-		rvItems.setAdapter(adapter);
-
-		findViewById(R.id.llAddParticipant).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				didTapAddParticipant();
 			}
 		});
 
-		Button createGroupButton = findViewById(R.id.save);
-		SwitchCompat weekly = findViewById(R.id.weekly);
-		SwitchCompat biweekly = findViewById(R.id.biweekly);
-		SwitchCompat monthly = findViewById(R.id.monthly);
+		RequestQueue queue = Volley.newRequestQueue(this);
+
+
+		Button createGroupButton = (Button) findViewById(R.id.save);
 		createGroupButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				// :O
-				String switchValue = "";
-				if(weekly.isEnabled()) {
-					switchValue = "weekly";
-				}
-				else if(biweekly.isEnabled()) {
-					switchValue = "biweekly";
-				}
-				else if(monthly.isEnabled()) {
-					switchValue = "monthly";
-				}
-				String finalSwitchValue = switchValue;
-				String allNames = "";
-				for(ModelParticipant participant: items) {
-					if(TextUtils.isEmpty(participant.getName())) continue;
-					allNames = allNames + participant.getName() + ", ";
-				}
-				if(!TextUtils.isEmpty(allNames)) {
-					allNames = allNames.substring(0, allNames.length() - 2);
-				}
-				String finalAllNames = allNames;
+
+
+				String name = ((EditText) findViewById(R.id.clubName)).getText().toString();
 				JSONObject newGroup = new JSONObject();
 				try {
-					newGroup.put("clubName", ((EditText) findViewById(R.id.clubName)).getText().toString());
-					//newGroup.put("clubDescription", ((EditText) findViewById(R.id.groupName)).getText().toString()); //description for Club not implemented in XML
-					newGroup.put("startDay", ((EditText) findViewById(R.id.etStartDay)).getText().toString());
-					newGroup.put("endDay", ((EditText) findViewById(R.id.etEndDay)).getText().toString());
-					newGroup.put("meetingFrequency", finalSwitchValue);
-					newGroup.put("groupParticipants", finalAllNames);
+					newGroup.put("name", ((EditText) findViewById(R.id.clubName)).getText().toString());
+					newGroup.put("description", ((EditText) findViewById(R.id.clubDescription)).getText().toString());
+					newGroup.put("meetingTimes", ((EditText) findViewById(R.id.meetTimes)).getText().toString());
+					newGroup.put("eventInformation", ((EditText) findViewById(R.id.EventC)).getText().toString());
+					newGroup.put("fees", ((EditText) findViewById(R.id.FeeC)).getText().toString());
+					newGroup.put("membershipRestrictions", ((EditText) findViewById(R.id.MemberRestrict)).getText().toString());
+					newGroup.put("officerPositions", new JSONArray(((EditText) findViewById(R.id.etPositions)).getText().toString().split(",")));
+					newGroup.put("electionInformation", ((EditText) findViewById(R.id.etElections)).getText().toString());
+					newGroup.put("constitution", ((EditText) findViewById(R.id.ConstitutionC)).getText().toString());
+
+					JSONObject Pres = new JSONObject();
+					JSONObject VPres = new JSONObject();
+					Pres.put("name", ((EditText) findViewById(R.id.PresName)).getText().toString());
+					Pres.put("phoneNumber", ((EditText) findViewById(R.id.PresidentPhoneNumber)).getText().toString());
+					Pres.put("email", ((EditText) findViewById(R.id.PresidentEmail)).getText().toString());
+					VPres.put("name", ((EditText) findViewById(R.id.VPresName)).getText().toString());
+					VPres.put("phoneNumber", ((EditText) findViewById(R.id.VicePresidentPhoneNumber)).getText().toString());
+					VPres.put("email", ((EditText) findViewById(R.id.VicePresidentEmail)).getText().toString());
+					JSONArray Contact = new JSONArray();
+					Contact.put(Pres);
+					Contact.put(VPres);
+
+					newGroup.put("contacts", Contact);
+
+
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Constance.BASE_URL+"group", newGroup, new Response.Listener<JSONObject>() {
+				String address = "http://10.49.40.75:8080/club/create";
+				String requestBody = newGroup.toString();
+
+
+
+
+				BooleanRequest jsonObjectRequest = new BooleanRequest(Request.Method.POST, address, requestBody, new Response.Listener<Boolean>() {
 					@Override
-					public void onResponse(JSONObject response) {
-						System.out.println(response);
-						Intent i = new Intent(CreateGroup.this, MainMenuScreen.class);
-						startActivity(i);
+					public void onResponse(Boolean response) {
+						if(response) {
+							GlobalVars.setCurClubName(name);
+							Intent i = new Intent(CreateClub.this, ClubDetailsScreen.class);
+							startActivity(i);
+						}
+						else{
+							AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateClub.this);
+							alertDialogBuilder.setTitle("Error");
+							alertDialogBuilder.setMessage("Club Already Taken");
+							alertDialogBuilder.setPositiveButton("Ok", null);
+							alertDialogBuilder.setNegativeButton("", null);
+							alertDialogBuilder.create().show();
+						}
 					}
 				}, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						error.printStackTrace();
-						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateGroup.this);
+						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateClub.this);
 						alertDialogBuilder.setTitle("Error");
 						alertDialogBuilder.setMessage(error.getMessage());
 						alertDialogBuilder.setPositiveButton("Ok", null);
@@ -124,13 +131,67 @@ public class CreateClub extends AppCompatActivity {
 				// Add the request to the queue
 				queue.add(jsonObjectRequest);
 
-				// >:O
+
 			}
 		});
 	}
+	//Public class
+	private class BooleanRequest extends Request<Boolean> {
+		private final Response.Listener<Boolean> mListener;
+		private final Response.ErrorListener mErrorListener;
+		private final String mRequestBody;
 
-	private void didTapAddParticipant(){
-		items.add(new ModelParticipant(""));
-		adapter.notifyItemInserted(items.size() - 1);
-	}*/
+		private final String PROTOCOL_CHARSET = "utf-8";
+		private final String PROTOCOL_CONTENT_TYPE = String.format("application/json; charset=%s", PROTOCOL_CHARSET);
+
+		public BooleanRequest(int method, String url, String requestBody, Response.Listener<Boolean> listener, Response.ErrorListener errorListener) {
+			super(method, url, errorListener);
+			this.mListener = listener;
+			this.mErrorListener = errorListener;
+			this.mRequestBody = requestBody;
+		}
+
+		@Override
+		protected Response<Boolean> parseNetworkResponse(NetworkResponse response) {
+			Boolean parsed;
+			try {
+				parsed = Boolean.valueOf(new String(response.data, HttpHeaderParser.parseCharset(response.headers)));
+			} catch (UnsupportedEncodingException e) {
+				parsed = Boolean.valueOf(new String(response.data));
+			}
+			return Response.success(parsed, HttpHeaderParser.parseCacheHeaders(response));
+		}
+
+		@Override
+		protected VolleyError parseNetworkError(VolleyError volleyError) {
+			return super.parseNetworkError(volleyError);
+		}
+
+		@Override
+		protected void deliverResponse(Boolean response) {
+			mListener.onResponse(response);
+		}
+
+		@Override
+		public void deliverError(VolleyError error) {
+			mErrorListener.onErrorResponse(error);
+		}
+
+		@Override
+		public String getBodyContentType() {
+			return PROTOCOL_CONTENT_TYPE;
+		}
+
+		@Override
+		public byte[] getBody() throws AuthFailureError {
+			try {
+				return mRequestBody == null ? null : mRequestBody.getBytes(PROTOCOL_CHARSET);
+			} catch (UnsupportedEncodingException uee) {
+				VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+						mRequestBody, PROTOCOL_CHARSET);
+				return null;
+			}
+		}
+	}
+
 }
