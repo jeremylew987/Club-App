@@ -57,8 +57,7 @@ public class ClubDetailsScreen extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Back to the main menu
-                startActivity(new Intent(ClubDetailsScreen.this, HomeScreen.class));
+                finish();
             }
         });
         RequestQueue queue = Volley.newRequestQueue(ClubDetailsScreen.this);
