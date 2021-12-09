@@ -60,7 +60,7 @@ public class LoginScreen extends AppCompatActivity {
 					e.printStackTrace();
 				}
 				String requestBody = data.toString();
-				String address = "http://10.49.40.75:8080/users/login";
+				String address = GlobalVars.VirtualUrl+ "/users/login";
 				BooleanRequest request = new BooleanRequest(Request.Method.POST, address, requestBody, new Response.Listener<Boolean>() {
 					@Override
 					public void onResponse(Boolean response) {
