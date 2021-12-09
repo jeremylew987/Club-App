@@ -39,6 +39,15 @@
             android:name=".CreateClub"
             android:exported="true" />
         <activity
+            android:name=".CreateEventScreen"
+            android:exported="true" />
+        <activity
+            android:name=".ModifyEventScreen"
+            android:exported="true" />
+        <activity
+            android:name=".CreateClubNotificationScreen"
+            android:exported="true" />
+        <activity
             android:name=".SettingScreen"
             android:exported="true" />
         <activity

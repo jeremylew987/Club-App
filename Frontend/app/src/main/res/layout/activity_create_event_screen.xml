@@ -38,6 +38,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="40dp"
         android:ems="10"
+        android:hint="Date (DD/MM/YYYY)"
         android:inputType="date"
         android:tag="DateText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/DescriptionText" />
 
     <TextView
-        android:id="@+id/StatusText"
+        android:id="@+id/StatusTextCreateEvent"
         android:layout_width="308dp"
         android:layout_height="50dp"
         android:layout_marginStart="3dp"
@@ -58,26 +59,26 @@
 
     <EditText
         android:id="@+id/TitleText"
-        android:layout_width="301dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="313dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="84dp"
         android:ems="10"
+        android:hint="Title"
         android:inputType="textPersonName"
         android:tag="TitleText"
-        android:text="Title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <EditText
         android:id="@+id/TimeText"
-        android:layout_width="306dp"
-        android:layout_height="43dp"
+        android:layout_width="307dp"
+        android:layout_height="55dp"
         android:layout_marginTop="44dp"
         android:ems="10"
+        android:hint="Time"
         android:inputType="textPersonName"
-        android:text="TimeText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,24 +88,36 @@
         android:id="@+id/Submit"
         android:layout_width="275dp"
         android:layout_height="57dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="30dp"
         android:text="SUBMIT"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/StatusText" />
+        app:layout_constraintTop_toBottomOf="@+id/StatusTextCreateEvent" />
 
     <EditText
         android:id="@+id/DescriptionText"
-        android:layout_width="301dp"
-        android:layout_height="43dp"
+        android:layout_width="305dp"
+        android:layout_height="59dp"
         android:layout_marginTop="52dp"
         android:ems="10"
         android:gravity="start|top"
+        android:hint="Description"
         android:inputType="textMultiLine"
         android:tag="DescriptionText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TitleText" />
+
+    <TextView
+        android:id="@+id/CreateEventForClubName"
+        android:layout_width="311dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="15dp"
+        android:text="Create Event for [ClubName]"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

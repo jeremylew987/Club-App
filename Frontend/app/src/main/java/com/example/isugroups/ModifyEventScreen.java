@@ -34,14 +34,17 @@ public class ModifyEventScreen extends AppCompatActivity {
         setContentView(R.layout.activity_modify_event_screen);
 
         //set up back button
-        ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ModifyEventScreen.this, LoginScreen.class));
-            }
-        });
+//        ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
+//        backButton.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(ModifyEventScreen.this, LoginScreen.class));
+//            }
+//        });
+
+        TextView header = ((TextView) findViewById(R.id.ModifyEventHeader));
+        header.setText("Modify Event For " + GlobalVars.getCurClubName());
 
         //set up submit button
         Button submitButton = (Button) findViewById(R.id.Submit);
@@ -49,17 +52,27 @@ public class ModifyEventScreen extends AppCompatActivity {
         {
             @Override
             public void onClick(View view) {
-                String title = ((TextView)findViewById(R.id.TitleText)).getText().toString();
-                String description = ((EditText)findViewById(R.id.DescriptionText)).getText().toString();
                 String date = ((EditText)findViewById(R.id.DateText)).getText().toString();
+                if(!validDate(date))
+                {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ModifyEventScreen.this);
+                    alertDialogBuilder.setTitle("Error");
+                    alertDialogBuilder.setMessage("Invalid Date Format.");
+                    alertDialogBuilder.setPositiveButton("Ok", null);
+                    alertDialogBuilder.setNegativeButton("", null);
+                    alertDialogBuilder.create().show();
+                    return;
+                }
+
+                String description = ((EditText)findViewById(R.id.DescriptionText)).getText().toString();
                 String time = ((EditText)findViewById(R.id.TimeText)).getText().toString();
 
 
                 RequestQueue queue = Volley.newRequestQueue(ModifyEventScreen.this);
                 JSONObject data = new JSONObject();
                 try {
-                    data.put("clubName",GlobalVars.getCurClubName());
-                    data.put("title",title);
+                    data.put("clubName","newClub4");//GlobalVars.getCurClubName());
+                    data.put("title","Test event for newclub4");//title);
                     data.put("description",description);
                     data.put("date",date);
                     data.put("time",time);
@@ -67,14 +80,14 @@ public class ModifyEventScreen extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 String requestBody = data.toString();
-                String address = "http://localhost:8080/event/modify";
+                String address = "http://10.0.2.2:8080/event/modify";
                 ModifyEventScreen.BooleanRequest request = new ModifyEventScreen.BooleanRequest(Request.Method.POST, address, requestBody, new Response.Listener<Boolean>() {
                     @Override
                     public void onResponse(Boolean response) {
                         if(response)
-                            ((TextView)findViewById(R.id.StatusText)).setText("Event Successfully Modified.");
+                            ((TextView)findViewById(R.id.StatusTextModifyEvent)).setText("Event Successfully Modified.");
                         else
-                            ((TextView)findViewById(R.id.StatusText)).setText("The Event Could Not Be Modified.");
+                            ((TextView)findViewById(R.id.StatusTextModifyEvent)).setText("The Event Could Not Be Modified.");
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -91,6 +104,29 @@ public class ModifyEventScreen extends AppCompatActivity {
                 queue.add(request);
             }
         });
+    }
+
+    public boolean validDate(String date)
+    {
+        if(date.length() != 10)
+            return false;
+
+        if(date.charAt(2) != '/' || date.charAt(5) != '/')
+            return false;
+
+        try{
+            int day = Integer.parseInt(date.substring(0, 2));
+            if(day < 1 || day > 31)
+                return false;
+
+            int month = Integer.parseInt(date.substring(3, 5));
+            if(month < 1 || month > 12)
+                return false;
+        } catch (NumberFormatException e)
+        {
+            return false;
+        }
+        return true;
     }
 
     private class BooleanRequest extends Request<Boolean> {

@@ -25,6 +25,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateClubNotificationScreen extends AppCompatActivity {
 
@@ -34,14 +36,17 @@ public class CreateClubNotificationScreen extends AppCompatActivity {
         setContentView(R.layout.activity_create_club_notification_screen);
 
         //set up back button
-        ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(CreateClubNotificationScreen.this, LoginScreen.class));
-            }
-        });
+//        ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
+//        backButton.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(CreateClubNotificationScreen.this, LoginScreen.class));
+//            }
+//        });
+
+        TextView header = ((TextView) findViewById(R.id.ClubNotificationClubName));
+        header.setText("Send Club Notification For " + GlobalVars.getCurClubName());
 
         //set up submit button
         Button submitButton = (Button) findViewById(R.id.Submit);
@@ -55,19 +60,20 @@ public class CreateClubNotificationScreen extends AppCompatActivity {
                 RequestQueue queue = Volley.newRequestQueue(CreateClubNotificationScreen.this);
                 JSONObject data = new JSONObject();
                 try {
+                    data.put("clubName","newClub4");
                     data.put("message",message);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 String requestBody = data.toString();
-                String address = "http://localhost:8080/club/notifications/add";
+                String address = "http://10.0.2.2:8080/club/notifications/add";
                 CreateClubNotificationScreen.BooleanRequest request = new CreateClubNotificationScreen.BooleanRequest(Request.Method.POST, address, requestBody, new Response.Listener<Boolean>() {
                     @Override
                     public void onResponse(Boolean response) {
                         if(response)
-                            ((TextView)findViewById(R.id.StatusText)).setText("Notification Was Successfully Sent.");
+                            ((TextView)findViewById(R.id.StatusTextClubNotification)).setText("Notification Was Successfully Sent.");
                         else
-                            ((TextView)findViewById(R.id.StatusText)).setText("The Notification Could Not Be Sent.");
+                            ((TextView)findViewById(R.id.StatusTextClubNotification)).setText("The Notification Could Not Be Sent.");
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -99,6 +105,13 @@ public class CreateClubNotificationScreen extends AppCompatActivity {
             this.mListener = listener;
             this.mErrorListener = errorListener;
             this.mRequestBody = requestBody;
+        }
+
+        @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            Map<String, String>  params = new HashMap<String, String>();
+            params.put("Authorization", "gtmobley" + ":" + "1234");
+            return params;
         }
 
         @Override

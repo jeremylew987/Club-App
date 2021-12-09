@@ -15,6 +15,12 @@ public class GlobalVars extends Application {
         CurUserID = CurUserID;
     }
 
+    public static String userPassphrase;
+
+    public static String getUserPassphrase() {return userPassphrase;}
+
+    public static void setUserPassphrase(String passphrase){userPassphrase = passphrase;}
+
     private static String CurClubName;//for club details page
 
     public static String getCurClubName() {
@@ -52,5 +58,10 @@ public class GlobalVars extends Application {
 
     public static void setPrevPage(String p){prevPage = p;}
 
+    private static String curEventTitle;
+
+    public static String getCurEventTitle(){return curEventTitle;}
+
+    public static void setCurEventTitle(String curEventTitle_){curEventTitle = curEventTitle_;}
 
 }
