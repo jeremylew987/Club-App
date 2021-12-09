@@ -31,6 +31,8 @@ public class ClubDto {
 	private String constitution;
 		
 	private List<ContactDetailsDto> contacts;
+	
+	private int numMembers;
 		
 	public ClubDto() 
 	{
@@ -42,6 +44,7 @@ public class ClubDto {
 		membershipRestrictions = "";         
 		electionInformation = "";   
 		constitution = "";
+		numMembers = 0;
 	}
 
 	public String getName() {
@@ -124,6 +127,14 @@ public class ClubDto {
 		this.contacts = contacts;
 	}
 	
+	public int getNumMembers() {
+		return numMembers;
+	}
+
+	public void setNumMembers(int numMembers) {
+		this.numMembers = numMembers;
+	}
+
 	public void copyFromClub(Club c)
 	{
 		this.name = c.getName();
@@ -142,6 +153,7 @@ public class ClubDto {
 				.stream()
 				.map(contactDetails -> {return new ContactDetailsDto(contactDetails);})
 				.collect(Collectors.toList());
+		this.numMembers = c.getNumMembers();
 	}
 
 	@Override
