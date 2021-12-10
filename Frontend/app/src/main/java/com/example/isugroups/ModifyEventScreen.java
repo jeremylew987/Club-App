@@ -71,8 +71,8 @@ public class ModifyEventScreen extends AppCompatActivity {
                 RequestQueue queue = Volley.newRequestQueue(ModifyEventScreen.this);
                 JSONObject data = new JSONObject();
                 try {
-                    data.put("clubName","newClub4");//GlobalVars.getCurClubName());
-                    data.put("title","Test event for newclub4");//title);
+                    data.put("clubName",GlobalVars.getCurClubName());
+                    data.put("title",GlobalVars.getCurEventTitle());
                     data.put("description",description);
                     data.put("date",date);
                     data.put("time",time);
