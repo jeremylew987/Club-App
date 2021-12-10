@@ -244,4 +244,16 @@ public class ClubService {
 		
 		return resource;
 	}
+	
+	public Boolean getIsMember(String username, String club) {
+		User user = userRepository.findByUsername(username);
+		if(user == null)
+			return false;
+		
+		Club club_ = clubRepository.findByName(club);
+		if(club_ == null)
+			return false;
+		
+		return user.getJoinedClubs().contains(club_);
+	}
 }
