@@ -60,11 +60,12 @@ public class HomeScreen extends AppCompatActivity {
         //The "queue" will take in HTTP messages(JsonObjectResponse), send them over the network, wait, get a response and then call a method
 
         //To enqueue an HTTP Request call "queue"."add("requestObject-here");"
-        String address = GlobalVars.VirtualUrl + "/users/getByUsermame?username=" +
+        String address = GlobalVars.VirtualUrl + "/club/joined?username=" +
                 GlobalVars.getUsername();
         JsonArrayRequest userClubs = new JsonArrayRequest(Request.Method.GET, address, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+                joinedClubs = response;
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         addClub(response.getJSONObject(i));
