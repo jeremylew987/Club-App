@@ -67,7 +67,9 @@ public class LoginScreen extends AppCompatActivity {
 					@Override
 					public void onResponse(Boolean response) {
 						if(response) {
+
 							String address = GlobalVars.VirtualUrl+"/club/joined?username="+name;
+
 							JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, address, null, new Response.Listener<JSONArray>() {
 								@Override
 								public void onResponse(JSONArray response) {

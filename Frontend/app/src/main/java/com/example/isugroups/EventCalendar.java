@@ -16,6 +16,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -31,7 +32,7 @@ import java.util.List;
 
 public class EventCalendar extends AppCompatActivity {
 
-    private JsonObjectRequest mJSONRequest;
+    private JsonArrayRequest mJSONRequest;
     private String address;
     private static final String TAG = EventCalendar.class.getName();
     private TextView Clubtitle;
@@ -57,16 +58,17 @@ public class EventCalendar extends AppCompatActivity {
         eventtitle = findViewById(R.id.calendar_event_title);
         eventtime = findViewById(R.id.calendar_event_time);
         currentclub = GlobalVars.getCurClubName();
+
         Clubtitle.setText(currentclub);
+        currentclub = Clubtitle.getText().toString();
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String selectedDate = sdf.format(new Date(calendar.getDate()));
-        currentmonth = selectedDate.substring(6, 10);
-        currentyear = selectedDate.substring(3, 5);
+        currentyear = selectedDate.substring(6, 10);
+        currentmonth = selectedDate.substring(3, 5);
         currentdate = selectedDate.substring(0, 2);
         eventdate.setText(currentdate + ":");
         address = GlobalVars.VirtualUrl + "/event/scheduled?club=" + currentclub + "&month=" + currentmonth + "&year=" + currentyear;
-
         EventRequest();
 
         homebutton.setOnClickListener(new View.OnClickListener() {
@@ -83,13 +85,14 @@ public class EventCalendar extends AppCompatActivity {
                 eventdescription.setText("");
                 eventtitle.setText("");
                 eventtime.setText("");
-                currentmonth = String.valueOf(i1);
+                currentmonth = String.valueOf(i1 + 1);
                 currentyear = String.valueOf(i);
 
                 int month = i1 + 1;
                 currentdate = i2 + "/" + month + "/" + i;
                 eventdate.setText(currentdate + ":");
-                address = "http://:8080/event/scheduled?club=" + currentclub + "&month=" + currentmonth + "&year=" + currentyear;
+                address = GlobalVars.VirtualUrl + "/event/scheduled?club=" + currentclub + "&month=" + currentmonth + "&year=" + currentyear;
+                Log.i(TAG, "address:" + address);
                 EventRequest();
 
             }
@@ -101,14 +104,15 @@ public class EventCalendar extends AppCompatActivity {
 
     private void EventRequest() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        mJSONRequest = new JsonObjectRequest
-                (Request.Method.GET, address, null, new Response.Listener<JSONObject>() {
+        mJSONRequest = new JsonArrayRequest
+                (Request.Method.GET, address, null, new Response.Listener<JSONArray>() {
 
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
+                        Log.i(TAG, "on response :" + response.toString());
                         try {
 
-                            JSONArray jsonArray = response.getJSONArray("EventDto");
+                            JSONArray jsonArray = response;
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject event = jsonArray.getJSONObject(i);
 
