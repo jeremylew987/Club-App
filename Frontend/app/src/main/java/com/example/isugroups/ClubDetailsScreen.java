@@ -94,7 +94,7 @@ public class ClubDetailsScreen extends AppCompatActivity {
                         join.setOnClickListener(new View.OnClickListener() {
 
                             public void onClick(View view) {
-                                String join = "http://10.49.40.75:8080/club/join?club="+GlobalVars.getCurClubName();
+                                String join = GlobalVars.VirtualUrl+"/club/join?club="+GlobalVars.getCurClubName();
                                 //TODO add user on backend and add club
                                 SStringRequest request = new SStringRequest(Request.Method.POST, join, null, new Response.Listener<String>() {
                                     @Override
@@ -274,17 +274,9 @@ public class ClubDetailsScreen extends AppCompatActivity {
                         TextView fee = (TextView) findViewById(R.id.Fees);
                         fee.setText(FeeData);
 
-                        String OfficerList = "";
 
-                      /*  String OfficersData = "President\n" +
-                                "John Doe\n" +
-                                "Treasurer\n" +
-                                "Jane Doe";
 
-                        TextView Officers = (TextView) findViewById(R.id.Officers);
-                        Officers.setText(OfficersData);
-*/
-                        //TODO add contact from JSON object
+
 
                         JSONArray exampleArray2 = null;
                         try {
@@ -293,11 +285,13 @@ public class ClubDetailsScreen extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        String ContactList = "";
+                        String ContactList = "President: \n";
                         if(exampleArray2 != null) {
 
                             for (int i = 0; i < exampleArray2.length(); i++) {
                                 try {
+                                    if(i==1)
+                                        ContactList += "Vice President: \n";
                                     JSONObject temp  = exampleArray2.getJSONObject(i);
                                     ContactList += temp.getString("name") + "\n";
                                     ContactList += temp.getString("phoneNumber") + "\n";
