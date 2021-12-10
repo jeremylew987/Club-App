@@ -46,6 +46,14 @@ public class HomeScreen extends AppCompatActivity {
                 startActivity(new Intent(HomeScreen.this, SearchPageScreen.class));
             }
         });
+        Button yourButton2 = (Button) findViewById(R.id.ToCreateClub);
+
+        yourButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomeScreen.this, CreateClub.class));
+            }
+        });
 
         //Make a RequestQueue Object named "queue" and assign to "Volley.newRequestQueue(HomeScreen.this);"
         RequestQueue queue = Volley.newRequestQueue(HomeScreen.this);

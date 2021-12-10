@@ -17,9 +17,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -65,6 +67,39 @@ public class LoginScreen extends AppCompatActivity {
 					@Override
 					public void onResponse(Boolean response) {
 						if(response) {
+							String address = "http://10.49.40.75:8080/club/joined?username="+name;
+							JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, address, null, new Response.Listener<JSONArray>() {
+								@Override
+								public void onResponse(JSONArray response) {
+									for(int i = 0;i< response.length();i++){
+										try {
+											JSONObject temp = response.getJSONObject(i);
+											GlobalVars.addClub(temp.getString("name"));
+										} catch (JSONException e) {
+											e.printStackTrace();
+										}
+
+									}
+
+								}}, new Response.ErrorListener() {
+								@Override
+								public void onErrorResponse(VolleyError error) {
+
+									error.printStackTrace();
+									android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(LoginScreen.this);
+									alertDialogBuilder.setTitle("Error");
+									alertDialogBuilder.setMessage(error.getMessage());
+									alertDialogBuilder.setPositiveButton("Ok", null);
+									alertDialogBuilder.setNegativeButton("", null);
+									alertDialogBuilder.create().show();
+								}
+							});
+							queue.add(request);
+
+
+
+							GlobalVars.setCurUserID(name);
+							GlobalVars.setUserPassphrase(pass);
 							Intent i = new Intent(LoginScreen.this, HomeScreen.class);
 							startActivity(i);
 						}

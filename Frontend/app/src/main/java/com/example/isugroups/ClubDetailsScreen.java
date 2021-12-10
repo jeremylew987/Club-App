@@ -11,10 +11,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -26,6 +30,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.KeyManagementException;
@@ -36,6 +41,8 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -60,6 +67,8 @@ public class ClubDetailsScreen extends AppCompatActivity {
                 finish();
             }
         });
+
+
         RequestQueue queue = Volley.newRequestQueue(ClubDetailsScreen.this);
         /*String address = "http://coms-319-g22.cs.iastate.edu/club/search?phrase=<" +
                 ((GlobalVars) ClubDetailsScreen.this.getApplication()).getCurClubName() +
@@ -78,16 +87,49 @@ public class ClubDetailsScreen extends AppCompatActivity {
                         isMember = ((GlobalVars) ClubDetailsScreen.this.getApplication()).getClubs().contains(((GlobalVars) ClubDetailsScreen.this.getApplication()).getCurClubName());
                         if (isMember) {
                             join.setVisibility(View.GONE);
+
                         }
 
 
                         join.setOnClickListener(new View.OnClickListener() {
 
                             public void onClick(View view) {
-                                //Join Club, add user ID to the list and refresh page to change view
-                                ((GlobalVars) ClubDetailsScreen.this.getApplication()).getClubs().add(((GlobalVars) ClubDetailsScreen.this.getApplication()).getCurClubName());
-                                startActivity(new Intent(ClubDetailsScreen.this, ClubDetailsScreen.class));
+                                String join = "http://10.49.40.75:8080/club/join?club="+GlobalVars.getCurClubName();
                                 //TODO add user on backend and add club
+                                SStringRequest request = new SStringRequest(Request.Method.POST, join, null, new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        if (response.equals("SUCCESS")){
+                                            //Join Club, add user ID to the list and refresh page to change view
+                                            ((GlobalVars) ClubDetailsScreen.this.getApplication()).getClubs().add(((GlobalVars) ClubDetailsScreen.this.getApplication()).getCurClubName());
+                                            startActivity(new Intent(ClubDetailsScreen.this, ClubDetailsScreen.class));
+                                        }
+                                        else{
+
+                                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ClubDetailsScreen.this);
+                                            alertDialogBuilder.setTitle("Error");
+                                            alertDialogBuilder.setMessage(GlobalVars.getCurUserID());
+                                            alertDialogBuilder.setPositiveButton("Ok", null);
+                                            alertDialogBuilder.setNegativeButton("", null);
+                                            alertDialogBuilder.create().show();
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+
+                                        error.printStackTrace();
+                                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ClubDetailsScreen.this);
+                                        alertDialogBuilder.setTitle("Error");
+                                        alertDialogBuilder.setMessage(GlobalVars.getCurUserID());
+                                        alertDialogBuilder.setPositiveButton("Ok", null);
+                                        alertDialogBuilder.setNegativeButton("", null);
+                                        alertDialogBuilder.create().show();
+                                    }
+                                });
+                                queue.add(request);
+
+
                             }
                         });
 
@@ -138,6 +180,27 @@ public class ClubDetailsScreen extends AppCompatActivity {
                                 startActivity(new Intent(ClubDetailsScreen.this, EventCalendar.class));
                             }
                         });
+                        Button yourButton2 = (Button) findViewById(R.id.ToCreateEvent);
+
+                        yourButton2.setOnClickListener(new View.OnClickListener() {
+
+                            public void onClick(View view) {
+                                startActivity(new Intent(ClubDetailsScreen.this, CreateEventScreen.class));
+                            }
+                        });
+                        Button yourButton3 = (Button) findViewById(R.id.ToCreateNotification);
+
+                        yourButton3.setOnClickListener(new View.OnClickListener() {
+
+                            public void onClick(View view) {
+                                startActivity(new Intent(ClubDetailsScreen.this, CreateClubNotificationScreen.class));
+                            }
+                        });
+                        if (!isMember) {
+                            yourButton3.setVisibility(View.GONE);
+                            yourButton2.setVisibility(View.GONE);
+
+                        }
 
                         TextView Event = (TextView) findViewById(R.id.Events);
                         Event.setText(EventData);
@@ -145,13 +208,13 @@ public class ClubDetailsScreen extends AppCompatActivity {
                         int numMembers = 0;
                         String Rescrictions ="Membership Restrictions:"+"\n";
                         try {
-                             Rescrictions = response.getString("membershipRestrictions");
+                             Rescrictions += response.getString("membershipRestrictions");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         String Elections = "Elections:"+"\n";
                         try {
-                            Elections = response.getString("electionInformation");
+                            Elections += response.getString("electionInformation");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -180,13 +243,22 @@ public class ClubDetailsScreen extends AppCompatActivity {
                         TextView Member = (TextView) findViewById(R.id.Members);
                         Member.setText(MemberData);
 
-                        Button yourButton2 = (Button) findViewById(R.id.ConstitutionButton);
+                        Button yourButton4 = (Button) findViewById(R.id.ConstitutionButton);
 
-                        yourButton2.setOnClickListener(new View.OnClickListener() {
+                        yourButton4.setOnClickListener(new View.OnClickListener() {
 
                             public void onClick(View view) {
-                                //Download Constitution from DB
-                                //TODO
+
+                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ClubDetailsScreen.this);
+                                alertDialogBuilder.setTitle("Constitution");
+                                try {
+                                    alertDialogBuilder.setMessage(response.getString("constitution"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                alertDialogBuilder.setPositiveButton("Ok", null);
+                                alertDialogBuilder.setNegativeButton("", null);
+                                alertDialogBuilder.create().show();
                             }
                         });
 
@@ -266,4 +338,68 @@ public class ClubDetailsScreen extends AppCompatActivity {
 				queue.add(request);
     }
 
+    private class SStringRequest extends Request<String> {
+        private final Response.Listener<String> mListener;
+        private final Response.ErrorListener mErrorListener;
+        private final String mRequestBody;
+
+        private final String PROTOCOL_CHARSET = "utf-8";
+        private final String PROTOCOL_CONTENT_TYPE = String.format("application/json; charset=%s", PROTOCOL_CHARSET);
+
+        public SStringRequest(int method, String url, String requestBody, Response.Listener<String> listener, Response.ErrorListener errorListener) {
+            super(method, url, errorListener);
+            this.mListener = listener;
+            this.mErrorListener = errorListener;
+            this.mRequestBody = requestBody;
+        }
+
+        @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            Map<String, String>  params = new HashMap<String, String>();
+            params.put("Authorization", GlobalVars.getCurUserID() + ":" + GlobalVars.getUserPassphrase());
+            return params;
+        }
+
+        @Override
+        protected Response<String> parseNetworkResponse(NetworkResponse response) {
+            String parsed;
+            try {
+                parsed = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
+            } catch (UnsupportedEncodingException e) {
+                parsed = new String(response.data);
+            }
+            return Response.success(parsed, HttpHeaderParser.parseCacheHeaders(response));
+        }
+
+        @Override
+        protected VolleyError parseNetworkError(VolleyError volleyError) {
+            return super.parseNetworkError(volleyError);
+        }
+
+        @Override
+        protected void deliverResponse(String response) {
+            mListener.onResponse(response);
+        }
+
+        @Override
+        public void deliverError(VolleyError error) {
+            mErrorListener.onErrorResponse(error);
+        }
+
+        @Override
+        public String getBodyContentType() {
+            return PROTOCOL_CONTENT_TYPE;
+        }
+
+        @Override
+        public byte[] getBody() throws AuthFailureError {
+            try {
+                return mRequestBody == null ? null : mRequestBody.getBytes(PROTOCOL_CHARSET);
+            } catch (UnsupportedEncodingException uee) {
+                VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                        mRequestBody, PROTOCOL_CHARSET);
+                return null;
+            }
+        }
+    }
 }

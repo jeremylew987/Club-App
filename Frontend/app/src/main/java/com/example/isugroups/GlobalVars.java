@@ -5,16 +5,19 @@ import android.app.Application;
 import java.util.ArrayList;
 
 public class GlobalVars extends Application {
+
+    private static String CurUserID;
+
     public static String VirtualUrl = "http://coms-319-g22.cs.iastate.edu:8080";
 
-    private static int CurUserID;
 
-    public static int getCurUserID() {//for home page and finding clubs in
+
+    public static String getCurUserID() {//for home page and finding clubs in
         return CurUserID;
     }
 
     public static void setCurUserID(String ID) {
-        CurUserID = CurUserID;
+        CurUserID = ID;
     }
 
     public static String userPassphrase;
