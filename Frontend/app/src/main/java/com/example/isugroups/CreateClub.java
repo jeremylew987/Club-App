@@ -92,7 +92,7 @@ public class CreateClub extends AppCompatActivity {
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				String address = "http://10.49.40.75:8080/club/create";
+				String address = GlobalVars.VirtualUrl + "/club/create";
 				String requestBody = newGroup.toString();
 
 

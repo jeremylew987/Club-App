@@ -65,7 +65,7 @@ public class EventCalendar extends AppCompatActivity {
         currentyear = selectedDate.substring(3, 5);
         currentdate = selectedDate.substring(0, 2);
         eventdate.setText(currentdate + ":");
-        address = "http://:8080/event/scheduled?club=" + currentclub + "&month=" + currentmonth + "&year=" + currentyear;
+        address = GlobalVars.VirtualUrl + "/event/scheduled?club=" + currentclub + "&month=" + currentmonth + "&year=" + currentyear;
 
         EventRequest();
 
