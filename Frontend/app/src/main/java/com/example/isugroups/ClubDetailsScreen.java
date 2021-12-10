@@ -84,7 +84,7 @@ public class ClubDetailsScreen extends AppCompatActivity {
                         Boolean isMember = false;
                         //check if user is member in the DB
                         //TODO
-                        isMember = ((GlobalVars) ClubDetailsScreen.this.getApplication()).getClubs().contains(((GlobalVars) ClubDetailsScreen.this.getApplication()).getCurClubName());
+                        isMember = GlobalVars.getClubs().contains(GlobalVars.getCurClubName());
                         if (isMember) {
                             join.setVisibility(View.GONE);
 
