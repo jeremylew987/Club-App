@@ -65,7 +65,7 @@ public class ClubDetailsScreen extends AppCompatActivity {
                 ((GlobalVars) ClubDetailsScreen.this.getApplication()).getCurClubName() +
                 ">&page=<0>";*/
         String club = GlobalVars.getCurClubName();
-        String address = "http://10.49.40.75:8080/club/search/narrowed?club="+club;
+        String address = GlobalVars.VirtualUrl + "/club/search/narrowed?club="+club;
 
 				JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, address, null, new Response.Listener<JSONObject>() {
 					@Override
@@ -264,10 +264,6 @@ public class ClubDetailsScreen extends AppCompatActivity {
 					}
 				});
 				queue.add(request);
-
-
-
-
     }
 
 }

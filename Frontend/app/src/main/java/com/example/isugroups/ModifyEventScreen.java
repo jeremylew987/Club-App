@@ -80,7 +80,7 @@ public class ModifyEventScreen extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 String requestBody = data.toString();
-                String address = "http://10.0.2.2:8080/event/modify";
+                String address = GlobalVars.VirtualUrl + "/event/modify";
                 ModifyEventScreen.BooleanRequest request = new ModifyEventScreen.BooleanRequest(Request.Method.POST, address, requestBody, new Response.Listener<Boolean>() {
                     @Override
                     public void onResponse(Boolean response) {
