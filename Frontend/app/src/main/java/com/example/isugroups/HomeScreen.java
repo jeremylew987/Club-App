@@ -25,6 +25,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 public class HomeScreen extends AppCompatActivity {
+    private JSONArray joinedClubs;
+    private ImageButton[] clubButtons;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
