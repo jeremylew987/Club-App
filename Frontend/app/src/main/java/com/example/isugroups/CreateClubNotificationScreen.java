@@ -60,7 +60,7 @@ public class CreateClubNotificationScreen extends AppCompatActivity {
                 RequestQueue queue = Volley.newRequestQueue(CreateClubNotificationScreen.this);
                 JSONObject data = new JSONObject();
                 try {
-                    data.put("clubName","newClub4");
+                    data.put("clubName",GlobalVars.getCurClubName());
                     data.put("message",message);
                 } catch (JSONException e) {
                     e.printStackTrace();

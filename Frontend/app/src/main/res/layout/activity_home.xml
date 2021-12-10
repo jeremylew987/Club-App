@@ -77,15 +77,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Upcoming events"
+        android:text="Recent Notifications"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintBottom_toTopOf="@+id/NotificationsScroll"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clubsList" />
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/NotificationsScroll"
         android:layout_width="411dp"
         android:layout_height="317dp"
         android:outlineProvider="none"
@@ -95,8 +95,9 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3">
 
         <LinearLayout
+            android:id="@+id/ClubNotiflayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical" />
     </ScrollView>
 

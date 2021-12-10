@@ -1,29 +1,31 @@
 package com.example.isugroups;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomeScreen extends AppCompatActivity {
     private JSONArray joinedClubs;
@@ -96,6 +98,36 @@ public class HomeScreen extends AppCompatActivity {
         });
         queue.add(userClubs);
 
+        String address2 = GlobalVars.VirtualUrl + "/club/joined/notifications?page=0";
+        JsonArrayRequest userNotificatons = new JsonArrayRequest(Request.Method.GET, address2, null, new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray response) {
+
+                Log.i("Response: " , response.toString());
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        addNotif(response.getJSONObject(i));
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            Map<String, String>  params = new HashMap<String, String>();
+            params.put("Authorization", GlobalVars.getCurUserID() + ":" + GlobalVars.getUserPassphrase());
+            return params;
+        }};
+        queue.add(userNotificatons);
 
     }
 
@@ -116,6 +148,30 @@ public class HomeScreen extends AppCompatActivity {
             public void onClick(View view){
                 try {
                     GlobalVars.setCurClubName(clubToAdd.getString("name") );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                startActivity(new Intent(HomeScreen.this, ClubDetailsScreen.class));
+            }
+        });
+        layout.addView(tv);
+    }
+    private void addNotif(JSONObject clubToAdd){
+        Toolbar.LayoutParams lparams = new Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT);
+        ViewGroup layout = (ViewGroup) findViewById(R.id.ClubNotiflayout);
+        Button tv = new Button(this);
+        tv.setLayoutParams(lparams);
+        try {
+            tv.setText("Sent From: "+clubToAdd.getString("senderName") + "\n" + clubToAdd.getString("message")+ "\n"+
+                    clubToAdd.getString("timestamp") + "\n"+clubToAdd.getString("clubName"));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        tv.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                try {
+                    GlobalVars.setCurClubName(clubToAdd.getString("clubName") );
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
