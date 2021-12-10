@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -61,11 +62,12 @@ public class HomeScreen extends AppCompatActivity {
 
         //To enqueue an HTTP Request call "queue"."add("requestObject-here");"
         String address = GlobalVars.VirtualUrl + "/club/joined?username=" +
-                GlobalVars.getUsername();
+                GlobalVars.getCurUserID();
         JsonArrayRequest userClubs = new JsonArrayRequest(Request.Method.GET, address, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 joinedClubs = response;
+                Log.i("Response: " , response.toString());
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         addClub(response.getJSONObject(i));
@@ -112,6 +114,11 @@ public class HomeScreen extends AppCompatActivity {
         tv.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                try {
+                    GlobalVars.setCurClubName(clubToAdd.getString("name") );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 startActivity(new Intent(HomeScreen.this, ClubDetailsScreen.class));
             }
         });
