@@ -108,7 +108,7 @@ public class ClubDetailsScreen extends AppCompatActivity {
 
                                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ClubDetailsScreen.this);
                                             alertDialogBuilder.setTitle("Error");
-                                            alertDialogBuilder.setMessage(GlobalVars.getCurUserID());
+                                            alertDialogBuilder.setMessage("Failed to join");
                                             alertDialogBuilder.setPositiveButton("Ok", null);
                                             alertDialogBuilder.setNegativeButton("", null);
                                             alertDialogBuilder.create().show();
@@ -121,7 +121,7 @@ public class ClubDetailsScreen extends AppCompatActivity {
                                         error.printStackTrace();
                                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ClubDetailsScreen.this);
                                         alertDialogBuilder.setTitle("Error");
-                                        alertDialogBuilder.setMessage(GlobalVars.getCurUserID());
+                                        alertDialogBuilder.setMessage(error.getMessage());
                                         alertDialogBuilder.setPositiveButton("Ok", null);
                                         alertDialogBuilder.setNegativeButton("", null);
                                         alertDialogBuilder.create().show();
