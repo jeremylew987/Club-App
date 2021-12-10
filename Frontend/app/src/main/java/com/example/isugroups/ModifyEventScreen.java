@@ -34,14 +34,14 @@ public class ModifyEventScreen extends AppCompatActivity {
         setContentView(R.layout.activity_modify_event_screen);
 
         //set up back button
-//        ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
-//        backButton.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(ModifyEventScreen.this, LoginScreen.class));
-//            }
-//        });
+        ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         TextView header = ((TextView) findViewById(R.id.ModifyEventHeader));
         header.setText("Modify Event For " + GlobalVars.getCurClubName());
@@ -80,14 +80,28 @@ public class ModifyEventScreen extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 String requestBody = data.toString();
-                String address = "http://10.0.2.2:8080/event/modify";
+                String address = GlobalVars.VirtualUrl + "/event/modify";
                 ModifyEventScreen.BooleanRequest request = new ModifyEventScreen.BooleanRequest(Request.Method.POST, address, requestBody, new Response.Listener<Boolean>() {
                     @Override
                     public void onResponse(Boolean response) {
                         if(response)
-                            ((TextView)findViewById(R.id.StatusTextModifyEvent)).setText("Event Successfully Modified.");
+                        {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ModifyEventScreen.this);
+                            alertDialogBuilder.setTitle("Status");
+                            alertDialogBuilder.setMessage("Event Successfully Modified.");
+                            alertDialogBuilder.setPositiveButton("Ok", null);
+                            alertDialogBuilder.setNegativeButton("", null);
+                            alertDialogBuilder.create().show();
+                        }
                         else
-                            ((TextView)findViewById(R.id.StatusTextModifyEvent)).setText("The Event Could Not Be Modified.");
+                        {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ModifyEventScreen.this);
+                            alertDialogBuilder.setTitle("Status");
+                            alertDialogBuilder.setMessage("The Event Could Not Be Modified.");
+                            alertDialogBuilder.setPositiveButton("Ok", null);
+                            alertDialogBuilder.setNegativeButton("", null);
+                            alertDialogBuilder.create().show();
+                        }
                     }
                 }, new Response.ErrorListener() {
                     @Override

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,14 +33,14 @@ public class CreateEventScreen extends AppCompatActivity {
         setContentView(R.layout.activity_create_event_screen);
 
         //set up back button
-//        ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
-//        backButton.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(CreateEventScreen.this, LoginScreen.class));
-//            }
-//        });
+        ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         TextView header = ((TextView) findViewById(R.id.CreateEventForClubName));
         header.setText("Create Event For " + GlobalVars.getCurClubName());
@@ -79,14 +80,28 @@ public class CreateEventScreen extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 String requestBody = data.toString();
-                String address = "http://10.0.2.2:8080/event/add";
+                String address = GlobalVars.VirtualUrl + "/event/add";
                 CreateEventScreen.BooleanRequest request = new CreateEventScreen.BooleanRequest(Request.Method.POST, address, requestBody, new Response.Listener<Boolean>() {
                     @Override
                     public void onResponse(Boolean response) {
                         if(response)
-                            ((TextView)findViewById(R.id.StatusTextCreateEvent)).setText("Event Successfully Added.");
+                        {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateEventScreen.this);
+                            alertDialogBuilder.setTitle("Status");
+                            alertDialogBuilder.setMessage("Event Successfully Added.");
+                            alertDialogBuilder.setPositiveButton("Ok", null);
+                            alertDialogBuilder.setNegativeButton("", null);
+                            alertDialogBuilder.create().show();
+                        }
                         else
-                            ((TextView)findViewById(R.id.StatusTextCreateEvent)).setText("The Event Could Not Be Added.");
+                        {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateEventScreen.this);
+                            alertDialogBuilder.setTitle("Status");
+                            alertDialogBuilder.setMessage("The Event Could Not Be Added.");
+                            alertDialogBuilder.setPositiveButton("Ok", null);
+                            alertDialogBuilder.setNegativeButton("", null);
+                            alertDialogBuilder.create().show();
+                        }
                     }
                 }, new Response.ErrorListener() {
                     @Override

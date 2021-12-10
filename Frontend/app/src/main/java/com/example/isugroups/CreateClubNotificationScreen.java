@@ -36,14 +36,14 @@ public class CreateClubNotificationScreen extends AppCompatActivity {
         setContentView(R.layout.activity_create_club_notification_screen);
 
         //set up back button
-//        ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
-//        backButton.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(CreateClubNotificationScreen.this, LoginScreen.class));
-//            }
-//        });
+        ImageButton backButton = (ImageButton) findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         TextView header = ((TextView) findViewById(R.id.ClubNotificationClubName));
         header.setText("Send Club Notification For " + GlobalVars.getCurClubName());
@@ -66,14 +66,28 @@ public class CreateClubNotificationScreen extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 String requestBody = data.toString();
-                String address = "http://10.0.2.2:8080/club/notifications/add";
+                String address = GlobalVars.VirtualUrl + "/club/notifications/add";
                 CreateClubNotificationScreen.BooleanRequest request = new CreateClubNotificationScreen.BooleanRequest(Request.Method.POST, address, requestBody, new Response.Listener<Boolean>() {
                     @Override
                     public void onResponse(Boolean response) {
                         if(response)
-                            ((TextView)findViewById(R.id.StatusTextClubNotification)).setText("Notification Was Successfully Sent.");
+                        {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateClubNotificationScreen.this);
+                            alertDialogBuilder.setTitle("Status");
+                            alertDialogBuilder.setMessage("Notification Was Successfully Sent.");
+                            alertDialogBuilder.setPositiveButton("Ok", null);
+                            alertDialogBuilder.setNegativeButton("", null);
+                            alertDialogBuilder.create().show();
+                        }
                         else
-                            ((TextView)findViewById(R.id.StatusTextClubNotification)).setText("The Notification Could Not Be Sent.");
+                        {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CreateClubNotificationScreen.this);
+                            alertDialogBuilder.setTitle("Status");
+                            alertDialogBuilder.setMessage("The Notification Could Not Be Sent.");
+                            alertDialogBuilder.setPositiveButton("Ok", null);
+                            alertDialogBuilder.setNegativeButton("", null);
+                            alertDialogBuilder.create().show();
+                        }
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -110,7 +124,7 @@ public class CreateClubNotificationScreen extends AppCompatActivity {
         @Override
         public Map<String, String> getHeaders() throws AuthFailureError {
             Map<String, String>  params = new HashMap<String, String>();
-            params.put("Authorization", "gtmobley" + ":" + "1234");
+            params.put("Authorization", GlobalVars.getCurUserID() + ":" + GlobalVars.getUserPassphrase());
             return params;
         }
 

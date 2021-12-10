@@ -57,6 +57,12 @@ public class ClubController {
 		return new ResponseEntity<List<ClubBasicDto>>(clubService.getJoinedClubs(username), HttpStatus.OK);
 	}
 	
+	@GetMapping("/joined/narrowed")
+	public ResponseEntity<Boolean> getClubMembership(@RequestHeader HttpHeaders headers, @RequestParam("username") String username, @RequestParam("club") String club)
+	{
+		return new ResponseEntity<Boolean>(clubService.getIsMember(username, club), HttpStatus.OK);
+	}
+	
 	@PostMapping("/join")
 	public ResponseEntity<String> joinClub(@RequestHeader HttpHeaders headers, @RequestParam("club") String clubName)
 	{
