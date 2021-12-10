@@ -5,14 +5,14 @@ import android.app.Application;
 import java.util.ArrayList;
 
 public class GlobalVars extends Application {
-    private static int CurUserID;
+    private static String CurUserID;
 
-    public static int getCurUserID() {//for home page and finding clubs in
+    public static String getCurUserID() {//for home page and finding clubs in
         return CurUserID;
     }
 
     public static void setCurUserID(String ID) {
-        CurUserID = CurUserID;
+        CurUserID = ID;
     }
 
     public static String userPassphrase;
